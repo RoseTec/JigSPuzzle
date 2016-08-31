@@ -1,0 +1,12 @@
+<!ELEMENT language (page*)>
+<!ATTLIST language tag CDATA #REQUIRED>
+<!-- the tag of a language is used to change the java environment of this execution to the desired language -->
+<!-- see also: https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html#forLanguageTag-java.lang.String- -->
+
+<!ELEMENT page (t*)>
+<!ATTLIST page id ID #REQUIRED>
+<!ATTLIST page descr CDATA "">
+
+<!ELEMENT t (#PCDATA)>
+<!ATTLIST t id ID #REQUIRED>
+<!ATTLIST t descr CDATA "">

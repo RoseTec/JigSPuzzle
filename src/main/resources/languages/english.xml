@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE language SYSTEM "language.dtd">
+
+<language tag="en">
+    <page id="1" descr="puzzle window menu">
+        <t id="1" descr="puzzle window title">JigSPuzzle</t>
+
+        <t id="55">Puzzle could not be created.</t>
+        <t id="56">No puzzle could be created from the given file.</t>
+
+        <t id="100">Puzzle</t>
+        <t id="110">Create New Puzzle</t>
+        <t id="120">Load Old Puzzle</t>
+        <t id="130">Save this Puzzle</t>
+        <t id="150">Shuffle Puzzle</t>
+        <t id="160">Restart Puzzle</t>
+        <t id="180">Quit JigSPuzzle</t>
+
+        <t id="300">Settings</t>
+        <t id="310">Appearance-Settings</t>
+        <t id="320">Puzzle-Options</t>
+
+        <t id="500">About</t>
+        <t id="510">About JigSPuzzle</t>
+        <t id="520">Check New Version</t>
+    </page>
+
+    <page id="5" descr="ErrorMessageDialog">
+        <t id="10">There was the following error:</t>
+        <t id="20">close message</t>
+    </page>
+
+    <page id="10" descr="settings window">
+        <t id="1" descr="settings window title">Settings</t>
+        <t id="2">Save</t>
+        <t id="3">Abort</t>
+
+        <t id="11">Appearance</t>
+        <t id="12">Puzzle</t>
+
+        <t id="85">Settings could not be saved</t>
+        <t id="86">The settings could not be saved.</t>
+        <t id="87">Settings could not be loaded</t>
+        <t id="88">The settings could not be loaded.</t>
+
+        <t id="100">Language</t>
+        <t id="101">Used Language for the interface:</t>
+
+        <t id="120">Backgroundcolor</t>
+        <t id="121">used color:</t>
+
+        <t id="140">Preview</t>
+        <t id="141">Show a preview of the complete puzzle</t>
+
+        <t id="160">Size of the puzzle</t>
+        <t id="161">Used Size for the puzzleare:</t>
+        <t id="164">Keep aspect ratio</t>
+        <t id="167">Decrease picture automatically</t>
+        <t id="170">Enlarge picture automatically</t>
+
+        <t id="180">Number of puzzlepieces</t>
+        <t id="181">Number of puzzlepieces:</t>
+        <t id="182">The number of puzzlepieces is an approximate value. It will be tried to divide the puzzle in the given number of pieces. Is this not possible, a number very near to this number will be choosen.</t>
+        <t id="183">Changing this value is only visible when starting a new puzzle.</t>
+
+        <t id="200">Snapping puzzlepieces</t>
+        <t id="201">The distance that two puzzlepieces must have in order to let the puzzlepieces snap together.</t>
+        <t id="202">small</t>
+        <t id="203">big</t>
+    </page>
+</language>

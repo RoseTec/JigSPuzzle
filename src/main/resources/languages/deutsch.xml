@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE language SYSTEM "language.dtd">
+
+<language tag="de">
+    <page id="1" descr="puzzle window menu">
+        <t id="1" descr="puzzle window title">JigSPuzzle</t>
+
+        <t id="55">Puzzle konnte nicht erstellt werden.</t>
+        <t id="56">Aus der angegebenen Datei konnte kein Puzzle erstellt werden.</t>
+
+        <t id="100">Puzzle</t>
+        <t id="110">Neues Puzzle Erstellen</t>
+        <t id="120">Altes Puzzle Laden</t>
+        <t id="130">Dieses Puzzle Speichern</t>
+        <t id="150">Puzzle Durchmischen</t>
+        <t id="160">Puzzle Neu Sarten</t>
+        <t id="180">JigSPuzzle Beenden</t>
+
+        <t id="300">Einstellungen</t>
+        <t id="310">Darstellungs-Einstellungen</t>
+        <t id="320">Puzzle-Optionen</t>
+
+        <t id="500">Über</t>
+        <t id="510">Über JigSPuzzle</t>
+        <t id="520">Auf Neue Version Prüfen</t>
+    </page>
+
+    <page id="5" descr="ErrorMessageDialog">
+        <t id="10">Es trat folgender Fehler auf:</t>
+        <t id="20">Nachricht schließen</t>
+    </page>
+
+    <page id="10" descr="settings window">
+        <t id="1" descr="settings window title">Einstellungen</t>
+        <t id="2">Speichern</t>
+        <t id="3">Abbrechen</t>
+
+        <t id="11">Aussehen</t>
+        <t id="12">Puzzle</t>
+
+        <t id="85">Einstellungen wurden nicht gespeichert.</t>
+        <t id="86">Die Einstellungen konnten nicht gespeichert werden.</t>
+        <t id="87">Einstellungen wurden nicht geladen</t>
+        <t id="88">Die Einstellungen konnten nicht geladen werden.</t>
+
+        <t id="100">Sprache</t>
+        <t id="101">Die verwendete Sprache für die Oberfläche:</t>
+
+        <t id="120">Hintergrundfarbe</t>
+        <t id="121">verwendete Farbe:</t>
+
+        <t id="140">Vorschau</t>
+        <t id="141">Zeige Vorschau des fertigen Puzzles an</t>
+
+        <t id="160">Puzzlegröße</t>
+        <t id="161">Verwendete Fläche der Puzzlefläche:</t>
+        <t id="164">Behalte Seitenverhältnisse bei</t>
+        <t id="167">Verkleinere Bild automatisch</t>
+        <t id="170">Vergrößere Bild automatisch</t>
+
+        <t id="180">Anzahl der Puzzleteile</t>
+        <t id="181">Anzahl der Puzzleteile:</t>
+        <t id="182">Die Anzahl an Puzzleteilen ist ein ungefährer Wert. Es wird versucht, das Puzzle in die angegebene Anzahl an Teilen zu zerteilen. Ist dies nicht möglich, wird eine Zahl sehr nahe an dieser Zahl gewählt.</t>
+        <t id="183">Änderung dieses Wertes wird bei einem neuen Puzzle sichtbar.</t>
+
+        <t id="200">Einrast-Größe</t>
+        <t id="201">Der Abstand, den zwei Puzzleteile haben müssen, um einzurasten und somit als 'ineinander gesteckt' zu gelten</t>
+        <t id="202">klein</t>
+        <t id="203">groß</t>
+    </page>
+</language>
