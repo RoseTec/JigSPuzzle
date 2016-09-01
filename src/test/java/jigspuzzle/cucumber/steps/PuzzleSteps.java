@@ -34,7 +34,7 @@ public class PuzzleSteps {
         get_puzzle_window().fileChooser().setCurrentDirectory(imageFile.getParentFile()).selectFile(imageFile).approve();
 
         // wait until the puzzle is created
-        Thread.sleep(200);
+        Thread.sleep(1000);
 
         // save puzzle settings
         puzzleRows = PuzzleController.getInstance().getPuzzlepieceRowCount();
