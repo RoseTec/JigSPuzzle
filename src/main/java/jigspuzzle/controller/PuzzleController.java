@@ -97,13 +97,16 @@ public class PuzzleController extends AbstractController {
         BufferedImage image = ImageIO.read(imageFile);
 
         // calculate number of rows/columns
-        // todo: find better method for this
         int rowCount;
         int columnCount;
         int numberOfPieces = SettingsController.getInstance().getPuzzlepieceNumber();
 
-        rowCount = (int) (Math.sqrt(numberOfPieces));
-        columnCount = (int) (numberOfPieces / rowCount);
+        int puzzleareaSize = image.getWidth() * image.getHeight();
+        int puzzlepieceHeight = (int) (Math.sqrt(puzzleareaSize / (double) numberOfPieces));
+        int puzzlepieceWidth = puzzlepieceHeight;
+
+        rowCount = image.getHeight() / puzzlepieceHeight;
+        columnCount = image.getWidth() / puzzlepieceWidth;
 
         // create puzzle
         Dimension pieceSize = SettingsController.getInstance().getPuzzlepieceSize(puzzleareaHeight,
