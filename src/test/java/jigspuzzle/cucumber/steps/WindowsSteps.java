@@ -6,7 +6,6 @@ import cucumber.api.java.en.*;
 import java.awt.Dimension;
 import java.awt.Frame;
 import jigspuzzle.JigSPuzzle;
-import org.assertj.core.api.Assertions;
 import org.assertj.swing.core.BasicRobot;
 import org.assertj.swing.core.GenericTypeMatcher;
 import org.assertj.swing.core.Robot;
@@ -25,6 +24,11 @@ import static org.assertj.swing.launcher.ApplicationLauncher.application;
  * @author RoseTec
  */
 public class WindowsSteps {
+
+    /**
+     * travis ci-server has a problem with the wirst window...
+     */
+    private static boolean first_start = true;
 
     private Robot robot;
 
@@ -92,6 +96,11 @@ public class WindowsSteps {
         robot = BasicRobot.robotWithCurrentAwtHierarchy();
 
         application(JigSPuzzle.class).start();
+        if (first_start) {
+            first_start = false;
+            restart_program();
+            return;
+        }
         puzzleWindow = findFrame(new GenericTypeMatcher<Frame>(Frame.class) {
             @Override
             protected boolean isMatching(Frame frame) {

@@ -1,5 +1,15 @@
 language: java
+jdk:
+ - oraclejdk8
 
+before_script:
+ - chmod +x execute-on-vnc.sh
+ - sudo apt-get install -y tightvncserver
+ # Configure VNC password
+ - umask 0077
+ - mkdir -p "$HOME/.vnc"
+ - chmod go-rwx "$HOME/.vnc"
+ - vncpasswd -f <<<"my_new_password" >"$HOME/.vnc/passwd"
 
-mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-mvn test
+script:
+ - ./execute-on-vnc.sh mvn -Dtest=* clean verify

@@ -34,7 +34,7 @@ public class PuzzleSteps {
         get_puzzle_window().fileChooser().setCurrentDirectory(imageFile.getParentFile()).selectFile(imageFile).approve();
 
         // wait until the puzzle is created
-        Thread.sleep(1000);
+        Thread.sleep(800);
 
         // save puzzle settings
         puzzleRows = PuzzleController.getInstance().getPuzzlepieceRowCount();
@@ -118,8 +118,8 @@ public class PuzzleSteps {
         for (int moveToX : new int[]{50, 500}) {
             for (int moveToY : new int[]{50, 500}) {
                 move_puzzlepiece_to(groupToMove, moveToX, moveToY);
-                Assertions.assertThat(groupToMove.getX()).isEqualTo(moveToX - offsetX);
-                Assertions.assertThat(groupToMove.getY()).isEqualTo(moveToY - offsetY);
+                Assertions.assertThat(groupToMove.getX()).isBetween(moveToX - offsetX - 1, moveToX - offsetX + 1);
+                Assertions.assertThat(groupToMove.getY()).isBetween(moveToY - offsetY - 1, moveToY - offsetY + 1);
             }
         }
     }
@@ -135,10 +135,11 @@ public class PuzzleSteps {
     // size of puzzlepieces
     @Then("^the size of (?:one|a)? puzzlepiece should be: width=(\\d+)(?:px)?, height=(\\d+)(?:px)?$")
     public void size_of_puzzlepiece_should_be(int width, int height) throws InterruptedException {
+        int buffer = 20;
         PuzzlepieceView piece = (PuzzlepieceView) (get_puzzlepiece_group(0, 0).target());
 
-        Assertions.assertThat(piece.getHeightOfThisGroup() / 2).isEqualTo(height); // ' / 2' because of the connector-size.
-        Assertions.assertThat(piece.getWidthOfThisGroup() / 2).isEqualTo(width);
+        Assertions.assertThat(piece.getHeightOfThisGroup() / 2).isBetween(height - height / buffer, height + height / buffer); // ' / 2' because of the connector-size.
+        Assertions.assertThat(piece.getWidthOfThisGroup() / 2).isBetween(width - width / buffer, width + width / buffer);
     }
     // -- size of puzzlepieces end
 
