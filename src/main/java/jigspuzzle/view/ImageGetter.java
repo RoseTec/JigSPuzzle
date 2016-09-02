@@ -3,6 +3,7 @@ package jigspuzzle.view;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
+import jigspuzzle.JigSPuzzleResources;
 
 /**
  * With this class one can get the images for using in the user interface.
@@ -35,7 +36,7 @@ public class ImageGetter {
     }
 
     private Image getImage(String imageName) {
-        URL url = getClass().getResource("/images/" + imageName);
+        URL url = JigSPuzzleResources.getResource("/images/" + imageName);
 
         return url == null ? null : Toolkit.getDefaultToolkit().getImage(url);
     }

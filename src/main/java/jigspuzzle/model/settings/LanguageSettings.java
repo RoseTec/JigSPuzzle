@@ -9,7 +9,7 @@ import java.util.Locale;
 import java.util.Observable;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import jigspuzzle.JigSPuzzle;
+import jigspuzzle.JigSPuzzleResources;
 import jigspuzzle.controller.Savable;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -101,7 +101,7 @@ public class LanguageSettings extends Observable implements Savable {
      * @return
      */
     public String[] getAvailableLanguages() {
-        List<String> files = JigSPuzzle.getFilesInPath(LANGUAGE_DIR_NAME);
+        List<String> files = JigSPuzzleResources.getResourcesInPath(LANGUAGE_DIR_NAME);
         List<String> languages = new ArrayList<>();
 
         for (String file : files) {
@@ -210,7 +210,7 @@ public class LanguageSettings extends Observable implements Savable {
 
             dBuilder.setEntityResolver((String publicId, String systemId) -> {
                 if (systemId.contains("language.dtd")) {
-                    InputStream dtdStream = getClass().getResourceAsStream(LANGUAGE_DIR_NAME + "language.dtd");
+                    InputStream dtdStream = JigSPuzzleResources.getResource(LANGUAGE_DIR_NAME + "language.dtd").openStream();
                     return new InputSource(dtdStream);
                 } else {
                     return null;
@@ -274,7 +274,7 @@ public class LanguageSettings extends Observable implements Savable {
      */
     private InputStream getLanguageStream(String language) {
         try {
-            return getClass().getResource(LANGUAGE_DIR_NAME + language + ".xml").openStream();
+            return JigSPuzzleResources.getResource(LANGUAGE_DIR_NAME + language + ".xml").openStream();
         } catch (IOException ex) {
             return null;
         }
