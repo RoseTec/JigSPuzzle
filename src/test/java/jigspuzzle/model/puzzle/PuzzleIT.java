@@ -29,9 +29,6 @@ public class PuzzleIT {
     public void tearDown() {
     }
 
-    /**
-     * Test of removePuzzlepieceGroup method, of class Puzzle.
-     */
     @Test
     public void testRemovePuzzlepieceGroup() throws ClassNotFoundException {
         Puzzle puzzle = (Puzzle) FactorySlave.build(Puzzle.class).create();

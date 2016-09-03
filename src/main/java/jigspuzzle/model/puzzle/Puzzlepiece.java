@@ -1,6 +1,8 @@
 package jigspuzzle.model.puzzle;
 
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * A class for representing a puzzlepiece.
@@ -28,6 +30,44 @@ public class Puzzlepiece {
     public Puzzlepiece(BufferedImage img) {
         connectors = new PuzzlepieceConnection[ConnectorPosition.numberOfElements()];
         this.image = img;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 31 * hash + Objects.hashCode(this.image);
+        hash = 31 * hash + Arrays.deepHashCode(this.connectors);
+        return hash;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Puzzlepiece other = (Puzzlepiece) obj;
+        if (!Objects.equals(this.image, other.image)) {
+            return false;
+        }
+        if (this.group != other.group) {
+            return false;
+        }
+        if (!Arrays.deepEquals(this.connectors, other.connectors)) {
+            return false;
+        }
+        return true;
     }
 
     /**

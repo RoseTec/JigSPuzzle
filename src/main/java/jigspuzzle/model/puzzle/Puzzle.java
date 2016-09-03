@@ -3,17 +3,36 @@ package jigspuzzle.model.puzzle;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
-import jigspuzzle.controller.SettingsController;
+import jigspuzzle.model.Savable;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  * A class for a puzzle, that is created for a given picture.
  *
  * @author RoseTec
  */
-public class Puzzle {
+public class Puzzle implements Savable {
+
+    /**
+     * Creates a puzzle from the given file
+     *
+     * @param settingsNode
+     * @return
+     * @throws IOException
+     * @see #loadFromFile(org.w3c.dom.Element)
+     */
+    public static Puzzle createFromFile(Element settingsNode) throws IOException {
+        Puzzle p = new Puzzle();
+        p.loadFromFile(settingsNode);
+        return p;
+    }
 
     /**
      * The pieces of the puzzle. Represented as groups of puzzlepieces.
@@ -36,9 +55,13 @@ public class Puzzle {
     private int columnCount;
 
     /**
-     * used for testings. Not to b used in other places than constructor
+     * used for testings. Not to be used in other places than constructor
      */
     Puzzlepiece[][] puzzlepieces;
+
+    private Puzzle() {
+        puzzlepieceseGroups = null;
+    }
 
     public Puzzle(BufferedImage image, int rowCount, int columnCount, int pieceWidth, int pieceHeight) {
         this.image = image;
@@ -85,6 +108,57 @@ public class Puzzle {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 89 * hash + Objects.hashCode(this.puzzlepieceseGroups);
+        hash = 89 * hash + Objects.hashCode(this.image);
+        hash = 89 * hash + this.rowCount;
+        hash = 89 * hash + this.columnCount;
+        return hash;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Puzzle other = (Puzzle) obj;
+        if (this.rowCount != other.rowCount) {
+            return false;
+        }
+        if (this.columnCount != other.columnCount) {
+            return false;
+        }
+        if (!Objects.equals(this.puzzlepieceseGroups, other.puzzlepieceseGroups)) {
+            return false;
+        }
+        if (!Objects.equals(this.image, other.image)) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void loadFromFile(Element settingsNode) throws IOException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    /**
      * Removes the given puzzlepiece group from the puzzle.
      *
      * @param group
@@ -94,13 +168,21 @@ public class Puzzle {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void saveToFile(Document doc, Element rootElement) throws IOException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    /**
      * Shuffles the puzzle on the puzzleare, so that all puzzlepieces get new
      * coordinates.
      *
-     * @param maxX The maximum x-coordinate, die <b>nicht mehr</b> verwendet
-     * wird.
-     * @param maxY The maximum y-coordinate, die <b>nicht mehr</b> verwendet
-     * wird.
+     * @param maxX The maximum x-coordinate, that is <b>not</b> be used. Means,
+     * the given number is excludes.
+     * @param maxY The maximum y-coordinate, that is <b>not</b> be used. Means,
+     * the given number is excludes.
      * @param waitBetweenShuffle The Time in miliseconds that should be waited
      * before the next puzzlepiece gets a new coordinate.
      */

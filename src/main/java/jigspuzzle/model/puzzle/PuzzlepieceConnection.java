@@ -1,6 +1,7 @@
 package jigspuzzle.model.puzzle;
 
 import java.awt.geom.Path2D;
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -59,6 +60,43 @@ public class PuzzlepieceConnection {
         inPieceIndex = rn.nextInt(2);
         outPieceIndex = inPieceIndex == 0 ? 1 : 0;
         initConnector(pieces[inPieceIndex], pieces[outPieceIndex]);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 19 * hash + Objects.hashCode(this.shape);
+        return hash;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final PuzzlepieceConnection other = (PuzzlepieceConnection) obj;
+        if (!Objects.equals(this.shape, other.shape)) {
+            return false;
+        }
+        if (this.inPuzzlepiece != other.inPuzzlepiece) {
+            return false;
+        }
+        if (this.outPuzzlepiece != other.outPuzzlepiece) {
+            return false;
+        }
+        return true;
     }
 
     /**
