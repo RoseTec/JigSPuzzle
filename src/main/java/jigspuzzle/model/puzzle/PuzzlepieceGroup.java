@@ -1,10 +1,16 @@
 package jigspuzzle.model.puzzle;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Observable;
 import jigspuzzle.JigSPuzzle;
+import jigspuzzle.model.Savable;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * A Puzzlepiece-group has one to many puzzlepieces. A puzzle consists only out
@@ -13,7 +19,22 @@ import jigspuzzle.JigSPuzzle;
  *
  * @author RoseTec
  */
-public class PuzzlepieceGroup extends Observable {
+public class PuzzlepieceGroup extends Observable implements Savable {
+
+    /**
+     * Creates a PuzzlepieceGroup from the given file
+     *
+     * @param settingsNode
+     * @param puzzle
+     * @return
+     * @throws IOException
+     * @see #loadFromFile(org.w3c.dom.Element)
+     */
+    public static PuzzlepieceGroup createFromFile(Element settingsNode, Puzzle puzzle) throws IOException {
+        PuzzlepieceGroup group = new PuzzlepieceGroup(puzzle);
+        group.loadFromFile(settingsNode);
+        return group;
+    }
 
     /**
      * All puzzlepieces are stored in this array. We agree on the following:
@@ -27,7 +48,7 @@ public class PuzzlepieceGroup extends Observable {
      * can be a puzzlepiece-group where the puzzlepiece to the top of position
      * (0,0) is contained.
      */
-    private final ArrayList<ArrayList<Puzzlepiece>> puzzlepiecesList;
+    private ArrayList<ArrayList<Puzzlepiece>> puzzlepiecesList;
 
     /**
      * The x-coordinate of this group. It indicates where in the puzzlearea this
@@ -44,7 +65,12 @@ public class PuzzlepieceGroup extends Observable {
     /**
      * The puzzle in that thisgroup is contained.
      */
-    private final Puzzle puzzle;
+    private Puzzle puzzle;
+
+    private PuzzlepieceGroup(Puzzle puzzle) {
+        this.puzzle = puzzle;
+        puzzlepiecesList = null;
+    }
 
     PuzzlepieceGroup(Puzzle puzzle, Puzzlepiece puzzlepiece, int x, int y) {
         this.puzzle = puzzle;
@@ -210,6 +236,87 @@ public class PuzzlepieceGroup extends Observable {
         puzzle.removePuzzlepieceGroup(this);
         setChanged();
         notifyObservers();
+    }
+
+    @Override
+    public void loadFromFile(Element settingsNode) throws IOException {
+        NodeList list;
+
+        if (!"group".equals(settingsNode.getNodeName())) {
+            return;
+        }
+        list = settingsNode.getChildNodes();
+
+        for (int i = 0; i < list.getLength(); i++) {
+            Element node = (Element) list.item(i);
+
+            switch (node.getNodeName()) {
+                case "x":
+                    x = Integer.parseInt(node.getTextContent());
+                    break;
+                case "y":
+                    y = Integer.parseInt(node.getTextContent());
+                    break;
+                //case "puzzle": is set in Puzzle
+                case "puzzlepieces":
+                    NodeList childs = node.getChildNodes();
+                    int rows = childs.getLength();
+                    puzzlepiecesList = new ArrayList<>(rows);
+
+                    for (int rowNumber = 0; rowNumber < rows; rowNumber++) {
+                        Node row = childs.item(rowNumber);
+                        NodeList rowChilds = row.getChildNodes();
+                        int colums = rowChilds.getLength();
+                        ArrayList<Puzzlepiece> puzzlepieces = new ArrayList<>(colums);
+
+                        for (int colNumber = 0; colNumber < colums; colNumber++) {
+                            Node puzzlepieceNode = rowChilds.item(colNumber);
+                            Puzzlepiece piece;
+
+                            if ("null".equals(puzzlepieceNode.getNodeName())) {
+                                piece = null;
+                            } else {
+                                piece = Puzzlepiece.createFromFile((Element) puzzlepieceNode, this);
+                            }
+                            puzzlepieces.add(piece);
+                        }
+                        puzzlepiecesList.add(puzzlepieces);
+                    }
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public void saveToFile(Document doc, Element rootElement) throws IOException {
+        Element element = doc.createElement("group");
+        rootElement.appendChild(element);
+
+        Element tmpElement, tmpElement2;
+        tmpElement = doc.createElement("x");
+        tmpElement.setTextContent(String.valueOf(x));
+        element.appendChild(tmpElement);
+
+        tmpElement = doc.createElement("y");
+        tmpElement.setTextContent(String.valueOf(y));
+        element.appendChild(tmpElement);
+
+        // puzzle is done in Puzzle
+        tmpElement = doc.createElement("puzzlepieces");
+        tmpElement.setAttribute("rows", "" + puzzlepiecesList.size());
+        for (List<Puzzlepiece> row : puzzlepiecesList) {
+            tmpElement2 = doc.createElement("row");
+
+            for (Puzzlepiece piece : row) {
+                if (piece == null) {
+                    tmpElement2.appendChild(doc.createElement("null"));
+                } else {
+                    piece.saveToFile(doc, tmpElement2);
+                }
+            }
+            tmpElement.appendChild(tmpElement2);
+        }
+        element.appendChild(tmpElement);
     }
 
     /**
@@ -422,6 +529,19 @@ public class PuzzlepieceGroup extends Observable {
         this.y = y;
         setChanged();
         notifyObservers();
+    }
+
+    /**
+     * Returns the puzzle in that this group is contained.
+     *
+     * @return
+     */
+    public Puzzle getPuzzle() {
+        return puzzle;
+    }
+
+    void setPuzzle(Puzzle puzzle) {
+        this.puzzle = puzzle;
     }
 
     /**

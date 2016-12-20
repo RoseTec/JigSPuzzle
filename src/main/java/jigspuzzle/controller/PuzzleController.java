@@ -140,7 +140,7 @@ public class PuzzleController extends AbstractController {
 
             doc.getDocumentElement().normalize();
 
-            Node settingsNode = doc.getElementsByTagName("settings").item(0);
+            Node settingsNode = doc.getElementsByTagName("jigspuzzle").item(0);
             if (settingsNode == null) {
                 throw new IOException("File is no puzzle");
             }
@@ -150,7 +150,9 @@ public class PuzzleController extends AbstractController {
             throw new IOException(ex);
         }
 
-        puzzle.destroy();
+        if (puzzle != null) {
+            puzzle.destroy();
+        }
         puzzle = newPuzzle;
 
         // show puzzle on view

@@ -79,6 +79,14 @@
         <!-- cucumber end -->
     </repositories>
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
+        <!-- used for Base64 in AbsractPuzzleModel -->
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.9</version>
+        </dependency>
+
         <!-- used for AssertJ -->
         <dependency>
             <groupId>org.assertj</groupId>

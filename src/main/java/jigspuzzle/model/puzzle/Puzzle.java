@@ -5,20 +5,22 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
-import jigspuzzle.model.Savable;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * A class for a puzzle, that is created for a given picture.
  *
  * @author RoseTec
  */
-public class Puzzle implements Savable {
+public class Puzzle extends AbstractPuzzlesModel {
 
     /**
      * Creates a puzzle from the given file
@@ -37,7 +39,7 @@ public class Puzzle implements Savable {
     /**
      * The pieces of the puzzle. Represented as groups of puzzlepieces.
      */
-    private final ArrayList<PuzzlepieceGroup> puzzlepieceseGroups;
+    private ArrayList<PuzzlepieceGroup> puzzlepieceseGroups;
 
     /**
      * The image of this puzzle.
@@ -59,8 +61,15 @@ public class Puzzle implements Savable {
      */
     Puzzlepiece[][] puzzlepieces;
 
+    /**
+     * A list of all puzzlepiece connections. Used in saving and loading a
+     * puzzle.
+     */
+    Map<Integer, PuzzlepieceConnection> puzzlepieceConnections;
+
     private Puzzle() {
         puzzlepieceseGroups = null;
+        puzzlepieceConnections = null;
     }
 
     public Puzzle(BufferedImage image, int rowCount, int columnCount, int pieceWidth, int pieceHeight) {
@@ -69,6 +78,7 @@ public class Puzzle implements Savable {
         this.columnCount = columnCount;
         puzzlepieces = new Puzzlepiece[rowCount][columnCount];
 
+        puzzlepieceConnections = new HashMap<>();
         puzzlepieceseGroups = new ArrayList<>(rowCount * columnCount);
         for (int x = 0; x < rowCount; x++) {
             for (int y = 0; y < columnCount; y++) {
@@ -85,16 +95,23 @@ public class Puzzle implements Savable {
                         null);
                 gr.dispose();
 
+                //TODO: refactor that puzzlepiece is contained in the group ('no piece without a group'...)
                 newPiece = new Puzzlepiece(img);
                 puzzlepieces[x][y] = newPiece;
                 puzzlepieceseGroups.add(x * columnCount + y, new PuzzlepieceGroup(this, newPiece, pieceWidth * y, pieceHeight * x));
 
                 // connect the puzzlepieces
+                PuzzlepieceConnection newConnection;
+
                 if (x > 0) {
                     puzzlepieces[x][y].createConnectorToPiece(puzzlepieces[x - 1][y], ConnectorPosition.TOP);
+                    newConnection = puzzlepieces[x][y].getConnectorForDirection(ConnectorPosition.TOP);
+                    puzzlepieceConnections.put(newConnection.getId(), newConnection);
                 }
                 if (y > 0) {
                     puzzlepieces[x][y].createConnectorToPiece(puzzlepieces[x][y - 1], ConnectorPosition.LEFT);
+                    newConnection = puzzlepieces[x][y].getConnectorForDirection(ConnectorPosition.LEFT);
+                    puzzlepieceConnections.put(newConnection.getId(), newConnection);
                 }
             }
         }
@@ -155,7 +172,51 @@ public class Puzzle implements Savable {
      */
     @Override
     public void loadFromFile(Element settingsNode) throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Node thisSettingsNode = settingsNode.getElementsByTagName("puzzle").item(0);
+        NodeList list;
+
+        if (thisSettingsNode == null) {
+            return;
+        }
+        list = thisSettingsNode.getChildNodes();
+
+        for (int i = 0; i < list.getLength(); i++) {
+            NodeList childs;
+            int n;
+            Element node = (Element) list.item(i);
+
+            switch (node.getNodeName()) {
+                case "row-count":
+                    rowCount = Integer.parseInt(node.getTextContent());
+                    break;
+                case "column-count":
+                    columnCount = Integer.parseInt(node.getTextContent());
+                    break;
+                case "image":
+                    image = this.loadImageFromElement(node);
+                    break;
+                case "connections":
+                    childs = node.getChildNodes();
+                    n = childs.getLength();
+                    puzzlepieceConnections = new HashMap<>(n);
+
+                    for (int i2 = 0; i2 < n; i2++) {
+                        PuzzlepieceConnection connection = PuzzlepieceConnection.createFromFile((Element) childs.item(i2));
+                        puzzlepieceConnections.put(connection.getId(), connection);
+                    }
+                    break;
+                case "groups":
+                    childs = node.getChildNodes();
+                    n = childs.getLength();
+                    puzzlepieceseGroups = new ArrayList<>(n);
+
+                    for (int i2 = 0; i2 < n; i2++) {
+                        PuzzlepieceGroup group = PuzzlepieceGroup.createFromFile((Element) childs.item(i2), this);
+                        puzzlepieceseGroups.add(group);
+                    }
+                    break;
+            }
+        }
     }
 
     /**
@@ -172,7 +233,33 @@ public class Puzzle implements Savable {
      */
     @Override
     public void saveToFile(Document doc, Element rootElement) throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Element element = doc.createElement("puzzle");
+        rootElement.appendChild(element);
+
+        Element tmpElement;
+        tmpElement = doc.createElement("row-count");
+        tmpElement.setTextContent(String.valueOf(rowCount));
+        element.appendChild(tmpElement);
+
+        tmpElement = doc.createElement("column-count");
+        tmpElement.setTextContent(String.valueOf(columnCount));
+        element.appendChild(tmpElement);
+
+        tmpElement = doc.createElement("image");
+        this.saveImageToElement(tmpElement, image);
+        element.appendChild(tmpElement);
+
+        tmpElement = doc.createElement("connections");
+        for (PuzzlepieceConnection connection : puzzlepieceConnections.values()) {
+            connection.saveToFile(doc, tmpElement);
+        }
+        element.appendChild(tmpElement);
+
+        tmpElement = doc.createElement("groups");
+        for (PuzzlepieceGroup group : puzzlepieceseGroups) {
+            group.saveToFile(doc, tmpElement);
+        }
+        element.appendChild(tmpElement);
     }
 
     /**
@@ -230,6 +317,16 @@ public class Puzzle implements Savable {
      */
     public Image getImage() {
         return image;
+    }
+
+    /**
+     * Returns the PuzzlepieceConnection with the given ID.
+     *
+     * @param id
+     * @return
+     */
+    PuzzlepieceConnection getPuzzlepieceConnectionWithId(int id) {
+        return puzzlepieceConnections.get(id);
     }
 
     /**
