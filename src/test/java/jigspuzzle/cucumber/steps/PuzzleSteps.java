@@ -5,6 +5,7 @@ import cucumber.api.java.en.*;
 import java.awt.Container;
 import java.awt.Point;
 import java.io.File;
+import java.io.IOException;
 import jigspuzzle.controller.PuzzleController;
 import jigspuzzle.controller.SettingsController;
 import jigspuzzle.view.desktop.puzzle.PuzzlepieceView;
@@ -72,9 +73,31 @@ public class PuzzleSteps {
         create_puzzle();
     }
 
+    @When("^I save the puzzle$")
+    public void save_puzzle() throws InterruptedException, IOException {
+        File file = new File("puzzle.xml");
+
+        file.createNewFile();
+        get_puzzle_window().menuItem("puzzle-save").click();
+        get_puzzle_window().fileChooser().setCurrentDirectory(file.getParentFile()).selectFile(file).approve();
+    }
+
+    @When("^I load a puzzle$")
+    public void load_puzzle() throws InterruptedException {
+        File file = new File("puzzle.xml");
+
+        get_puzzle_window().menuItem("puzzle-load").click();
+        get_puzzle_window().fileChooser().setCurrentDirectory(file.getParentFile()).selectFile(file).approve();
+    }
+
+    @When("^I restart the puzzle$")
+    public void restart_puzzle() throws InterruptedException {
+        get_puzzle_window().menuItem("puzzle-restart").click();
+    }
+
     @When("^I drag an image into the puzzlearea$")
     public void create_puzzle_drag_drop() throws InterruptedException {
-        new PendingException();
+        throw new PendingException();
     }
 
     @When("^I create a new puzzle with an image from my HDD$")
@@ -146,11 +169,17 @@ public class PuzzleSteps {
     @Then("^I should see the complete puzzle$")
     public void see_complete_puzzle() {
         // yeah, the step says something different than the implementation here....
+        get_puzzlepiece_group(0, 0).requireEnabled(); // check (0,0) at least once
         for (int x = 0; x < puzzleRows; x++) {
             for (int y = 0; y < puzzleColumns; y++) {
                 get_puzzlepiece_group(x, y).requireEnabled();
             }
         }
+    }
+
+    @Then("^I should see the restarted puzzle$")
+    public void see_restarted_puzzle() {
+        see_complete_puzzle();
     }
 
     @Then("^I should see a puzzle of that image$")

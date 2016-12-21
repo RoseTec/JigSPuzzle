@@ -1,17 +1,31 @@
 package jigspuzzle.controller;
 
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import javax.imageio.ImageIO;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import jigspuzzle.JigSPuzzle;
 import jigspuzzle.model.puzzle.ConnectorPosition;
 import jigspuzzle.model.puzzle.Puzzle;
 import jigspuzzle.model.puzzle.Puzzlepiece;
 import jigspuzzle.model.puzzle.PuzzlepieceConnection;
 import jigspuzzle.model.puzzle.PuzzlepieceGroup;
+import jigspuzzle.util.ImageUtil;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 
 /**
  * A controller for all kinds of buissniss with a puzzle. Either the puzzle
@@ -20,6 +34,11 @@ import jigspuzzle.model.puzzle.PuzzlepieceGroup;
  * @author RoseTec
  */
 public class PuzzleController extends AbstractController {
+
+    /**
+     * The file ending that a saved puzzle to a file has.
+     */
+    public static final String PUZZLE_SAVES_ENDING = "jig";
 
     private static PuzzleController instance;
 
@@ -41,6 +60,31 @@ public class PuzzleController extends AbstractController {
     private Puzzle puzzle;
 
     private PuzzleController() {
+    }
+
+    /**
+     * Gets the current puzzle.
+     *
+     * Should <b>not</b> be used exept in tests.
+     *
+     * @return
+     */
+    Puzzle getPuzzle() {
+        return puzzle;
+    }
+
+    /**
+     * Sets the current puzzle to the given puzzle.
+     *
+     * Should <b>not</b> be used exept in tests.
+     *
+     * @param puzzle
+     */
+    void setPuzzle(Puzzle puzzle) {
+        this.puzzle = puzzle;
+
+        // show puzzle on view
+        JigSPuzzle.getInstance().getPuzzleWindow().setNewPuzzle(puzzle);
     }
 
     /**
@@ -80,30 +124,67 @@ public class PuzzleController extends AbstractController {
     }
 
     /**
+     * Loads a puzzle from the given file. If the file does not contain a
+     * puzzle, a IOExeption is thrown.
+     *
+     * @param file
+     * @throws java.io.IOException
+     * @see #savePuzzle(java.io.File)
+     */
+    public void loadPuzzle(File file) throws IOException {
+        // load puzzle
+        Puzzle newPuzzle;
+
+        try {
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(file);
+
+            doc.getDocumentElement().normalize();
+
+            Node settingsNode = doc.getElementsByTagName("jigspuzzle").item(0);
+            if (settingsNode == null) {
+                throw new IOException("File is no puzzle");
+            }
+
+            newPuzzle = Puzzle.createFromFile((Element) settingsNode);
+        } catch (SAXException | ParserConfigurationException ex) {
+            throw new IOException(ex);
+        }
+
+        if (puzzle != null) {
+            puzzle.destroy();
+        }
+        puzzle = newPuzzle;
+
+        // show puzzle on view
+        JigSPuzzle.getInstance().getPuzzleWindow().setNewPuzzle(newPuzzle);
+    }
+
+    /**
      * Creates a new puzzle that can be solved by the user
      *
-     * @param imageFile The image for that a puzzle should be created.
+     * @param img The image for that a puzzle should be created.
      * @param puzzleareaHeight The availible height on the puzzlearea.
      * @param puzzleareaWidth The availible width on the puzzlearea.
      * @throws IOException Will be thrown, when the given images cannot be
      * opened.
      */
-    public void newPuzzle(File imageFile, int puzzleareaHeight, int puzzleareaWidth) throws IOException {
-        if (puzzle != null) {
-            puzzle.destroy();
-        }
-
+    public void newPuzzle(Image img, int puzzleareaHeight, int puzzleareaWidth) throws IOException {
         // load the image to the puzzle
-        BufferedImage image = ImageIO.read(imageFile);
+        BufferedImage image = ImageUtil.transformImageToBufferedImage(img);
 
         // calculate number of rows/columns
-        // todo: find better method for this
         int rowCount;
         int columnCount;
         int numberOfPieces = SettingsController.getInstance().getPuzzlepieceNumber();
 
-        rowCount = (int) (Math.sqrt(numberOfPieces));
-        columnCount = (int) (numberOfPieces / rowCount);
+        int puzzleareaSize = image.getWidth() * image.getHeight();
+        int puzzlepieceHeight = (int) (Math.sqrt(puzzleareaSize / (double) numberOfPieces));
+        int puzzlepieceWidth = puzzlepieceHeight;
+
+        rowCount = image.getHeight() / puzzlepieceHeight;
+        columnCount = image.getWidth() / puzzlepieceWidth;
 
         // create puzzle
         Dimension pieceSize = SettingsController.getInstance().getPuzzlepieceSize(puzzleareaHeight,
@@ -113,6 +194,9 @@ public class PuzzleController extends AbstractController {
                 rowCount,
                 columnCount);
 
+        if (puzzle != null) {
+            puzzle.destroy();
+        }
         puzzle = new Puzzle(image, rowCount, columnCount, pieceSize.width, pieceSize.height);
 
         // show puzzle on view
@@ -120,6 +204,60 @@ public class PuzzleController extends AbstractController {
 
         // shuffle puzzle over the puzzlewindow
         shufflePuzzlepieces(puzzleareaWidth - pieceSize.width, puzzleareaHeight - pieceSize.height);
+    }
+
+    /**
+     * Creates a new puzzle that can be solved by the user.
+     *
+     * @param imageFile The image for that a puzzle should be created.
+     * @param puzzleareaHeight The availible height on the puzzlearea.
+     * @param puzzleareaWidth The availible width on the puzzlearea.
+     * @throws IOException Will be thrown, when the given images cannot be
+     * opened.
+     */
+    public void newPuzzle(File imageFile, int puzzleareaHeight, int puzzleareaWidth) throws IOException {
+        newPuzzle(ImageIO.read(imageFile), puzzleareaHeight, puzzleareaWidth);
+    }
+
+    /**
+     * Restarts the current puzzle. That means it will a new puzzle be created
+     * from the image of the current puzzle.
+     *
+     * @param puzzleareaHeight The availible height on the puzzlearea.
+     * @param puzzleareaWidth The availible width on the puzzlearea.
+     * @throws java.io.IOException
+     */
+    public void restartPuzzle(int puzzleareaHeight, int puzzleareaWidth) throws IOException {
+        newPuzzle(puzzle.getImage(), puzzleareaHeight, puzzleareaWidth);
+    }
+
+    /**
+     * Saves the puzzle to the given file. If the file exists, it will be
+     * overwritten.
+     *
+     * @param file
+     * @throws java.io.IOException
+     * @see #loadPuzzle(java.io.File)
+     */
+    public void savePuzzle(File file) throws IOException {
+        try {
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.newDocument();
+
+            Element root = doc.createElement("jigspuzzle");
+            doc.appendChild(root);
+            puzzle.saveToFile(doc, root);
+
+            // write the content into xml file
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(file);
+
+            transformer.transform(source, result);
+        } catch (ParserConfigurationException | TransformerException ex) {
+            throw new IOException(ex);
+        }
     }
 
     /**

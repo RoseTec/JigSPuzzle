@@ -6,10 +6,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetAdapter;
-import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -155,7 +152,7 @@ public class Puzzlearea extends JLayeredPane {
         List<PuzzlepieceGroup> piecegroups = puzzle.getPuzzlepieceGroups();
         List<PuzzlepieceView> piecegroupsViews = new ArrayList<>();
 
-        for (int i = 0; i < piecegroups.size(); i++) {
+        for (PuzzlepieceGroup piecegroup : piecegroups) {
             piecegroupsViews.add(null);
         }
 
@@ -163,9 +160,15 @@ public class Puzzlearea extends JLayeredPane {
         for (int x = 0; x < puzzle.getRowCount(); x++) {
             for (int y = 0; y < puzzle.getColumnCount(); y++) {
                 int listIndex = x * puzzle.getColumnCount() + y;
-                PuzzlepieceGroup group = piecegroups.get(listIndex);
+                PuzzlepieceGroup group;
+                PuzzlepieceView newView;
 
-                PuzzlepieceView newView = new PuzzlepieceView(this, group);
+                if (listIndex >= piecegroups.size()) {
+                    break;
+                }
+                group = piecegroups.get(listIndex);
+                newView = new PuzzlepieceView(this, group);
+
                 newView.setName("puzzlepiece-group-" + x + "-" + y); // name is needed for tests
                 piecegroupsViews.set(listIndex, newView);
             }
@@ -176,8 +179,14 @@ public class Puzzlearea extends JLayeredPane {
         for (int x = 0; x < puzzle.getRowCount(); x++) {
             for (int y = 0; y < puzzle.getColumnCount(); y++) {
                 int listIndex = x * puzzle.getColumnCount() + y;
-                PuzzlepieceView newView = piecegroupsViews.get(listIndex);
-                PuzzlepieceGroup group = piecegroups.get(listIndex);
+                PuzzlepieceView newView;
+                PuzzlepieceGroup group;
+
+                if (listIndex >= piecegroups.size()) {
+                    break;
+                }
+                newView = piecegroupsViews.get(listIndex);
+                group = piecegroups.get(listIndex);
 
                 add(newView);
                 group.addObserver((Observable o, Object arg) -> {

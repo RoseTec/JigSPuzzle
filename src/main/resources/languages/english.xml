@@ -5,8 +5,14 @@
     <page id="1" descr="puzzle window menu">
         <t id="1" descr="puzzle window title">JigSPuzzle</t>
 
+        <t id="51">Puzzle could not be saved.</t>
+        <t id="52">The Puzzle could not be saved to the selected file.</t>
+        <t id="53">Puzzle could not be loaded.</t>
+        <t id="54">The Puzzle could not be loaded from the selected file.</t>
         <t id="55">Puzzle could not be created.</t>
         <t id="56">No puzzle could be created from the given file.</t>
+        <t id="57">Puzzle could not be restarted.</t>
+        <t id="58">The Puzzle could not be restarted.</t>
 
         <t id="100">Puzzle</t>
         <t id="110">Create New Puzzle</t>

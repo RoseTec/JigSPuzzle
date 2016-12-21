@@ -53,7 +53,7 @@
         </packagings>
         <goals>
             <goal>test-compile</goal>
-            <goal>surefire:test</goal>
+            <goal>integration-test</goal>
         </goals>
         <properties>
             <test>${packageClassName}</test>
@@ -66,7 +66,7 @@
         </packagings>
         <goals>
             <goal>test-compile</goal>
-            <goal>surefire:test</goal>
+            <goal>integration-test</goal>
         </goals>
         <properties>
             <test>${packageClassName}</test>
@@ -82,7 +82,6 @@
         </packagings>
         <goals>
             <goal>test</goal>
-            <goal>surefire:test</goal>
             <goal>integration-test</goal>
         </goals>
         <properties>
@@ -96,11 +95,10 @@
             <packaging>*</packaging>
         </packagings>
         <goals>
-            <goal>test</goal>
-            <goal>surefire:test</goal>
+            <goal>integration-test</goal>
         </goals>
-        <properties>
+        <!--        <properties>
             <test>jigspuzzle.cucumber.RunCucumber</test>
-        </properties>
+        </properties>-->
     </action>
 </actions>

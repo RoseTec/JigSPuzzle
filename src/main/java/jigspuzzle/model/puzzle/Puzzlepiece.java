@@ -1,18 +1,42 @@
 package jigspuzzle.model.puzzle;
 
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Objects;
+import jigspuzzle.util.ImageUtil;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 /**
  * A class for representing a puzzlepiece.
  *
  * @author RoseTec
  */
-public class Puzzlepiece {
+public class Puzzlepiece extends AbstractPuzzlesModel {
+
+    /**
+     * Creates a PuzzlepieceGroup from the given file
+     *
+     * @param settingsNode
+     * @param group
+     * @return
+     * @throws IOException
+     * @see #loadFromFile(org.w3c.dom.Element)
+     */
+    public static Puzzlepiece createFromFile(Element settingsNode, PuzzlepieceGroup group) throws IOException {
+        Puzzlepiece piece = new Puzzlepiece(group);
+        piece.loadFromFile(settingsNode);
+        return piece;
+    }
 
     /**
      * The Images that this piece has.
      */
-    private final BufferedImage image;
+    private BufferedImage image;
 
     /**
      * The group in which this puzzlepiece is contained.
@@ -25,9 +49,55 @@ public class Puzzlepiece {
      */
     private PuzzlepieceConnection[] connectors = null;
 
+    public Puzzlepiece(PuzzlepieceGroup group) {
+        connectors = new PuzzlepieceConnection[ConnectorPosition.numberOfElements()];
+        this.group = group;
+    }
+
     public Puzzlepiece(BufferedImage img) {
+        //TODO: refactor that puzzlepiece is contained in the group ('no piece without a group'...)
         connectors = new PuzzlepieceConnection[ConnectorPosition.numberOfElements()];
         this.image = img;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 31 * hash + Objects.hashCode(this.image);
+        hash = 31 * hash + Arrays.deepHashCode(this.connectors);
+        return hash;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Puzzlepiece other = (Puzzlepiece) obj;
+        if (!ImageUtil.imagesAreEqual(this.image, other.image)) {
+            return false;
+        }
+        for (int i = 0; i < this.connectors.length; i++) {
+            if (this.connectors[i] == null && other.connectors[i] == null) {
+                continue;
+            }
+            if (!this.connectors[i].equals(other.connectors[i])) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -54,6 +124,76 @@ public class Puzzlepiece {
         otherPiece.connectors[position.getOpposite().intValue()] = connection;
 
         return true;
+    }
+
+    @Override
+    public void loadFromFile(Element settingsNode) throws IOException {
+        NodeList list;
+
+        if (!"puzzlepiece".equals(settingsNode.getNodeName())) {
+            return;
+        }
+        list = settingsNode.getChildNodes();
+
+        for (int i = 0; i < list.getLength(); i++) {
+            Element node = (Element) list.item(i);
+
+            switch (node.getNodeName()) {
+                case "img":
+                    Image img = this.loadImageFromElement(node);
+                    image = ImageUtil.transformImageToBufferedImage(img);
+                    break;
+                case "connectors":
+                    NodeList childs = node.getChildNodes();
+                    int n = childs.getLength();
+
+                    for (int i2 = 0; i2 < n; i2++) {
+                        Element positionElem = (Element) childs.item(i2);
+                        int id, position;
+                        boolean isInPuzzlepiece;
+
+                        if (!"connector".equals(positionElem.getNodeName())) {
+                            continue;
+                        }
+                        id = Integer.parseInt(positionElem.getTextContent());
+                        position = Integer.parseInt(positionElem.getAttribute("position"));
+                        isInPuzzlepiece = Boolean.parseBoolean(positionElem.getAttribute("is-in"));
+
+                        connectors[position] = group.getPuzzle().getPuzzlepieceConnectionWithId(id);
+                        if (isInPuzzlepiece) {
+                            connectors[position].setInPuzzlepiece(this);
+                        } else {
+                            connectors[position].setOutPuzzlepiece(this);
+                        }
+                    }
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public void saveToFile(Document doc, Element rootElement) throws IOException {
+        Element element = doc.createElement("puzzlepiece");
+        rootElement.appendChild(element);
+
+        Element tmpElement, tmpElement2;
+        tmpElement = doc.createElement("img");
+        this.saveImageToElement(tmpElement, image);
+        element.appendChild(tmpElement);
+
+        // puzzlepiecegroup is done in PuzzlepieceGroup
+        tmpElement = doc.createElement("connectors");
+        for (ConnectorPosition position : ConnectorPosition.values()) {
+            if (connectors[position.intValue()] == null) {
+                continue;
+            }
+            tmpElement2 = doc.createElement("connector");
+            tmpElement2.setAttribute("position", String.valueOf(position.intValue()));
+            tmpElement2.setAttribute("is-in", String.valueOf(isInPieceInDirection(position)));
+            tmpElement2.setTextContent(String.valueOf(connectors[position.intValue()].getId()));
+            tmpElement.appendChild(tmpElement2);
+        }
+        element.appendChild(tmpElement);
     }
 
     /**

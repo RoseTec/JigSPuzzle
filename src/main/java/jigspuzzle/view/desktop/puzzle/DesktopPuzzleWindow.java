@@ -1,9 +1,7 @@
 package jigspuzzle.view.desktop.puzzle;
 
 import java.awt.Dimension;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.Observable;
@@ -14,7 +12,6 @@ import jigspuzzle.controller.PuzzleController;
 import jigspuzzle.controller.SettingsController;
 import jigspuzzle.model.puzzle.Puzzle;
 import jigspuzzle.model.puzzle.PuzzlepieceGroup;
-import jigspuzzle.model.settings.PuzzleSettings;
 import jigspuzzle.model.settings.PuzzleareaSettings;
 import jigspuzzle.view.IPuzzleWindow;
 import jigspuzzle.view.ImageGetter;
@@ -38,6 +35,14 @@ public class DesktopPuzzleWindow extends javax.swing.JFrame implements IPuzzleWi
      * The window in that the user can change the settings
      */
     private SettingsWindow settingsWindow;
+
+    /**
+     * The file to that the last time the puzzle was saved to. If this is set,
+     * there will be no dialog to select the file to save to when saving.
+     *
+     * The file is set to <code>null</code> when a new puzzle is created.
+     */
+    private File lastSavedFile = null;
 
     /**
      * Creates new form PuzzleWindow
@@ -101,6 +106,7 @@ public class DesktopPuzzleWindow extends javax.swing.JFrame implements IPuzzleWi
      */
     @Override
     public void setNewPuzzle(Puzzle puzzle) {
+        lastSavedFile = null;
         Thread thread = new Thread(() -> {
             puzzlearea.setNewPuzzle(puzzle);
         });
@@ -197,14 +203,22 @@ public class DesktopPuzzleWindow extends javax.swing.JFrame implements IPuzzleWi
 
         jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem2.setText("Altes Puzzle Laden");
-        jMenuItem2.setEnabled(false);
         jMenuItem2.setName("puzzle-load"); // NOI18N
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem2);
 
         jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem3.setText("Dieses Puzzle Speichern");
-        jMenuItem3.setEnabled(false);
         jMenuItem3.setName("puzzle-save"); // NOI18N
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem3);
         jMenu1.add(jSeparator1);
 
@@ -220,8 +234,12 @@ public class DesktopPuzzleWindow extends javax.swing.JFrame implements IPuzzleWi
 
         jMenuItem5.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem5.setText("Puzzle Neu Starten");
-        jMenuItem5.setEnabled(false);
         jMenuItem5.setName("puzzle-restart"); // NOI18N
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem5);
         jMenu1.add(jSeparator2);
 
@@ -296,16 +314,18 @@ public class DesktopPuzzleWindow extends javax.swing.JFrame implements IPuzzleWi
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // show window for selecting a picture
         JFileChooser fileChooser = new JFileChooser();
+        File selectedFile;
 
         if (fileChooser.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) {
             // user canceled
             return;
         }
+        selectedFile = fileChooser.getSelectedFile();
 
         // make a puzzle out of the file
         new Thread(() -> {
             try {
-                PuzzleController.getInstance().newPuzzle(fileChooser.getSelectedFile(), puzzlearea.getHeight(), puzzlearea.getWidth());
+                PuzzleController.getInstance().newPuzzle(selectedFile, puzzlearea.getHeight(), puzzlearea.getWidth());
             } catch (IOException ex) {
                 new ErrorMessageDialog(SettingsController.getInstance().getLanguageText(1, 55),
                         SettingsController.getInstance().getLanguageText(1, 56),
@@ -323,6 +343,63 @@ public class DesktopPuzzleWindow extends javax.swing.JFrame implements IPuzzleWi
             PuzzleController.getInstance().shufflePuzzlepieces(puzzlearea.getWidth() - pieceWidth, puzzlearea.getHeight() - pieceHeight);
         }).start();
     }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        // show window for selecting
+        JFileChooser fileChooser = new JFileChooser();
+        File selectedFile;
+
+        if (lastSavedFile == null) {
+            if (fileChooser.showSaveDialog(this) != JFileChooser.APPROVE_OPTION) {
+                // user canceled
+                return;
+            }
+            selectedFile = fileChooser.getSelectedFile();
+            lastSavedFile = selectedFile;
+        } else {
+            selectedFile = lastSavedFile;
+        }
+
+        try {
+            PuzzleController.getInstance().savePuzzle(selectedFile);
+        } catch (IOException ex) {
+            new ErrorMessageDialog(SettingsController.getInstance().getLanguageText(1, 51),
+                    SettingsController.getInstance().getLanguageText(1, 52),
+                    ex.getMessage()).showDialog(this);
+        }
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // show window for selecting
+        JFileChooser fileChooser = new JFileChooser();
+        File selectedFile;
+
+        if (fileChooser.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) {
+            // user canceled
+            return;
+        }
+        selectedFile = fileChooser.getSelectedFile();
+
+        try {
+            PuzzleController.getInstance().loadPuzzle(selectedFile);
+        } catch (IOException ex) {
+            new ErrorMessageDialog(SettingsController.getInstance().getLanguageText(1, 53),
+                    SettingsController.getInstance().getLanguageText(1, 54),
+                    ex.getMessage()).showDialog(this);
+        }
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        new Thread(() -> {
+            try {
+                PuzzleController.getInstance().restartPuzzle(puzzlearea.getHeight(), puzzlearea.getWidth());
+            } catch (IOException ex) {
+                new ErrorMessageDialog(SettingsController.getInstance().getLanguageText(1, 57),
+                        SettingsController.getInstance().getLanguageText(1, 58),
+                        ex.getMessage()).showDialog(this);
+            }
+        }).start();
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;

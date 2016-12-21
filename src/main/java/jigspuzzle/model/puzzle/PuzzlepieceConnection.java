@@ -1,7 +1,12 @@
 package jigspuzzle.model.puzzle;
 
 import java.awt.geom.Path2D;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.Random;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 /**
  * A class for modeling the connection between two puzzlepieces.
@@ -29,12 +34,26 @@ import java.util.Random;
  *
  * @author RoseTec
  */
-public class PuzzlepieceConnection {
+public class PuzzlepieceConnection extends AbstractPuzzlesModel {
+
+    /**
+     * Creates a puzzle from the given file
+     *
+     * @param settingsNode
+     * @return
+     * @throws IOException
+     * @see #loadFromFile(org.w3c.dom.Element)
+     */
+    public static PuzzlepieceConnection createFromFile(Element settingsNode) throws IOException {
+        PuzzlepieceConnection connection = new PuzzlepieceConnection();
+        connection.loadFromFile(settingsNode);
+        return connection;
+    }
 
     /**
      * The shape of this Connector
      */
-    private Path2D shape;
+    private ConnectorShape shape;
 
     /**
      * The 'in-connector'-puzzlepiece
@@ -45,6 +64,9 @@ public class PuzzlepieceConnection {
      * The 'out-connector'-puzzlepiece
      */
     private Puzzlepiece outPuzzlepiece;
+
+    private PuzzlepieceConnection() {
+    }
 
     /**
      * @param pieces The <b>two</b> puzzlepieces. It will be random, which
@@ -59,6 +81,37 @@ public class PuzzlepieceConnection {
         inPieceIndex = rn.nextInt(2);
         outPieceIndex = inPieceIndex == 0 ? 1 : 0;
         initConnector(pieces[inPieceIndex], pieces[outPieceIndex]);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 19 * hash + Objects.hashCode(this.shape);
+        return hash;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final PuzzlepieceConnection other = (PuzzlepieceConnection) obj;
+        if (!this.shape.equals(other.shape)) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -79,12 +132,30 @@ public class PuzzlepieceConnection {
     }
 
     /**
+     * Sets the 'in-connector'-puzzlepiece.
+     *
+     * @param inPuzzlepiece
+     */
+    void setInPuzzlepiece(Puzzlepiece inPuzzlepiece) {
+        this.inPuzzlepiece = inPuzzlepiece;
+    }
+
+    /**
      * Gets the 'outconnector'-puzzlepiece.
      *
      * @return
      */
     public Puzzlepiece getOutPuzzlepiece() {
         return outPuzzlepiece;
+    }
+
+    /**
+     * Sets the 'out-connector'-puzzlepiece.
+     *
+     * @param outPuzzlepiece
+     */
+    void setOutPuzzlepiece(Puzzlepiece outPuzzlepiece) {
+        this.outPuzzlepiece = outPuzzlepiece;
     }
 
     /**
@@ -100,7 +171,7 @@ public class PuzzlepieceConnection {
      * @return
      */
     public Path2D getShape() {
-        return shape;
+        return shape.getShape();
     }
 
     private void initConnector(Puzzlepiece in, Puzzlepiece out) {
@@ -108,7 +179,41 @@ public class PuzzlepieceConnection {
         this.outPuzzlepiece = out;
 
         // create shape
-        this.shape = ConnectoryShapeFactory.getInstance().createShape();
+        this.shape = ConnectorShapeFactory.getInstance().createShape();
+    }
+
+    @Override
+    public void loadFromFile(Element settingsNode) throws IOException {
+        NodeList list;
+
+        if (!"puzzlepiece-connector".equals(settingsNode.getNodeName())) {
+            return;
+        }
+        list = settingsNode.getChildNodes();
+        this.loadIdFromElement(settingsNode);
+
+        for (int i = 0; i < list.getLength(); i++) {
+            Element node = (Element) list.item(i);
+
+            switch (node.getNodeName()) {
+                case "connector-shape":
+                    shape = ConnectorShape.createFromFile((Element) node.getFirstChild());
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public void saveToFile(Document doc, Element rootElement) throws IOException {
+        Element element = doc.createElement("puzzlepiece-connector");
+        rootElement.appendChild(element);
+
+        saveIdToElement(element);
+
+        Element tmpElement;
+        tmpElement = doc.createElement("connector-shape");
+        shape.saveToFile(doc, tmpElement);
+        element.appendChild(tmpElement);
     }
 
 }

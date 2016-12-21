@@ -3,7 +3,7 @@ package jigspuzzle.model.settings;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.Observable;
-import jigspuzzle.controller.Savable;
+import jigspuzzle.model.Savable;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

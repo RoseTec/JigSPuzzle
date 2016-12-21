@@ -1,4 +1,4 @@
-package jigspuzzle.controller;
+package jigspuzzle.model;
 
 import java.io.IOException;
 import org.w3c.dom.Document;

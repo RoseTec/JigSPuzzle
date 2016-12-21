@@ -14,7 +14,7 @@ import org.junit.runner.RunWith;
         features = "../src/test/java/jigspuzzle/cucumber/features",
         glue = "jigspuzzle.cucumber.steps",
         //tags = {"@test"}, // <- activate this if only scenarios with tag '@test' should be executed.
-        plugin = {"html:../target/cucumber-html-report"}
+        plugin = {"pretty", "html:../target/cucumber-html-report"}
 )
 public class RunCucumber {
 }
