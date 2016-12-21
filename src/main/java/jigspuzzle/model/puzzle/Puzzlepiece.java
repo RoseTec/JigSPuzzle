@@ -86,14 +86,16 @@ public class Puzzlepiece extends AbstractPuzzlesModel {
             return false;
         }
         final Puzzlepiece other = (Puzzlepiece) obj;
-        if (!Objects.equals(this.image, other.image)) {
+        if (!ImageUtil.imagesAreEqual(this.image, other.image)) {
             return false;
         }
-        if (this.group != other.group) {
-            return false;
-        }
-        if (!Arrays.deepEquals(this.connectors, other.connectors)) {
-            return false;
+        for (int i = 0; i < this.connectors.length; i++) {
+            if (this.connectors[i] == null && other.connectors[i] == null) {
+                continue;
+            }
+            if (!this.connectors[i].equals(other.connectors[i])) {
+                return false;
+            }
         }
         return true;
     }

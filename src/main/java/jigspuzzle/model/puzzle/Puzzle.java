@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
+import jigspuzzle.util.ImageUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -158,10 +159,18 @@ public class Puzzle extends AbstractPuzzlesModel {
         if (this.columnCount != other.columnCount) {
             return false;
         }
-        if (!Objects.equals(this.puzzlepieceseGroups, other.puzzlepieceseGroups)) {
+        if (!this.puzzlepieceConnections.equals(other.puzzlepieceConnections)) {
             return false;
         }
-        if (!Objects.equals(this.image, other.image)) {
+        if (this.puzzlepieceseGroups.size() != other.puzzlepieceseGroups.size()) {
+            return false;
+        }
+        for (int i = 0; i < this.puzzlepieceseGroups.size(); i++) {
+            if (!this.puzzlepieceseGroups.get(i).equals(other.puzzlepieceseGroups.get(i))) {
+                return false;
+            }
+        }
+        if (!ImageUtil.imagesAreEqual(this.image, other.image)) {
             return false;
         }
         return true;
@@ -212,7 +221,7 @@ public class Puzzle extends AbstractPuzzlesModel {
 
                     for (int i2 = 0; i2 < n; i2++) {
                         PuzzlepieceGroup group = PuzzlepieceGroup.createFromFile((Element) childs.item(i2), this);
-                        puzzlepieceseGroups.add(group);
+                        puzzlepieceseGroups.add(i2, group);
                     }
                     break;
             }

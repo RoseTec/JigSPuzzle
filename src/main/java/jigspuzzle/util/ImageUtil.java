@@ -35,4 +35,35 @@ public class ImageUtil {
         return bimage;
     }
 
+    /**
+     * Compares two images pixel by pixel and returns if they are equal.
+     *
+     * @param imgageA the first image.
+     * @param imgageB the second image.
+     * @return whether the images are both the same or not.
+     */
+    public static boolean imagesAreEqual(Image imgageA, Image imgageB) {
+        BufferedImage imgA = transformImageToBufferedImage(imgageA);
+        BufferedImage imgB = transformImageToBufferedImage(imgageB);
+        //source: http://stackoverflow.com/a/29886786
+        // The images must be the same size.
+        if (imgA.getWidth() == imgB.getWidth() && imgA.getHeight() == imgB.getHeight()) {
+            int width = imgA.getWidth();
+            int height = imgA.getHeight();
+
+            // Loop over every pixel.
+            for (int y = 0; y < height; y++) {
+                for (int x = 0; x < width; x++) {
+                    // Compare the pixels for equality.
+                    if (imgA.getRGB(x, y) != imgB.getRGB(x, y)) {
+                        return false;
+                    }
+                }
+            }
+        } else {
+            return false;
+        }
+
+        return true;
+    }
 }

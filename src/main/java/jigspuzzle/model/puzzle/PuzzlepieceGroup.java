@@ -352,7 +352,7 @@ public class PuzzlepieceGroup extends Observable implements Savable {
         if (this.y != other.y) {
             return false;
         }
-        if (!Objects.equals(this.puzzlepiecesList, other.puzzlepiecesList)) {
+        if (!this.puzzlepiecesList.equals(other.puzzlepiecesList)) {
             return false;
         }
         return true;

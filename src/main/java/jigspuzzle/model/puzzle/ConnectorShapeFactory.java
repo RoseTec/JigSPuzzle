@@ -24,8 +24,9 @@ class ConnectorShapeFactory {
     private ConnectorShapeFactory() {
         connectorShapes = new HashMap<>();
         //TODO: also put in other connectorShapes for different shapes
-
-        connectorShapes.put(1, new ConnectorShape());
+        ConnectorShape shape = new ConnectorShape();
+        connectorShapes.put(1, shape);
+        shape.setId(1); // TODO: not that nice....
     }
 
     /**

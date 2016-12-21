@@ -43,6 +43,21 @@ public class PuzzleControllerIT {
     }
 
     @Test
+    public void testShufflePuzzlepieces() throws Exception {
+        Puzzle puzzle = (Puzzle) FactorySlave.build(Puzzle.class).create();
+        PuzzleController instance = PuzzleController.getInstance();
+        instance.setPuzzle(puzzle);
+
+        int x = puzzle.getPuzzlepieceGroups().get(3).getX();
+        int y = puzzle.getPuzzlepieceGroups().get(3).getY();
+        instance.shufflePuzzlepieces(600, 600);
+        int newX = puzzle.getPuzzlepieceGroups().get(3).getX();
+        int newY = puzzle.getPuzzlepieceGroups().get(3).getY();
+
+        assertTrue(x != newX && y != newY);
+    }
+
+    @Test
     public void testSavePuzzle() throws Exception {
         Puzzle puzzle = (Puzzle) FactorySlave.build(Puzzle.class).create();
         File testFile = new File(puzzlename);
@@ -50,9 +65,31 @@ public class PuzzleControllerIT {
 
         instance.setPuzzle(puzzle);
         instance.savePuzzle(testFile);
+        instance.setPuzzle(null);
         instance.loadPuzzle(testFile);
 
         assertTrue(puzzle.equals(instance.getPuzzle()));
+    }
+
+    @Test
+    public void testSetPuzzle1() throws Exception {
+        Puzzle puzzle = (Puzzle) FactorySlave.build(Puzzle.class).create();
+        PuzzleController instance = PuzzleController.getInstance();
+
+        instance.setPuzzle(puzzle);
+
+        assertTrue(puzzle == instance.getPuzzle());
+    }
+
+    @Test
+    public void testSetPuzzle2() throws Exception {
+        Puzzle puzzle = (Puzzle) FactorySlave.build(Puzzle.class).create();
+        PuzzleController instance = PuzzleController.getInstance();
+
+        instance.setPuzzle(puzzle);
+        instance.setPuzzle(null);
+
+        assertTrue(null == instance.getPuzzle());
     }
 
 }

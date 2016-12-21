@@ -108,13 +108,7 @@ public class PuzzlepieceConnection extends AbstractPuzzlesModel {
             return false;
         }
         final PuzzlepieceConnection other = (PuzzlepieceConnection) obj;
-        if (!Objects.equals(this.shape, other.shape)) {
-            return false;
-        }
-        if (this.inPuzzlepiece != other.inPuzzlepiece) {
-            return false;
-        }
-        if (this.outPuzzlepiece != other.outPuzzlepiece) {
+        if (!this.shape.equals(other.shape)) {
             return false;
         }
         return true;
@@ -203,7 +197,7 @@ public class PuzzlepieceConnection extends AbstractPuzzlesModel {
 
             switch (node.getNodeName()) {
                 case "connector-shape":
-                    shape = ConnectorShape.createFromFile(node);
+                    shape = ConnectorShape.createFromFile((Element) node.getFirstChild());
                     break;
             }
         }
