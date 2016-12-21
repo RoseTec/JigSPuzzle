@@ -37,6 +37,14 @@ public class DesktopPuzzleWindow extends javax.swing.JFrame implements IPuzzleWi
     private SettingsWindow settingsWindow;
 
     /**
+     * The file to that the last time the puzzle was saved to. If this is set,
+     * there will be no dialog to select the file to save to when saving.
+     *
+     * The file is set to <code>null</code> when a new puzzle is created.
+     */
+    private File lastSavedFile = null;
+
+    /**
      * Creates new form PuzzleWindow
      */
     public DesktopPuzzleWindow() {
@@ -98,6 +106,7 @@ public class DesktopPuzzleWindow extends javax.swing.JFrame implements IPuzzleWi
      */
     @Override
     public void setNewPuzzle(Puzzle puzzle) {
+        lastSavedFile = null;
         Thread thread = new Thread(() -> {
             puzzlearea.setNewPuzzle(puzzle);
         });
@@ -340,11 +349,16 @@ public class DesktopPuzzleWindow extends javax.swing.JFrame implements IPuzzleWi
         JFileChooser fileChooser = new JFileChooser();
         File selectedFile;
 
-        if (fileChooser.showSaveDialog(this) != JFileChooser.APPROVE_OPTION) {
-            // user canceled
-            return;
+        if (lastSavedFile == null) {
+            if (fileChooser.showSaveDialog(this) != JFileChooser.APPROVE_OPTION) {
+                // user canceled
+                return;
+            }
+            selectedFile = fileChooser.getSelectedFile();
+            lastSavedFile = selectedFile;
+        } else {
+            selectedFile = lastSavedFile;
         }
-        selectedFile = fileChooser.getSelectedFile();
 
         try {
             PuzzleController.getInstance().savePuzzle(selectedFile);
