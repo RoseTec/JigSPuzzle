@@ -171,10 +171,6 @@ public class PuzzleController extends AbstractController {
      * opened.
      */
     public void newPuzzle(Image img, int puzzleareaHeight, int puzzleareaWidth) throws IOException {
-        if (puzzle != null) {
-            puzzle.destroy();
-        }
-
         // load the image to the puzzle
         BufferedImage image = ImageUtil.transformImageToBufferedImage(img);
 
@@ -198,6 +194,9 @@ public class PuzzleController extends AbstractController {
                 rowCount,
                 columnCount);
 
+        if (puzzle != null) {
+            puzzle.destroy();
+        }
         puzzle = new Puzzle(image, rowCount, columnCount, pieceSize.width, pieceSize.height);
 
         // show puzzle on view
@@ -229,8 +228,7 @@ public class PuzzleController extends AbstractController {
      * @throws java.io.IOException
      */
     public void restartPuzzle(int puzzleareaHeight, int puzzleareaWidth) throws IOException {
-        newPuzzle(puzzle.getImage(), puzzleareaHeight, puzzleareaWidth
-        );
+        newPuzzle(puzzle.getImage(), puzzleareaHeight, puzzleareaWidth);
     }
 
     /**

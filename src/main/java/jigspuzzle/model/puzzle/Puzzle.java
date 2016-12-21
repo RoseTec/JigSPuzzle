@@ -123,6 +123,8 @@ public class Puzzle extends AbstractPuzzlesModel {
      * about to be destroyed.
      */
     public void destroy() {
+        puzzlepieceConnections.clear();
+        puzzlepieceseGroups.clear();
     }
 
     /**

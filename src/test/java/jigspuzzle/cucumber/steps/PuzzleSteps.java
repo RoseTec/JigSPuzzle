@@ -90,6 +90,11 @@ public class PuzzleSteps {
         get_puzzle_window().fileChooser().setCurrentDirectory(file.getParentFile()).selectFile(file).approve();
     }
 
+    @When("^I restart the puzzle$")
+    public void restart_puzzle() throws InterruptedException {
+        get_puzzle_window().menuItem("puzzle-restart").click();
+    }
+
     @When("^I drag an image into the puzzlearea$")
     public void create_puzzle_drag_drop() throws InterruptedException {
         throw new PendingException();
@@ -170,6 +175,11 @@ public class PuzzleSteps {
                 get_puzzlepiece_group(x, y).requireEnabled();
             }
         }
+    }
+
+    @Then("^I should see the restarted puzzle$")
+    public void see_restarted_puzzle() {
+        see_complete_puzzle();
     }
 
     @Then("^I should see a puzzle of that image$")
