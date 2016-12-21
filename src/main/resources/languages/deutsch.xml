@@ -5,6 +5,10 @@
     <page id="1" descr="puzzle window menu">
         <t id="1" descr="puzzle window title">JigSPuzzle</t>
 
+        <t id="51">Puzzle konnte nicht gespeichert werden.</t>
+        <t id="52">Das Puzzle konnte nicht in die angegebene Datei gespeichert werden.</t>
+        <t id="53">Puzzle konnte nicht geladen werden.</t>
+        <t id="54">Das Puzzle konnte nicht aus der angegebenen Datei geladen werden.</t>
         <t id="55">Puzzle konnte nicht erstellt werden.</t>
         <t id="56">Aus der angegebenen Datei konnte kein Puzzle erstellt werden.</t>
 
