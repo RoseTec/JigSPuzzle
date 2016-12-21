@@ -1,6 +1,7 @@
 package jigspuzzle.controller;
 
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -20,6 +21,7 @@ import jigspuzzle.model.puzzle.Puzzle;
 import jigspuzzle.model.puzzle.Puzzlepiece;
 import jigspuzzle.model.puzzle.PuzzlepieceConnection;
 import jigspuzzle.model.puzzle.PuzzlepieceGroup;
+import jigspuzzle.util.ImageUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -162,19 +164,19 @@ public class PuzzleController extends AbstractController {
     /**
      * Creates a new puzzle that can be solved by the user
      *
-     * @param imageFile The image for that a puzzle should be created.
+     * @param img The image for that a puzzle should be created.
      * @param puzzleareaHeight The availible height on the puzzlearea.
      * @param puzzleareaWidth The availible width on the puzzlearea.
      * @throws IOException Will be thrown, when the given images cannot be
      * opened.
      */
-    public void newPuzzle(File imageFile, int puzzleareaHeight, int puzzleareaWidth) throws IOException {
+    public void newPuzzle(Image img, int puzzleareaHeight, int puzzleareaWidth) throws IOException {
         if (puzzle != null) {
             puzzle.destroy();
         }
 
         // load the image to the puzzle
-        BufferedImage image = ImageIO.read(imageFile);
+        BufferedImage image = ImageUtil.transformImageToBufferedImage(img);
 
         // calculate number of rows/columns
         int rowCount;
@@ -203,6 +205,32 @@ public class PuzzleController extends AbstractController {
 
         // shuffle puzzle over the puzzlewindow
         shufflePuzzlepieces(puzzleareaWidth - pieceSize.width, puzzleareaHeight - pieceSize.height);
+    }
+
+    /**
+     * Creates a new puzzle that can be solved by the user.
+     *
+     * @param imageFile The image for that a puzzle should be created.
+     * @param puzzleareaHeight The availible height on the puzzlearea.
+     * @param puzzleareaWidth The availible width on the puzzlearea.
+     * @throws IOException Will be thrown, when the given images cannot be
+     * opened.
+     */
+    public void newPuzzle(File imageFile, int puzzleareaHeight, int puzzleareaWidth) throws IOException {
+        newPuzzle(ImageIO.read(imageFile), puzzleareaHeight, puzzleareaWidth);
+    }
+
+    /**
+     * Restarts the current puzzle. That means it will a new puzzle be created
+     * from the image of the current puzzle.
+     *
+     * @param puzzleareaHeight The availible height on the puzzlearea.
+     * @param puzzleareaWidth The availible width on the puzzlearea.
+     * @throws java.io.IOException
+     */
+    public void restartPuzzle(int puzzleareaHeight, int puzzleareaWidth) throws IOException {
+        newPuzzle(puzzle.getImage(), puzzleareaHeight, puzzleareaWidth
+        );
     }
 
     /**

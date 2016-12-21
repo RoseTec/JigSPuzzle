@@ -225,8 +225,12 @@ public class DesktopPuzzleWindow extends javax.swing.JFrame implements IPuzzleWi
 
         jMenuItem5.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem5.setText("Puzzle Neu Starten");
-        jMenuItem5.setEnabled(false);
         jMenuItem5.setName("puzzle-restart"); // NOI18N
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem5);
         jMenu1.add(jSeparator2);
 
@@ -370,6 +374,18 @@ public class DesktopPuzzleWindow extends javax.swing.JFrame implements IPuzzleWi
                     ex.getMessage()).showDialog(this);
         }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        new Thread(() -> {
+            try {
+                PuzzleController.getInstance().restartPuzzle(puzzlearea.getHeight(), puzzlearea.getWidth());
+            } catch (IOException ex) {
+                new ErrorMessageDialog(SettingsController.getInstance().getLanguageText(1, 57),
+                        SettingsController.getInstance().getLanguageText(1, 58),
+                        ex.getMessage()).showDialog(this);
+            }
+        }).start();
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
