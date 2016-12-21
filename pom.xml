@@ -16,7 +16,7 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <id>integration-test</id>
+                        <id>default-test</id>
                         <goals>
                             <goal>test</goal>
                         </goals>
