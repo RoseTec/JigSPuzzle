@@ -336,7 +336,7 @@ public class DesktopPuzzleWindow extends javax.swing.JFrame implements IPuzzleWi
         JFileChooser fileChooser = new JFileChooser();
         File selectedFile;
 
-        if (fileChooser.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) {
+        if (fileChooser.showSaveDialog(this) != JFileChooser.APPROVE_OPTION) {
             // user canceled
             return;
         }
