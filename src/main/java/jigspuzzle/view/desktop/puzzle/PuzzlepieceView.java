@@ -399,8 +399,14 @@ public class PuzzlepieceView extends JPanel {
                 // fill out-connectors with the 'deleted' image of the other piece
                 BufferedImage conImg = connection.getInPuzzlepiece().getImage();
                 Shape oldClip = g2.getClip();
-                g2.setClip(gp);
+                Area outConn = new Area(gp);
 
+                if (yStart == 0 && this.getY() < 0 && ConnectorPosition.TOP.equals(position)) {
+                    // don't draw the connector above the puzzleare, because it
+                    // could then be painted in the menu, that doesn't look nice...
+                    outConn.subtract(new Area(new Rectangle(getConnectionsSizeLeftRight(), 0, puzzlearea.getPuzzlepieceWidth(), -this.getY())));
+                }
+                g2.setClip(outConn);
                 switch (position) {
                     case LEFT:
                         g2.drawImage(conImg,
