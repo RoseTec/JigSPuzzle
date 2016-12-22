@@ -471,7 +471,8 @@ public class PuzzlepieceView extends JPanel {
      * @param p
      */
     private void correctPointToFitInPuzzleare(Point p) {
-        if (puzzlearea.getWidth() <= getWidth() || puzzlearea.getHeight() <= getHeight()) {
+        if (puzzlearea.getWidth() <= getWidth() - 2 * getConnectionsSizeLeftRight()
+                || puzzlearea.getHeight() <= getHeight() - 2 * getConnectionsSizeTopButtom()) {
             return;
         }
         if (p.x < 0) {
