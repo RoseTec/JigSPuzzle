@@ -15,6 +15,7 @@ import jigspuzzle.model.puzzle.PuzzlepieceGroup;
 import jigspuzzle.model.settings.PuzzleareaSettings;
 import jigspuzzle.view.IPuzzleWindow;
 import jigspuzzle.view.ImageGetter;
+import jigspuzzle.view.desktop.DesktopPuzzleWindow;
 import jigspuzzle.view.desktop.settings.SettingsWindow;
 import jigspuzzle.view.desktop.swing.ErrorMessageDialog;
 import jigspuzzle.view.desktop.swing.JMenu;
@@ -24,7 +25,7 @@ import jigspuzzle.view.desktop.swing.JMenuItem;
  *
  * @author RoseTec
  */
-public class DesktopPuzzleWindow extends javax.swing.JFrame implements IPuzzleWindow {
+public class DesktopPuzzleMainWindow extends javax.swing.JFrame implements IPuzzleWindow {
 
     /**
      * the area, where the user can play with puzzlepieces
@@ -32,9 +33,10 @@ public class DesktopPuzzleWindow extends javax.swing.JFrame implements IPuzzleWi
     private final Puzzlearea puzzlearea;
 
     /**
-     * The window in that the user can change the settings
+     * The class that contains all references to the windows for the desktop
+     * version.
      */
-    private SettingsWindow settingsWindow;
+    private final DesktopPuzzleWindow desktopPuzzleWindow;
 
     /**
      * The file to that the last time the puzzle was saved to. If this is set,
@@ -47,7 +49,8 @@ public class DesktopPuzzleWindow extends javax.swing.JFrame implements IPuzzleWi
     /**
      * Creates new form PuzzleWindow
      */
-    public DesktopPuzzleWindow() {
+    public DesktopPuzzleMainWindow(DesktopPuzzleWindow desktopPuzzleWindow) {
+        this.desktopPuzzleWindow = desktopPuzzleWindow;
         initComponents();
 
         // create Puzzlearea
@@ -64,7 +67,7 @@ public class DesktopPuzzleWindow extends javax.swing.JFrame implements IPuzzleWi
         // register observer for setting the background color in the main window for live preview
         SettingsController.getInstance().addPuzzleareaSettingsObserver((Observable o, Object arg) -> {
             PuzzleareaSettings settings = (PuzzleareaSettings) o;
-            DesktopPuzzleWindow.this.jPanel1.setBackground(settings.getPuzzleareaBackgroundColor());
+            DesktopPuzzleMainWindow.this.jPanel1.setBackground(settings.getPuzzleareaBackgroundColor());
         });
         this.getContentPane().setBackground(SettingsController.getInstance().getPuzzleareaBackgroundColor());
     }
@@ -116,13 +119,6 @@ public class DesktopPuzzleWindow extends javax.swing.JFrame implements IPuzzleWi
             thread.join();
         } catch (InterruptedException ex) {
         }
-    }
-
-    private SettingsWindow getSettingsWindow() {
-        if (settingsWindow == null) {
-            settingsWindow = new SettingsWindow(this, false);
-        }
-        return settingsWindow;
     }
 
     /**
@@ -304,11 +300,11 @@ public class DesktopPuzzleWindow extends javax.swing.JFrame implements IPuzzleWi
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
-        getSettingsWindow().showPuzzleSettings();
+        this.desktopPuzzleWindow.showPuzzleSettings();
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        getSettingsWindow().showAppearanceSettings();
+        this.desktopPuzzleWindow.showAppearanceSettings();
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
