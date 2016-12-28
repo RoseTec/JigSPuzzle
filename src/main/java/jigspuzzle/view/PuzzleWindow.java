@@ -39,6 +39,14 @@ public class PuzzleWindow implements IPuzzleWindow {
      * {@inheritDoc}
      */
     @Override
+    public void displayFatalError(String message) {
+        puzzleWindow.displayFatalError(message);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int getPuzzlepieceHeight() {
         return puzzleWindow.getPuzzlepieceHeight();
     }
