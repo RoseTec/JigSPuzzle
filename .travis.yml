@@ -6,6 +6,7 @@ branches:
   only:
   - master
   - develop
+  - in_testing
 
 before_script:
  - chmod +x execute-on-vnc.sh
