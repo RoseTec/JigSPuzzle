@@ -8,10 +8,14 @@ import java.io.File;
 import java.io.IOException;
 import jigspuzzle.controller.PuzzleController;
 import jigspuzzle.controller.SettingsController;
+import jigspuzzle.cucumber.RunCucumber;
 import jigspuzzle.view.desktop.puzzle.PuzzlepieceView;
 import org.assertj.core.api.Assertions;
+import org.assertj.swing.exception.ComponentLookupException;
 import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.fixture.JPanelFixture;
+import org.assertj.swing.timing.Condition;
+import org.assertj.swing.timing.Pause;
 
 /**
  * Step definitions for the input with a puzzle and the puzzle window.
@@ -30,29 +34,50 @@ public class PuzzleSteps {
     }
 
     // creation of a puzzle
-    private void createPuzzle(File imageFile) throws InterruptedException {
+    private void createPuzzle(File imageFile) {
         get_puzzle_window().menuItem("puzzle-create").click();
         get_puzzle_window().fileChooser().setCurrentDirectory(imageFile.getParentFile()).selectFile(imageFile).approve();
 
         // wait until the puzzle is created
-        Thread.sleep(800);
+        Pause.pause(new Condition("Puzzle is created") {
+            @Override
+            public boolean test() {
+                try {
+                    return PuzzleController.getInstance().getPuzzlepieceRowCount() != 0;
+                } catch (NullPointerException ex) {
+                    return false;
+                }
+            }
+        }, RunCucumber.TIMEOUT_UI_UPDATED);
 
         // save puzzle settings
         puzzleRows = PuzzleController.getInstance().getPuzzlepieceRowCount();
         puzzleColumns = PuzzleController.getInstance().getPuzzlepieceColumnCount();
+
+        // wait some time until the puzzle is created
+        Pause.pause(new Condition("Puzzlepieces are visable") {
+            @Override
+            public boolean test() {
+                try {
+                    get_puzzlepiece_group(
+                            PuzzleController.getInstance().getPuzzlepieceRowCount() - 1,
+                            PuzzleController.getInstance().getPuzzlepieceColumnCount() - 1
+                    );
+                    return true;
+                } catch (ComponentLookupException ex) {
+                    return false;
+                }
+            }
+        }, RunCucumber.TIMEOUT_UI_UPDATED);
     }
 
     @Given("^(?:that )?I (?:have )?created a puzzle$")
-    public void create_puzzle2() throws InterruptedException {
+    public void create_puzzle2() {
         create_puzzle();
-
-        // wait some time until the puzzle is created
-        //todo: wait for the cmponents to appear, not a given time...
-        Thread.sleep(1000);
     }
 
     @Given("^(?:that )?I (?:have )?created a sqaure puzzle with (\\d+) puzzlepieces out of a (big|small)? image")
-    public void create_puzzle_big(int pieceNumber, String size) throws InterruptedException {
+    public void create_puzzle_big(int pieceNumber, String size) {
         SettingsController.getInstance().setPuzzlepieceNumber(pieceNumber);
 
         File imageFile;
@@ -62,19 +87,15 @@ public class PuzzleSteps {
             imageFile = new File("../src/test/images/test_puzzle_sqare_small.jpg");
         }
         createPuzzle(imageFile);
-
-        // wait some time until the puzzle is created
-        //todo: wait for the cmponents to appear, not a given time...
-        Thread.sleep(1000);
     }
 
     @When("^I create a new puzzle$")
-    public void create_puzzle1() throws InterruptedException {
+    public void create_puzzle1() {
         create_puzzle();
     }
 
     @When("^I save the puzzle$")
-    public void save_puzzle() throws InterruptedException, IOException {
+    public void save_puzzle() throws IOException {
         File file = new File("puzzle.xml");
 
         file.createNewFile();
@@ -83,7 +104,7 @@ public class PuzzleSteps {
     }
 
     @When("^I load a puzzle$")
-    public void load_puzzle() throws InterruptedException {
+    public void load_puzzle() {
         File file = new File("puzzle.xml");
 
         get_puzzle_window().menuItem("puzzle-load").click();
@@ -91,17 +112,17 @@ public class PuzzleSteps {
     }
 
     @When("^I restart the puzzle$")
-    public void restart_puzzle() throws InterruptedException {
+    public void restart_puzzle() {
         get_puzzle_window().menuItem("puzzle-restart").click();
     }
 
     @When("^I drag an image into the puzzlearea$")
-    public void create_puzzle_drag_drop() throws InterruptedException {
+    public void create_puzzle_drag_drop() {
         throw new PendingException();
     }
 
     @When("^I create a new puzzle with an image from my HDD$")
-    public void create_puzzle() throws InterruptedException {
+    public void create_puzzle() {
         // create puzzle
         File imageFile = new File("../src/test/images/test_puzzle.jpg");
         createPuzzle(imageFile);
@@ -123,9 +144,6 @@ public class PuzzleSteps {
 
     @Then("^the new puzzle should have \"(\\d+)\" puzzlepieces$")
     public void puzzle_should_have_that_many_puzzlepieces(int number) throws InterruptedException {
-        // wait for the app to create all pieces
-        Thread.sleep(100); //todo: make it without the sleep
-
 //        int actualNumber = puzzleRows * puzzleColumns;
         int actualNumber = get_puzzle_area().getComponentCount();
 
@@ -148,7 +166,7 @@ public class PuzzleSteps {
     }
 
     @Then("^the two puzzlepieces should snap together and create a group$")
-    public void the_puzzlepieces_snap_together() throws InterruptedException {
+    public void the_puzzlepieces_snap_together() {
         PuzzlepieceView group = (PuzzlepieceView) get_puzzlepiece_group(0, 0).target();
 
         Assertions.assertThat(group.getNumberOfContainedPuzzlepieceGroups()).isEqualTo(2);
@@ -157,7 +175,7 @@ public class PuzzleSteps {
 
     // size of puzzlepieces
     @Then("^the size of (?:one|a)? puzzlepiece should be: width=(\\d+)(?:px)?, height=(\\d+)(?:px)?$")
-    public void size_of_puzzlepiece_should_be(int width, int height) throws InterruptedException {
+    public void size_of_puzzlepiece_should_be(int width, int height) {
         int buffer = 20;
         PuzzlepieceView piece = (PuzzlepieceView) (get_puzzlepiece_group(0, 0).target());
 
