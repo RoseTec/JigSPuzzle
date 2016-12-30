@@ -141,8 +141,8 @@ public class PuzzleSteps {
         for (int moveToX : new int[]{50, 500}) {
             for (int moveToY : new int[]{50, 500}) {
                 move_puzzlepiece_to(groupToMove, moveToX, moveToY);
-                Assertions.assertThat(groupToMove.getX()).isBetween(moveToX - offsetX - 1, moveToX - offsetX + 1);
-                Assertions.assertThat(groupToMove.getY()).isBetween(moveToY - offsetY - 1, moveToY - offsetY + 1);
+                Assertions.assertThat(groupToMove.getX()).isBetween(moveToX - offsetX - 2, moveToX - offsetX + 2);
+                Assertions.assertThat(groupToMove.getY()).isBetween(moveToY - offsetY - 2, moveToY - offsetY + 2);
             }
         }
     }
