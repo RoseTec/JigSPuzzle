@@ -143,7 +143,7 @@ public class PuzzleSteps {
     }
 
     @Then("^the new puzzle should have \"(\\d+)\" puzzlepieces$")
-    public void puzzle_should_have_that_many_puzzlepieces(int number) throws InterruptedException {
+    public void puzzle_should_have_that_many_puzzlepieces(int number) {
 //        int actualNumber = puzzleRows * puzzleColumns;
         int actualNumber = get_puzzle_area().getComponentCount();
 
