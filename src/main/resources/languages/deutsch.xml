@@ -19,7 +19,7 @@
         <t id="120">Altes Puzzle Laden</t>
         <t id="130">Dieses Puzzle Speichern</t>
         <t id="150">Puzzle Durchmischen</t>
-        <t id="160">Puzzle Neu Sarten</t>
+        <t id="160">Puzzle Neu Starten</t>
         <t id="180">JigSPuzzle Beenden</t>
 
         <t id="300">Einstellungen</t>
@@ -74,4 +74,16 @@
         <t id="202">klein</t>
         <t id="203">groß</t>
     </page>
+
+    <page id="11" descr="VersionDialog">
+        <t id="1">JigSPuzzle</t>
+
+        <t id="10">Diese Version:</t>
+        <t id="11">Neueste verfügbare Version:</t>
+        <t id="15">-suche-</t>
+
+        <t id="20">Neue Version herunterladen</t>
+        <t id="21">Dies ist bereits die aktuelle Version</t>
+    </page>
+
 </language>

@@ -10,12 +10,13 @@ import javax.swing.JFileChooser;
 import jigspuzzle.JigSPuzzle;
 import jigspuzzle.controller.PuzzleController;
 import jigspuzzle.controller.SettingsController;
+import jigspuzzle.controller.VersionController;
 import jigspuzzle.model.puzzle.Puzzle;
 import jigspuzzle.model.puzzle.PuzzlepieceGroup;
 import jigspuzzle.model.settings.PuzzleareaSettings;
 import jigspuzzle.view.IPuzzleWindow;
 import jigspuzzle.view.ImageGetter;
-import jigspuzzle.view.desktop.settings.SettingsWindow;
+import jigspuzzle.view.desktop.DesktopPuzzleWindow;
 import jigspuzzle.view.desktop.swing.ErrorMessageDialog;
 import jigspuzzle.view.desktop.swing.JMenu;
 import jigspuzzle.view.desktop.swing.JMenuItem;
@@ -24,7 +25,7 @@ import jigspuzzle.view.desktop.swing.JMenuItem;
  *
  * @author RoseTec
  */
-public class DesktopPuzzleWindow extends javax.swing.JFrame implements IPuzzleWindow {
+public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
 
     /**
      * the area, where the user can play with puzzlepieces
@@ -32,9 +33,10 @@ public class DesktopPuzzleWindow extends javax.swing.JFrame implements IPuzzleWi
     private final Puzzlearea puzzlearea;
 
     /**
-     * The window in that the user can change the settings
+     * The class that contains all references to the windows for the desktop
+     * version.
      */
-    private SettingsWindow settingsWindow;
+    private final DesktopPuzzleWindow desktopPuzzleWindow;
 
     /**
      * The file to that the last time the puzzle was saved to. If this is set,
@@ -46,8 +48,11 @@ public class DesktopPuzzleWindow extends javax.swing.JFrame implements IPuzzleWi
 
     /**
      * Creates new form PuzzleWindow
+     *
+     * @param desktopPuzzleWindow
      */
-    public DesktopPuzzleWindow() {
+    public DesktopPuzzleMainWindow(DesktopPuzzleWindow desktopPuzzleWindow) {
+        this.desktopPuzzleWindow = desktopPuzzleWindow;
         initComponents();
 
         // create Puzzlearea
@@ -64,47 +69,42 @@ public class DesktopPuzzleWindow extends javax.swing.JFrame implements IPuzzleWi
         // register observer for setting the background color in the main window for live preview
         SettingsController.getInstance().addPuzzleareaSettingsObserver((Observable o, Object arg) -> {
             PuzzleareaSettings settings = (PuzzleareaSettings) o;
-            DesktopPuzzleWindow.this.jPanel1.setBackground(settings.getPuzzleareaBackgroundColor());
+            DesktopPuzzleMainWindow.this.jPanel1.setBackground(settings.getPuzzleareaBackgroundColor());
         });
         this.getContentPane().setBackground(SettingsController.getInstance().getPuzzleareaBackgroundColor());
     }
 
     /**
-     * {@inheritDoc}
+     * @see IPuzzleWindow#bringToFront(jigspuzzle.model.puzzle.PuzzlepieceGroup)
      */
-    @Override
     public void bringToFront(PuzzlepieceGroup puzzlepieceGroup) {
         puzzlearea.bringToFront(puzzlepieceGroup);
     }
 
     /**
-     * {@inheritDoc}
+     * @see IPuzzleWindow#getPuzzlepieceHeight()
      */
-    @Override
     public int getPuzzlepieceHeight() {
         return puzzlearea.getPuzzlepieceHeight();
     }
 
     /**
-     * {@inheritDoc}
+     * @see IPuzzleWindow#getPuzzlepieceWidth()
      */
-    @Override
     public int getPuzzlepieceWidth() {
         return puzzlearea.getPuzzlepieceWidth();
     }
 
     /**
-     * {@inheritDoc}
+     * @see IPuzzleWindow#showPuzzleWindow()
      */
-    @Override
     public void showPuzzleWindow() {
         this.setVisible(true);
     }
 
     /**
-     * {@inheritDoc}
+     * @see IPuzzleWindow#setNewPuzzle(jigspuzzle.model.puzzle.Puzzle)
      */
-    @Override
     public void setNewPuzzle(Puzzle puzzle) {
         lastSavedFile = null;
         Thread thread = new Thread(() -> {
@@ -116,13 +116,6 @@ public class DesktopPuzzleWindow extends javax.swing.JFrame implements IPuzzleWi
             thread.join();
         } catch (InterruptedException ex) {
         }
-    }
-
-    private SettingsWindow getSettingsWindow() {
-        if (settingsWindow == null) {
-            settingsWindow = new SettingsWindow(this, false);
-        }
-        return settingsWindow;
     }
 
     /**
@@ -147,6 +140,7 @@ public class DesktopPuzzleWindow extends javax.swing.JFrame implements IPuzzleWi
         jMenuItem10.setText(SettingsController.getInstance().getLanguageText(1, 520));
 
         // also set the default locale of the swing components
+        //TODO: move this to DesktopPuzzleWindow.java?
         JComponent.setDefaultLocale(Locale.getDefault());
     }
 
@@ -180,7 +174,7 @@ public class DesktopPuzzleWindow extends javax.swing.JFrame implements IPuzzleWi
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("JigSPuzzle");
         setIconImage(ImageGetter.getInstance().getJigSPuzzleImage());
-        setPreferredSize(new java.awt.Dimension(1200, 800));
+        setPreferredSize(new java.awt.Dimension(1200, 900));
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
         jPanel1.setName("puzzlearea-panel"); // NOI18N
@@ -289,7 +283,12 @@ public class DesktopPuzzleWindow extends javax.swing.JFrame implements IPuzzleWi
         jMenu3.add(jMenuItem9);
 
         jMenuItem10.setText("Auf Neue Version Prüfen");
-        jMenuItem10.setEnabled(false);
+        jMenuItem10.setName("check-new-version"); // NOI18N
+        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem10ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem10);
 
         jMenuBar1.add(jMenu3);
@@ -304,11 +303,11 @@ public class DesktopPuzzleWindow extends javax.swing.JFrame implements IPuzzleWi
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
-        getSettingsWindow().showPuzzleSettings();
+        this.desktopPuzzleWindow.showPuzzleSettings();
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        getSettingsWindow().showAppearanceSettings();
+        this.desktopPuzzleWindow.showAppearanceSettings();
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
@@ -400,6 +399,10 @@ public class DesktopPuzzleWindow extends javax.swing.JFrame implements IPuzzleWi
             }
         }).start();
     }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        this.desktopPuzzleWindow.showVersionCheckWindow();
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;

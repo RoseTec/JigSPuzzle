@@ -36,6 +36,8 @@ public class WindowsSteps {
 
     private DialogFixture settingsWindow;
 
+    private DialogFixture versionWindow;
+
     private static NoExitSecurityManagerInstaller noExitSecurityManagerInstaller;
 
     public WindowsSteps() {
@@ -62,6 +64,10 @@ public class WindowsSteps {
             puzzleWindow.cleanUp();
             puzzleWindow = null;
         }
+        if (versionWindow != null) {
+            versionWindow.cleanUp();
+            versionWindow = null;
+        }
         if (noExitSecurityManagerInstaller != null) {
             JigSPuzzle.getInstance().exitProgram();
             noExitSecurityManagerInstaller.uninstall();
@@ -75,6 +81,10 @@ public class WindowsSteps {
 
     public AbstractWindowFixture getPuzzleWindow() {
         return puzzleWindow;
+    }
+
+    public AbstractWindowFixture getVersionWindow() {
+        return versionWindow;
     }
 
     public Robot getRobot() {
@@ -159,4 +169,12 @@ public class WindowsSteps {
         settingsWindow.tabbedPane("main-tabbed-pane").requireSelectedTab(Index.atIndex(1));
     }
     // -- Settings window: puzzle end
+
+    // Version window
+    @When("^I check for a newer version$")
+    public void check_newer_version() {
+        puzzleWindow.menuItem("check-new-version").click();
+        versionWindow = findDialog("version-window").using(robot);
+    }
+    // -- Version window: end
 }

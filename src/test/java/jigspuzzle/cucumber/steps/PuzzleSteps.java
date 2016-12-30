@@ -138,8 +138,8 @@ public class PuzzleSteps {
         int offsetX = groupToMove.getWidth() / 2;
         int offsetY = groupToMove.getHeight() / 2;
 
-        for (int moveToX : new int[]{50, 500}) {
-            for (int moveToY : new int[]{50, 500}) {
+        for (int moveToX : new int[]{150, 500}) {
+            for (int moveToY : new int[]{150, 500}) {
                 move_puzzlepiece_to(groupToMove, moveToX, moveToY);
                 Assertions.assertThat(groupToMove.getX()).isBetween(moveToX - offsetX - 1, moveToX - offsetX + 1);
                 Assertions.assertThat(groupToMove.getY()).isBetween(moveToY - offsetY - 1, moveToY - offsetY + 1);

@@ -2,6 +2,7 @@ package jigspuzzle;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -13,6 +14,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A class for managing access to the recources of JigSPuzzle. All access to
@@ -34,7 +37,21 @@ public class JigSPuzzleResources {
         if (!resourcePath.startsWith("/")) {
             resourcePath = "/" + resourcePath;
         }
-        return JigSPuzzleResources.class.getResource(resourcePath);
+
+        URL ret = JigSPuzzleResources.class.getResource(resourcePath);
+        if (ret != null) {
+            return ret;
+        }
+
+        // seach also for files
+        File file = new File(resourcePath.substring(1));
+        if (file.exists()) {
+            try {
+                return file.toURI().toURL();
+            } catch (MalformedURLException ex) {
+            }
+        }
+        return null;
     }
 
     /**

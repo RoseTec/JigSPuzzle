@@ -74,4 +74,16 @@
         <t id="202">small</t>
         <t id="203">big</t>
     </page>
+
+    <page id="11" descr="VersionDialog">
+        <t id="1">JigSPuzzle</t>
+
+        <t id="10">This Version:</t>
+        <t id="11">Newest available Version:</t>
+        <t id="15">-searching-</t>
+
+        <t id="20">Download new Version</t>
+        <t id="21">This is already the newest version</t>
+    </page>
+
 </language>

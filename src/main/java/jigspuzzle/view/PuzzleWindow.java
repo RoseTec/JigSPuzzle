@@ -3,7 +3,7 @@ package jigspuzzle.view;
 import javax.swing.UIManager;
 import jigspuzzle.model.puzzle.Puzzle;
 import jigspuzzle.model.puzzle.PuzzlepieceGroup;
-import jigspuzzle.view.desktop.puzzle.DesktopPuzzleWindow;
+import jigspuzzle.view.desktop.DesktopPuzzleWindow;
 
 /**
  * A class for the puzzlewindow used for puzzeling. All methods are delegated to
@@ -33,6 +33,14 @@ public class PuzzleWindow implements IPuzzleWindow {
     @Override
     public void bringToFront(PuzzlepieceGroup puzzlepieceGroup) {
         puzzleWindow.bringToFront(puzzlepieceGroup);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void displayFatalError(String message) {
+        puzzleWindow.displayFatalError(message);
     }
 
     /**

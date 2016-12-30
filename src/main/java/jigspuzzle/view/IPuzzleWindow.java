@@ -20,6 +20,20 @@ public interface IPuzzleWindow {
     public void bringToFront(PuzzlepieceGroup puzzlepieceGroup);
 
     /**
+     * Displays a fatal error, because of that the program has to exit.
+     *
+     * This method can be called any time. EVen when no UI hs been loaded up to
+     * now.
+     *
+     * When calling this method, it keeps active, until the message for the user
+     * is closed. Means, a call to this method will not return until the user
+     * closed the dialog. After that the program will probable be exited.
+     *
+     * @param message The text to be displayed.
+     */
+    public void displayFatalError(String message);
+
+    /**
      * Gets the height of one puzzlepiece in the puzzleare.
      *
      * @return
