@@ -96,7 +96,7 @@ public class PuzzleSteps {
 
     @When("^I save the puzzle$")
     public void save_puzzle() throws IOException {
-        File file = new File("puzzle.xml");
+        File file = new File("puzzle.jig");
 
         file.createNewFile();
         get_puzzle_window().menuItem("puzzle-save").click();

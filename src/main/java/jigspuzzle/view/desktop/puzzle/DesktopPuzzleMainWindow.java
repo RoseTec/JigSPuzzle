@@ -315,7 +315,12 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
         JFileChooser fileChooser = new JFileChooser();
         File selectedFile;
 
-        fileChooser.setFileFilter(new FileNameExtensionFilter(SettingsController.getInstance().getLanguageText(1, 121), PuzzleController.PUZZLE_SAVES_ENDING));
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(SettingsController.getInstance().getLanguageText(1, 111), "bmp", "gif", "jpg", "png"));
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(SettingsController.getInstance().getLanguageText(1, 112), "bmp"));
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(SettingsController.getInstance().getLanguageText(1, 113), "gif"));
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(SettingsController.getInstance().getLanguageText(1, 114), "jpg"));
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(SettingsController.getInstance().getLanguageText(1, 115), "png"));
         if (fileChooser.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) {
             // user canceled
             return;
