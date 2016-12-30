@@ -17,6 +17,7 @@
         <t id="100">Puzzle</t>
         <t id="110">Neues Puzzle Erstellen</t>
         <t id="120">Altes Puzzle Laden</t>
+        <t id="121">JigsPuzzle Puzzles (*.jig)</t>
         <t id="130">Dieses Puzzle Speichern</t>
         <t id="150">Puzzle Durchmischen</t>
         <t id="160">Puzzle Neu Starten</t>

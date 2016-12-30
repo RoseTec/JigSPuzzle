@@ -7,10 +7,10 @@ import java.util.Locale;
 import java.util.Observable;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import jigspuzzle.JigSPuzzle;
 import jigspuzzle.controller.PuzzleController;
 import jigspuzzle.controller.SettingsController;
-import jigspuzzle.controller.VersionController;
 import jigspuzzle.model.puzzle.Puzzle;
 import jigspuzzle.model.puzzle.PuzzlepieceGroup;
 import jigspuzzle.model.settings.PuzzleareaSettings;
@@ -315,6 +315,7 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
         JFileChooser fileChooser = new JFileChooser();
         File selectedFile;
 
+        fileChooser.setFileFilter(new FileNameExtensionFilter(SettingsController.getInstance().getLanguageText(1, 121), PuzzleController.PUZZLE_SAVES_ENDING));
         if (fileChooser.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) {
             // user canceled
             return;
@@ -348,6 +349,7 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
         JFileChooser fileChooser = new JFileChooser();
         File selectedFile;
 
+        fileChooser.setFileFilter(new FileNameExtensionFilter(SettingsController.getInstance().getLanguageText(1, 121), PuzzleController.PUZZLE_SAVES_ENDING));
         if (lastSavedFile == null) {
             if (fileChooser.showSaveDialog(this) != JFileChooser.APPROVE_OPTION) {
                 // user canceled
