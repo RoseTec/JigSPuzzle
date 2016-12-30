@@ -16,6 +16,10 @@ public class DummyPuzzleWindow implements IPuzzleWindow {
     }
 
     @Override
+    public void displayFatalError(String message) {
+    }
+
+    @Override
     public int getPuzzlepieceHeight() {
         return 100;
     }

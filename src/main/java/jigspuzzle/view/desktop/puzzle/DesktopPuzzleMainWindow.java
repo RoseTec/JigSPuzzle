@@ -283,6 +283,7 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
         jMenu3.add(jMenuItem9);
 
         jMenuItem10.setText("Auf Neue Version Prüfen");
+        jMenuItem10.setName("check-new-version"); // NOI18N
         jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem10ActionPerformed(evt);

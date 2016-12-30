@@ -48,6 +48,7 @@ public class JigSPuzzle {
             instance = null;
             PuzzleController.getInstance().resetInstance();
             SettingsController.getInstance().resetInstance();
+            VersionController.getInstance().resetInstance();
         }
     }
 

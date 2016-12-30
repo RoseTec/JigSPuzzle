@@ -131,7 +131,7 @@ public class VersionCheckDialog extends javax.swing.JDialog {
 
         setMaximumSize(new java.awt.Dimension(330, 276));
         setMinimumSize(new java.awt.Dimension(330, 276));
-        setName("dialogNewVersion"); // NOI18N
+        setName("version-window"); // NOI18N
         setResizable(false);
         addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -193,6 +193,7 @@ public class VersionCheckDialog extends javax.swing.JDialog {
         jPanel3.add(jLabel2, gridBagConstraints);
 
         jLabel3.setText("0.1");
+        jLabel3.setName("this-version-number"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
@@ -208,6 +209,7 @@ public class VersionCheckDialog extends javax.swing.JDialog {
         jPanel3.add(jLabel4, gridBagConstraints);
 
         jLabel5.setText("-??-");
+        jLabel5.setName("new-version-number"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
@@ -219,6 +221,7 @@ public class VersionCheckDialog extends javax.swing.JDialog {
         jPanel4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
 
         jButton1.setText("Neue Version herunterladen");
+        jButton1.setName("navigate-to-new-version"); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -229,6 +232,7 @@ public class VersionCheckDialog extends javax.swing.JDialog {
         jPanel7.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
 
         jLabel6.setText("Dies ist bereits die aktuelle Version");
+        jLabel6.setName("notify-this-is-newest-version"); // NOI18N
         jPanel7.add(jLabel6);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
