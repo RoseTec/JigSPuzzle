@@ -354,6 +354,7 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
         JFileChooser fileChooser = new JFileChooser();
         File selectedFile;
 
+        fileChooser.setAcceptAllFileFilterUsed(false);
         fileChooser.setFileFilter(new FileNameExtensionFilter(SettingsController.getInstance().getLanguageText(1, 121), PuzzleController.PUZZLE_SAVES_ENDING));
         if (lastSavedFile == null) {
             if (fileChooser.showSaveDialog(this) != JFileChooser.APPROVE_OPTION) {
@@ -380,6 +381,8 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
         JFileChooser fileChooser = new JFileChooser();
         File selectedFile;
 
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        fileChooser.setFileFilter(new FileNameExtensionFilter(SettingsController.getInstance().getLanguageText(1, 121), PuzzleController.PUZZLE_SAVES_ENDING));
         if (fileChooser.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) {
             // user canceled
             return;
