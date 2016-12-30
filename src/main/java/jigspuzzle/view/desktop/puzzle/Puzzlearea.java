@@ -56,8 +56,16 @@ public class Puzzlearea extends JLayeredPane {
 
                         if (transferData != null && transferData.size() > 0) {
                             new Thread(() -> {
+                                File draggedFile = transferData.get(0);
+
                                 try {
-                                    PuzzleController.getInstance().newPuzzle(transferData.get(0), Puzzlearea.this.getHeight(), Puzzlearea.this.getWidth());
+                                    if (draggedFile.getName().endsWith("." + PuzzleController.PUZZLE_SAVES_ENDING)) {
+                                        // load existing puzzle
+                                        PuzzleController.getInstance().loadPuzzle(draggedFile);
+                                    } else {
+                                        // load image
+                                        PuzzleController.getInstance().newPuzzle(draggedFile, Puzzlearea.this.getHeight(), Puzzlearea.this.getWidth());
+                                    }
                                 } catch (IOException ex) {
                                 }
                             }).start();
