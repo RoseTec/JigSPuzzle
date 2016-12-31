@@ -1,18 +1,15 @@
 package jigspuzzle.view.desktop.swing;
 
 import java.awt.AlphaComposite;
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.regex.Pattern;
-import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -59,8 +56,22 @@ public class ThumbnailView extends FileView {
         loadingImage = new BufferedImage(iconSize, iconSize, BufferedImage.TYPE_INT_ARGB);
     }
 
+    private Image iconToImage(Icon icon) {
+        if (icon instanceof ImageIcon) {
+            return ((ImageIcon) icon).getImage();
+        } else {
+            BufferedImage image = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_RGB);
+            icon.paintIcon(null, image.getGraphics(), 0, 0);
+            return image;
+        }
+    }
+
     @Override
     public Icon getIcon(File file) {
+//        if (file.isDirectory()) {
+//            FileSystemView view = FileSystemView.getFileSystemView();
+//            return new ImageIcon(getScaledImage(iconToImage(view.getSystemIcon(file))));
+//        }
         if (!imageFilePattern.matcher(file.getName()).matches()) {
             return null;
         }
@@ -84,6 +95,31 @@ public class ThumbnailView extends FileView {
         }
     }
 
+    /**
+     * Gets a scaled version of the given image. The scaled version is
+     * restricted by the variable <code>iconSize</code>.
+     *
+     * It will be tried to maintain the image's aspect ratio.
+     *
+     * @param img
+     * @return
+     */
+    private Image getScaledImage(Image img) {
+        BufferedImage scaledImg = new BufferedImage(iconSize, iconSize, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = scaledImg.createGraphics();
+
+        g.setComposite(AlphaComposite.DstAtop);
+        if (img.getWidth(null) > img.getHeight(null)) {
+            int height = iconSize * img.getHeight(null) / img.getWidth(null);
+            g.drawImage(img, 0, (iconSize - height) / 2, iconSize, height, null);
+        } else {
+            int width = iconSize * img.getWidth(null) / img.getHeight(null);
+            g.drawImage(img, (iconSize - width) / 2, 0, width, iconSize, null);
+        }
+        g.dispose();
+        return scaledImg;
+    }
+
     private class ThumbnailIconLoader implements Runnable {
 
         private final ImageIcon icon;
@@ -96,28 +132,9 @@ public class ThumbnailView extends FileView {
 
         @Override
         public void run() {
-            // Load and scale the image down, then replace the icon's old image with the new one.
-            try {
-                BufferedImage newIcon = ImageIO.read(file);
-                BufferedImage scaledImg = new BufferedImage(iconSize, iconSize, BufferedImage.TYPE_INT_ARGB);
-                Graphics2D g = scaledImg.createGraphics();
-
-                g.setComposite(AlphaComposite.DstAtop);
-                if (newIcon.getWidth() > newIcon.getHeight()) {
-                    int height = iconSize * newIcon.getHeight() / newIcon.getWidth();
-                    g.drawImage(newIcon, 0, (iconSize - height) / 2, iconSize, height, null);
-                } else {
-                    int width = iconSize * newIcon.getWidth() / newIcon.getHeight();
-                    g.drawImage(newIcon, (iconSize - width) / 2, 0, width, iconSize, null);
-                }
-                g.dispose();
-                icon.setImage(scaledImg);
-            } catch (IOException ex) {
-                // this scaling does not maintain the image's aspect ratio:
-                ImageIcon newIcon = new ImageIcon(file.getAbsolutePath());
-                Image scaledImg = newIcon.getImage().getScaledInstance(iconSize, iconSize, Image.SCALE_SMOOTH);
-                icon.setImage(scaledImg);
-            }
+            Image newIcon;
+            newIcon = new ImageIcon(file.getAbsolutePath()).getImage();
+            icon.setImage(getScaledImage(newIcon));
 
             // Repaint the dialog so we see the new icon.
             SwingUtilities.invokeLater(() -> {
