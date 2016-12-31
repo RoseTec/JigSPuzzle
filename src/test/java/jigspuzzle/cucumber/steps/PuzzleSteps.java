@@ -96,7 +96,7 @@ public class PuzzleSteps {
 
     @When("^I save the puzzle$")
     public void save_puzzle() throws IOException {
-        File file = new File("puzzle.jig");
+        File file = new File("puzzle." + PuzzleController.PUZZLE_SAVES_ENDING);
 
         file.createNewFile();
         get_puzzle_window().menuItem("puzzle-save").click();
@@ -105,7 +105,7 @@ public class PuzzleSteps {
 
     @When("^I load a puzzle$")
     public void load_puzzle() {
-        File file = new File("puzzle.xml");
+        File file = new File("puzzle." + PuzzleController.PUZZLE_SAVES_ENDING);
 
         get_puzzle_window().menuItem("puzzle-load").click();
         get_puzzle_window().fileChooser().setCurrentDirectory(file.getParentFile()).selectFile(file).approve();
