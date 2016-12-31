@@ -36,7 +36,8 @@ import org.xml.sax.SAXException;
 public class PuzzleController extends AbstractController {
 
     /**
-     * The file ending that a saved puzzle to a file has.
+     * The file ending that a saved puzzle to a file has. This ending is without
+     * a "."!
      */
     public static final String PUZZLE_SAVES_ENDING = "jig";
 

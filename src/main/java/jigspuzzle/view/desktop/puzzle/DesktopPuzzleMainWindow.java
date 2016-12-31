@@ -6,11 +6,10 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.Observable;
 import javax.swing.JComponent;
-import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import jigspuzzle.JigSPuzzle;
 import jigspuzzle.controller.PuzzleController;
 import jigspuzzle.controller.SettingsController;
-import jigspuzzle.controller.VersionController;
 import jigspuzzle.model.puzzle.Puzzle;
 import jigspuzzle.model.puzzle.PuzzlepieceGroup;
 import jigspuzzle.model.settings.PuzzleareaSettings;
@@ -18,8 +17,10 @@ import jigspuzzle.view.IPuzzleWindow;
 import jigspuzzle.view.ImageGetter;
 import jigspuzzle.view.desktop.DesktopPuzzleWindow;
 import jigspuzzle.view.desktop.swing.ErrorMessageDialog;
+import jigspuzzle.view.desktop.swing.JFileChooser;
 import jigspuzzle.view.desktop.swing.JMenu;
 import jigspuzzle.view.desktop.swing.JMenuItem;
+import jigspuzzle.view.desktop.swing.ThumbnailView;
 
 /**
  *
@@ -315,6 +316,13 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
         JFileChooser fileChooser = new JFileChooser();
         File selectedFile;
 
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        fileChooser.setFileView(new ThumbnailView(fileChooser, 50));
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(SettingsController.getInstance().getLanguageText(1, 111), "bmp", "gif", "jpg", "jpeg", "png"));
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(SettingsController.getInstance().getLanguageText(1, 112), "bmp"));
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(SettingsController.getInstance().getLanguageText(1, 113), "gif"));
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(SettingsController.getInstance().getLanguageText(1, 114), "jpg", "jpeg"));
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(SettingsController.getInstance().getLanguageText(1, 115), "png"));
         if (fileChooser.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) {
             // user canceled
             return;
@@ -348,6 +356,8 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
         JFileChooser fileChooser = new JFileChooser();
         File selectedFile;
 
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        fileChooser.setFileFilter(new FileNameExtensionFilter(SettingsController.getInstance().getLanguageText(1, 121), PuzzleController.PUZZLE_SAVES_ENDING));
         if (lastSavedFile == null) {
             if (fileChooser.showSaveDialog(this) != JFileChooser.APPROVE_OPTION) {
                 // user canceled
@@ -373,6 +383,8 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
         JFileChooser fileChooser = new JFileChooser();
         File selectedFile;
 
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        fileChooser.setFileFilter(new FileNameExtensionFilter(SettingsController.getInstance().getLanguageText(1, 121), PuzzleController.PUZZLE_SAVES_ENDING));
         if (fileChooser.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) {
             // user canceled
             return;

@@ -111,7 +111,7 @@ public class SettingsSteps {
     }
 
     @When("^I cancel the settings window without saving$")
-    public void cancel_settings() throws InterruptedException {
+    public void cancel_settings() {
         get_settings_window().button("settings-cancel").click();
     }
 

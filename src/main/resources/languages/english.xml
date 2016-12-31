@@ -16,7 +16,13 @@
 
         <t id="100">Puzzle</t>
         <t id="110">Create New Puzzle</t>
+        <t id="111">All images</t>
+        <t id="112">Images (*.bmp)</t>
+        <t id="113">Images (*.gif)</t>
+        <t id="114">Images (*.jpg)</t>
+        <t id="115">Images (*.png)</t>
         <t id="120">Load Old Puzzle</t>
+        <t id="121">JigsPuzzle puzzles (*.jig)</t>
         <t id="130">Save this Puzzle</t>
         <t id="150">Shuffle Puzzle</t>
         <t id="160">Restart Puzzle</t>
