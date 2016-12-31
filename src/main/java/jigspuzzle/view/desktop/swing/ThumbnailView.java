@@ -26,6 +26,12 @@ import javax.swing.filechooser.FileView;
 public class ThumbnailView extends FileView {
 
     /**
+     * The maximal length of the filename to be displayed. The rest will be
+     * indicated by "..."
+     */
+    private final int maxLengthOfFilename = 30;
+
+    /**
      * All preview icons will be this width and height
      */
     private final int iconSize;
@@ -93,6 +99,22 @@ public class ThumbnailView extends FileView {
 
             return icon;
         }
+    }
+
+    @Override
+    public String getName(File f) {
+        if (!imageFilePattern.matcher(f.getName()).matches()) {
+            return null;
+        }
+        String newName = f.getName();
+
+        // shorten the names of images
+        if (newName.length() > maxLengthOfFilename) {
+            String appending = "...";
+
+            newName = newName.substring(0, maxLengthOfFilename - appending.length()) + appending;
+        }
+        return newName;
     }
 
     /**
