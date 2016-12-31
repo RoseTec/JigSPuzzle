@@ -20,6 +20,7 @@ import jigspuzzle.view.desktop.DesktopPuzzleWindow;
 import jigspuzzle.view.desktop.swing.ErrorMessageDialog;
 import jigspuzzle.view.desktop.swing.JMenu;
 import jigspuzzle.view.desktop.swing.JMenuItem;
+import jigspuzzle.view.desktop.swing.ThumbnailView;
 
 /**
  *
@@ -316,10 +317,11 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
         File selectedFile;
 
         fileChooser.setAcceptAllFileFilterUsed(false);
-        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(SettingsController.getInstance().getLanguageText(1, 111), "bmp", "gif", "jpg", "png"));
+        fileChooser.setFileView(new ThumbnailView(fileChooser, 50));
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(SettingsController.getInstance().getLanguageText(1, 111), "bmp", "gif", "jpg", "jpeg", "png"));
         fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(SettingsController.getInstance().getLanguageText(1, 112), "bmp"));
         fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(SettingsController.getInstance().getLanguageText(1, 113), "gif"));
-        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(SettingsController.getInstance().getLanguageText(1, 114), "jpg"));
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(SettingsController.getInstance().getLanguageText(1, 114), "jpg", "jpeg"));
         fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(SettingsController.getInstance().getLanguageText(1, 115), "png"));
         if (fileChooser.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) {
             // user canceled
