@@ -53,10 +53,7 @@ public class VersionCheckDialog extends javax.swing.JDialog {
         jLabel6.setVisible(false);
         jButton1.setEnabled(false);
 
-        // set position
-        setLocation((getParent().getWidth() - getParent().getX() - this.getWidth()) / 2,
-                (getParent().getHeight() - getParent().getY() - this.getHeight()) / 2);
-
+        this.setLocationRelativeTo(this.getParent());
         this.setVisible(true);
 
         // check for newer version
