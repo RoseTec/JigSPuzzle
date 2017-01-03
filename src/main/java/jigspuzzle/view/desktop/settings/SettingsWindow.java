@@ -108,7 +108,7 @@ public class SettingsWindow extends javax.swing.JDialog {
      * Also sets the view in foreground where the user can change the appearence
      * of the UI.
      */
-    public void showAppearanceSettings() {
+    public void showUiSettings() {
         loadSettings();
         jTabbedPane1.setSelectedIndex(0);
         this.setVisible(true);
@@ -216,15 +216,14 @@ public class SettingsWindow extends javax.swing.JDialog {
         jPanel8 = new javax.swing.JPanel();
         jPanel5 = new SettingsCategoryPanel(10, 140);
         jCheckBox1 = new javax.swing.JCheckBox();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jPanel3 = new SettingViewPanel();
         jPanel6 = new SettingsCategoryPanel(10, 160);
-        jPanel10 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        jLabel1 = new ExplainingJLabel();
         jSlider1 = new javax.swing.JSlider();
         jCheckBox2 = new javax.swing.JCheckBox();
         jCheckBox4 = new javax.swing.JCheckBox();
         jCheckBox3 = new javax.swing.JCheckBox();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jPanel3 = new SettingViewPanel();
         jPanel11 = new SettingsCategoryPanel(10, 180);
         jSlider2 = new javax.swing.JSlider();
         jPanel7 = new javax.swing.JPanel();
@@ -244,7 +243,7 @@ public class SettingsWindow extends javax.swing.JDialog {
         setIconImage(ImageGetter.getInstance().getJigSPuzzleImage());
         setMinimumSize(new java.awt.Dimension(400, 300));
         setName("settings"); // NOI18N
-        setPreferredSize(new java.awt.Dimension(775, 650));
+        setPreferredSize(new java.awt.Dimension(800, 650));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
@@ -301,10 +300,14 @@ public class SettingsWindow extends javax.swing.JDialog {
 
         jPanel2.add(jPanel5);
 
-        jPanel10.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        jScrollPane1.setViewportView(jPanel2);
+
+        jTabbedPane1.addTab("Appearance", jScrollPane1);
+
+        jPanel3.setPreferredSize(jPanel2.getPreferredSize());
 
         jLabel1.setText("Used Size of the puzzleare:");
-        jPanel10.add(jLabel1);
+        jPanel6.add(jLabel1);
 
         jSlider1.setMajorTickSpacing(25);
         jSlider1.setMinimum(25);
@@ -319,9 +322,7 @@ public class SettingsWindow extends javax.swing.JDialog {
                 jSlider1StateChanged(evt);
             }
         });
-        jPanel10.add(jSlider1);
-
-        jPanel6.add(jPanel10);
+        jPanel6.add(jSlider1);
 
         jCheckBox2.setSelected(true);
         jCheckBox2.setText("Keep aspect ratio");
@@ -349,13 +350,7 @@ public class SettingsWindow extends javax.swing.JDialog {
         });
         jPanel6.add(jCheckBox3);
 
-        jPanel2.add(jPanel6);
-
-        jScrollPane1.setViewportView(jPanel2);
-
-        jTabbedPane1.addTab("Appearance", jScrollPane1);
-
-        jPanel3.setPreferredSize(jPanel2.getPreferredSize());
+        jPanel3.add(jPanel6);
 
         jSlider2.setMajorTickSpacing(200);
         jSlider2.setMaximum(1000);
@@ -502,7 +497,6 @@ public class SettingsWindow extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;

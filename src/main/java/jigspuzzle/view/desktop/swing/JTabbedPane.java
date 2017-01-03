@@ -80,7 +80,7 @@ public class JTabbedPane extends javax.swing.JTabbedPane {
         textLabel.setFont(new java.awt.Font("Segoe UI", Font.PLAIN, 14));
         rendererComponent.add(textLabel, BorderLayout.CENTER);
 
-        rendererComponent.setPreferredSize(new Dimension(80, 35));
+        rendererComponent.setPreferredSize(new Dimension(100, 35));
 
         return rendererComponent;
     }

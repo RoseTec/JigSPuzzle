@@ -57,11 +57,19 @@ public class ExplainingJLabel extends JLabel {
      * @return
      */
     private String makeHtmlText(String text) {
-        if (text.startsWith("<html>")) {
+        if (text.length() == 0) {
             return text;
-        } else {
-            return "<html>" + text + "</html>";
         }
+
+        String ret;
+
+        // make html-string
+        ret = text.startsWith("<html>") ? text : "<html>" + text + "</html>";
+
+        // replace special chars
+        ret = ret.replaceAll("\\\\n", "<br/>");
+
+        return ret;
     }
 
 }

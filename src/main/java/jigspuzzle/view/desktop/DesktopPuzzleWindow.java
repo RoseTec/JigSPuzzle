@@ -69,10 +69,10 @@ public class DesktopPuzzleWindow implements IPuzzleWindow {
     }
 
     /**
-     * @see SettingsWindow#showAppearanceSettings()
+     * @see SettingsWindow#showUiSettings()
      */
-    public void showAppearanceSettings() {
-        settingsWindow.showAppearanceSettings();
+    public void showUiSettings() {
+        settingsWindow.showUiSettings();
     }
 
     /**
