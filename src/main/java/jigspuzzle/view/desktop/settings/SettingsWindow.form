@@ -172,8 +172,11 @@
                     <Component class="javax.swing.JCheckBox" name="jCheckBox1">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Show a preview of the complete puzzle"/>
-                        <Property name="enabled" type="boolean" value="false"/>
+                        <Property name="name" type="java.lang.String" value="show-puzzle-preview" noResource="true"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jCheckBox1ActionPerformed"/>
+                      </Events>
                     </Component>
                   </SubComponents>
                 </Container>

@@ -295,7 +295,12 @@ public class SettingsWindow extends javax.swing.JDialog {
         jPanel2.add(jPanel4);
 
         jCheckBox1.setText("Show a preview of the complete puzzle");
-        jCheckBox1.setEnabled(false);
+        jCheckBox1.setName("show-puzzle-preview"); // NOI18N
+        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox1ActionPerformed(evt);
+            }
+        });
         jPanel5.add(jCheckBox1);
 
         jPanel2.add(jPanel5);
@@ -479,6 +484,10 @@ public class SettingsWindow extends javax.swing.JDialog {
 
         SettingsController.getInstance().setCurrentLanguage(newLanguage);
     }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+        SettingsController.getInstance().setShowPuzzlePreview(jCheckBox1.isSelected());
+    }//GEN-LAST:event_jCheckBox1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

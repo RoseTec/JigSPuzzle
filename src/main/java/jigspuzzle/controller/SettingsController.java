@@ -336,6 +336,22 @@ public class SettingsController extends AbstractController {
     }
 
     /**
+     * @see PuzzleareaSettings#getShowPuzzlePreview()
+     * @return
+     */
+    public boolean getShowPuzzlePreview() {
+        return puzzleareaSettings.getShowPuzzlePreview();
+    }
+
+    /**
+     * @see PuzzleareaSettings#setShowPuzzlePreview(boolean)
+     * @param showPuzzlePreview
+     */
+    public void setShowPuzzlePreview(boolean showPuzzlePreview) {
+        puzzleareaSettings.setShowPuzzlePreview(showPuzzlePreview);
+    }
+
+    /**
      * Sets the number in percent, how much of the puzzleare should be used for
      * puzzeling. A number of 0.5 for instance means, that only 50% of the
      * puzzelarea should be used for the final puzzle.

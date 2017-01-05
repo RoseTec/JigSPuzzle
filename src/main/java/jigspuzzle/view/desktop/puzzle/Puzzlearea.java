@@ -1,6 +1,8 @@
 package jigspuzzle.view.desktop.puzzle;
 
 import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DnDConstants;
@@ -37,10 +39,15 @@ public class Puzzlearea extends JLayeredPane {
         this.setOpaque(true);
         this.setName("puzzlearea");
 
-        // register observer for setting the background color in the main window for live preview
+        // register observer for puzzlearea settings
         SettingsController.getInstance().addPuzzleareaSettingsObserver((Observable o, Object arg) -> {
             PuzzleareaSettings settings = (PuzzleareaSettings) o;
+
+            // background color in the main window for live preview
             Puzzlearea.this.setBackground(settings.getPuzzleareaBackgroundColor());
+
+            // preview of the played puzzle
+            Puzzlearea.this.repaint();
         });
         this.setBackground(SettingsController.getInstance().getPuzzleareaBackgroundColor());
 
@@ -127,6 +134,31 @@ public class Puzzlearea extends JLayeredPane {
         puzzle = null;
         removeAll();
         repaint();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void paintComponent(Graphics g) {
+        // paint preview of this image
+        if (SettingsController.getInstance().getShowPuzzlePreview() && puzzle != null) {
+            int MAX_SIZE = 300;
+            Image previewImg = puzzle.getImage();
+            int height, width;
+
+            if (previewImg.getHeight(null) < previewImg.getWidth(null)) {
+                width = MAX_SIZE;
+                height = (int) (width * (previewImg.getHeight(null) / (float) previewImg.getWidth(null)));
+            } else {
+                height = MAX_SIZE;
+                width = (int) (height * (previewImg.getWidth(null) / (float) previewImg.getHeight(null)));
+            }
+            g.drawImage(previewImg, 0, 0, width, height, null);
+        }
+
+        // paint other parts
+        super.paintComponent(g);
     }
 
     /**
