@@ -1,5 +1,6 @@
 package jigspuzzle.cucumber.steps;
 
+import cucumber.api.PendingException;
 import cucumber.api.java.en.*;
 import java.awt.Color;
 import java.awt.Component;
@@ -34,6 +35,17 @@ public class PuzzleareaSteps {
         }
     }
     // -- color of puzzle area end
+
+    // preview for the image of the puzzle
+    @Then("^I should( not)? see a preview of the puzzle$")
+    public void i_should_see_a_preview_of_the_puzzle(String negation) {
+        //find out how to check the image
+        throw new PendingException();
+//        if (negation != null) {
+//        } else {
+//        }
+    }
+    // -- preview for the image of the puzzle end
 
     private FrameFixture get_puzzle_window() {
         return (FrameFixture) windowsSteps.getPuzzleWindow();
