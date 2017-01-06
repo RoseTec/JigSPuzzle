@@ -181,15 +181,21 @@ public class SettingsWindow extends javax.swing.JDialog {
         } catch (IOException ex) {
         }
 
+        // background color
         jColorChooser1.setColor(SettingsController.getInstance().getPuzzleareaBackgroundColor());
         jPanel8.setBackground(jColorChooser1.getColor());
 
+        // number of puzzlepieces
         jSlider2.setValue(SettingsController.getInstance().getPuzzlepieceNumber());
         jTextField1.setText(SettingsController.getInstance().getPuzzlepieceNumber() + "");
 
+        // size of the puzzle
         jSlider1.setValue((int) (SettingsController.getInstance().getUsedSizeOfPuzzleare() * 100));
         jCheckBox3.setSelected(SettingsController.getInstance().getEnlargePuzzleAutomatically());
         jCheckBox4.setSelected(SettingsController.getInstance().getDecreasePuzzleAutomatically());
+
+        // preview of the puzzle
+        jCheckBox1.setSelected(SettingsController.getInstance().getShowPuzzlePreview());
     }
 
     /**

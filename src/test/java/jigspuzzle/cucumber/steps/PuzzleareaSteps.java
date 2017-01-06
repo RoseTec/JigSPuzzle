@@ -4,6 +4,8 @@ import cucumber.api.PendingException;
 import cucumber.api.java.en.*;
 import java.awt.Color;
 import java.awt.Component;
+import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
 import jigspuzzle.cucumber.steps.util.ColorSteps;
 import static org.assertj.core.api.Assertions.*;
 import org.assertj.swing.fixture.FrameFixture;
@@ -39,11 +41,23 @@ public class PuzzleareaSteps {
     // preview for the image of the puzzle
     @Then("^I should( not)? see a preview of the puzzle$")
     public void i_should_see_a_preview_of_the_puzzle(String negation) {
-        //find out how to check the image
+        String previewName = "puzzle-preview";
+        JPanel previrePanel = null;
+
+        for (Component comp : get_puzzle_area().getComponents()) {
+            if (previewName.equals(comp.getName())) {
+                previrePanel = (JPanel) comp;
+                break;
+            }
+        }
+        assertThat(previrePanel).isNotNull();
+        if (negation != null) {
+            assertThat(previrePanel.isVisible()).isTrue();
+        } else {
+            assertThat(previrePanel.isVisible()).isFalse();
+        }
+        //todo: find out how to check the image
         throw new PendingException();
-//        if (negation != null) {
-//        } else {
-//        }
     }
     // -- preview for the image of the puzzle end
 
@@ -51,8 +65,8 @@ public class PuzzleareaSteps {
         return (FrameFixture) windowsSteps.getPuzzleWindow();
     }
 
-    private Component get_puzzle_area() {
-        return get_puzzle_window().panel("puzzlearea-panel").target().getComponent(0);
+    private JLayeredPane get_puzzle_area() {
+        return (JLayeredPane) get_puzzle_window().panel("puzzlearea-panel").target().getComponent(0);
     }
 
 }

@@ -1,8 +1,6 @@
 package jigspuzzle.view.desktop.puzzle;
 
 import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DnDConstants;
@@ -34,10 +32,13 @@ public class Puzzlearea extends JLayeredPane {
      */
     private Puzzle puzzle;
 
+    private PuzzlePreview preview;
+
     public Puzzlearea() {
         this.setLayout(null);
         this.setOpaque(true);
         this.setName("puzzlearea");
+        this.addPuzzlePreview();
 
         // register observer for puzzlearea settings
         SettingsController.getInstance().addPuzzleareaSettingsObserver((Observable o, Object arg) -> {
@@ -45,9 +46,6 @@ public class Puzzlearea extends JLayeredPane {
 
             // background color in the main window for live preview
             Puzzlearea.this.setBackground(settings.getPuzzleareaBackgroundColor());
-
-            // preview of the played puzzle
-            Puzzlearea.this.repaint();
         });
         this.setBackground(SettingsController.getInstance().getPuzzleareaBackgroundColor());
 
@@ -133,32 +131,8 @@ public class Puzzlearea extends JLayeredPane {
     public void deletePuzzle() {
         puzzle = null;
         removeAll();
+        addPuzzlePreview();
         repaint();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void paintComponent(Graphics g) {
-        // paint preview of this image
-        if (SettingsController.getInstance().getShowPuzzlePreview() && puzzle != null) {
-            int MAX_SIZE = 300;
-            Image previewImg = puzzle.getImage();
-            int height, width;
-
-            if (previewImg.getHeight(null) < previewImg.getWidth(null)) {
-                width = MAX_SIZE;
-                height = (int) (width * (previewImg.getHeight(null) / (float) previewImg.getWidth(null)));
-            } else {
-                height = MAX_SIZE;
-                width = (int) (height * (previewImg.getWidth(null) / (float) previewImg.getHeight(null)));
-            }
-            g.drawImage(previewImg, 0, 0, width, height, null);
-        }
-
-        // paint other parts
-        super.paintComponent(g);
     }
 
     /**
@@ -237,7 +211,24 @@ public class Puzzlearea extends JLayeredPane {
                 });
             }
         }
+
+        // move preview in the background
+        this.moveToBack(preview);
+
+        // make this visible
         setVisible(true);
+    }
+
+    /**
+     * Adds a panel for the preview of the puzzle.
+     */
+    private void addPuzzlePreview() {
+        if (this.getComponentCount() != 0) {
+            return;
+        }
+
+        preview = new PuzzlePreview();
+        this.add(preview);
     }
 
 }

@@ -116,12 +116,31 @@ public class PuzzleController extends AbstractController {
     }
 
     /**
+     * Gets the image of the puzzle.
+     *
+     * @return
+     */
+    public Image getPuzzlepieceImage() {
+        return puzzle.getImage();
+    }
+
+    /**
      * Gets the number of rows that the puzzle has.
      *
      * @return
      */
     public int getPuzzlepieceRowCount() {
         return puzzle.getRowCount();
+    }
+
+    /**
+     * Checks, wheather there is currently a puzzle beeing loaded and it is
+     * tried to solve this.
+     *
+     * @return
+     */
+    public boolean isPuzzleAcive() {
+        return puzzle != null;
     }
 
     /**
