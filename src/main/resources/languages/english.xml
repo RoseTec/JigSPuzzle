@@ -79,6 +79,9 @@
         <t id="201">The distance that two puzzlepieces must have in order to let the puzzlepieces snap together.</t>
         <t id="202">small</t>
         <t id="203">big</t>
+
+        <t id="220">Sounds</t>
+        <t id="222">Play Sounds</t>
     </page>
 
     <page id="11" descr="VersionDialog">

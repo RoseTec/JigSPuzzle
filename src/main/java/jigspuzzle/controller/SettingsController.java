@@ -229,6 +229,22 @@ public class SettingsController extends AbstractController {
     }
 
     /**
+     * @see PuzzleareaSettings#getPlaySounds()
+     * @return
+     */
+    public boolean getPlaySounds() {
+        return puzzleareaSettings.getPlaySounds();
+    }
+
+    /**
+     * @see PuzzleareaSettings#setPlaySounds(boolean)
+     * @param playSounds
+     */
+    public void setPlaySounds(boolean playSounds) {
+        puzzleareaSettings.setPlaySounds(playSounds);
+    }
+
+    /**
      * Gets the bckground color for the puzzlearea where the player playes
      * around with the puzzlepieces.
      *

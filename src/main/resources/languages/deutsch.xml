@@ -79,6 +79,9 @@
         <t id="201">Der Abstand, den zwei Puzzleteile haben müssen, um einzurasten und somit als 'ineinander gesteckt' zu gelten</t>
         <t id="202">klein</t>
         <t id="203">groß</t>
+
+        <t id="220">Sounds</t>
+        <t id="222">Spiele Sounds ab</t>
     </page>
 
     <page id="11" descr="VersionDialog">

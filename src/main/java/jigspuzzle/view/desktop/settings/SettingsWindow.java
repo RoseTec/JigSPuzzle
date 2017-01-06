@@ -157,6 +157,9 @@ public class SettingsWindow extends javax.swing.JDialog {
         tableLockSize.put(0, new JLabel(SettingsController.getInstance().getLanguageText(10, 202)));
         tableLockSize.put(100, new JLabel(SettingsController.getInstance().getLanguageText(10, 203)));
         jSlider3.setLabelTable(tableLockSize);
+
+        jCheckBox5.setText(SettingsController.getInstance().getLanguageText(10, 222));
+
         repaint();
     }
 
@@ -196,6 +199,9 @@ public class SettingsWindow extends javax.swing.JDialog {
 
         // preview of the puzzle
         jCheckBox1.setSelected(SettingsController.getInstance().getShowPuzzlePreview());
+
+        // play sounds
+        jCheckBox5.setSelected(SettingsController.getInstance().getPlaySounds());
     }
 
     /**
@@ -220,6 +226,8 @@ public class SettingsWindow extends javax.swing.JDialog {
         jPanel9 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
+        jPanel10 = new SettingsCategoryPanel(10, 220);
+        jCheckBox5 = new javax.swing.JCheckBox();
         jPanel5 = new SettingsCategoryPanel(10, 140);
         jCheckBox1 = new javax.swing.JCheckBox();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -299,6 +307,17 @@ public class SettingsWindow extends javax.swing.JDialog {
         jPanel4.add(jPanel9);
 
         jPanel2.add(jPanel4);
+
+        jCheckBox5.setText("Play Sounds");
+        jCheckBox5.setName(""); // NOI18N
+        jCheckBox5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox5ActionPerformed(evt);
+            }
+        });
+        jPanel10.add(jCheckBox5);
+
+        jPanel2.add(jPanel10);
 
         jCheckBox1.setText("Show a preview of the complete puzzle");
         jCheckBox1.setName("show-puzzle-preview"); // NOI18N
@@ -495,6 +514,10 @@ public class SettingsWindow extends javax.swing.JDialog {
         SettingsController.getInstance().setShowPuzzlePreview(jCheckBox1.isSelected());
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
+    private void jCheckBox5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox5ActionPerformed
+        SettingsController.getInstance().setPlaySounds(jCheckBox5.isSelected());
+    }//GEN-LAST:event_jCheckBox5ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -502,6 +525,7 @@ public class SettingsWindow extends javax.swing.JDialog {
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JCheckBox jCheckBox3;
     private javax.swing.JCheckBox jCheckBox4;
+    private javax.swing.JCheckBox jCheckBox5;
     private javax.swing.JColorChooser jColorChooser1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
@@ -512,6 +536,7 @@ public class SettingsWindow extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;

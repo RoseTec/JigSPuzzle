@@ -34,6 +34,12 @@ public class PuzzleareaSettings extends Observable implements Savable {
     private boolean enlargePuzzleAutomatically = true;
 
     /**
+     * Wheather there should be sounds, when something happend (e.g. snapping
+     * puzzlepieces).
+     */
+    private boolean playSounds = true;
+
+    /**
      * The value, wheather to show a preview of the finished puzzle on the
      * puzzlearea.
      */
@@ -92,6 +98,26 @@ public class PuzzleareaSettings extends Observable implements Savable {
             setChanged();
             notifyObservers();
         }
+    }
+
+    /**
+     * Gets the value for playing sounds on the puzzlearea, e.g. whn
+     * puzzlepieces snap together and a sound should be played.
+     *
+     * @return
+     */
+    public boolean getPlaySounds() {
+        return playSounds;
+    }
+
+    /**
+     * Sets the value for playing sounds on the puzzlearea, e.g. whn
+     * puzzlepieces snap together and a sound should be played.
+     *
+     * @param playSounds
+     */
+    public void setPlaySounds(boolean playSounds) {
+        this.playSounds = playSounds;
     }
 
     /**

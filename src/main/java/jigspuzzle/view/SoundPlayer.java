@@ -8,6 +8,7 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import jigspuzzle.JigSPuzzleResources;
+import jigspuzzle.controller.SettingsController;
 
 /**
  * A class for playing sounds that are used in JigSPuzzle.
@@ -53,6 +54,10 @@ public class SoundPlayer implements ISoundPlayer {
      * @throws IOException
      */
     private void playSound(URL soundpath) throws LineUnavailableException, IOException {
+        if (!SettingsController.getInstance().getPlaySounds()) {
+            return;
+        }
+
         Clip clip;
         AudioInputStream inputStream;
 
