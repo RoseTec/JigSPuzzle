@@ -385,6 +385,9 @@ public class PuzzleController extends AbstractController {
                 puzzlepieceGroup.destroy();
                 puzzlepieceGroup = otherGroup;
 
+                // play sound for snapping the puzzlepieces
+                JigSPuzzle.getInstance().getSoundPlayer().playSnapPuzzlepieces();
+
                 // bring the other group to the front
                 JigSPuzzle.getInstance().getPuzzleWindow().bringToFront(otherGroup);
             }

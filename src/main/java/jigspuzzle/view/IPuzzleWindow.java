@@ -4,8 +4,8 @@ import jigspuzzle.model.puzzle.Puzzle;
 import jigspuzzle.model.puzzle.PuzzlepieceGroup;
 
 /**
- * This is the main window for the game. It serves a a plazground where the user
- * can plaz with puyylepieces.
+ * This is the main window for the game. It serves a a playground where the user
+ * can play with puzzlepieces.
  *
  * @author RoseTec
  */
