@@ -248,6 +248,9 @@ public class PuzzleController extends AbstractController {
      * @throws java.io.IOException
      */
     public void restartPuzzle(int puzzleareaHeight, int puzzleareaWidth) throws IOException {
+        if (puzzle == null) {
+            return;
+        }
         newPuzzle(puzzle.getImage(), puzzleareaHeight, puzzleareaWidth);
     }
 
