@@ -51,7 +51,8 @@ public class PuzzleareaSteps {
             }
         }
         assertThat(previrePanel).isNotNull();
-        if (negation != null) {
+
+        if (negation == null) {
             assertThat(previrePanel.isVisible()).isTrue();
         } else {
             assertThat(previrePanel.isVisible()).isFalse();

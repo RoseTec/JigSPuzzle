@@ -14,9 +14,15 @@ Feature: Show preview of the puzzle
       And I have created a puzzle
       Then I should see a preview of the puzzle
 
+   Scenario: Do not show preview of the puzzle after creating a puzzle
+      Given that the function for showing a preview of the puzzle is deactivated
+      And I am on the puzzle window
+      And I have created a puzzle
+      Then I should not see a preview of the puzzle
+
    Scenario: Live changing preview of the puzzle after creating a puzzle
       Given that the function for showing a preview of the puzzle is deactivated
       And I am on the puzzle window
       And I have created a puzzle
       When I decide to change the settings for showing a preview of the puzzle
-      Then I should not see a preview of the puzzle
+      Then I should see a preview of the puzzle
