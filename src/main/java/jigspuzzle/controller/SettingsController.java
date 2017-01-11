@@ -352,6 +352,21 @@ public class SettingsController extends AbstractController {
     }
 
     /**
+     * @see PuzzleSettings#setSnapDistancePercent(int)
+     * @param snapDistancePercent
+     */
+    public void setPuzzlepieceSnapDistancePercent(int snapDistancePercent) {
+        puzzleSettings.setSnapDistancePercent(snapDistancePercent);
+    }
+
+    /**
+     * @return @see PuzzleSettings#getSnapDistancePercent
+     */
+    public int getPuzzlepieceSnapDistancePercent() {
+        return puzzleSettings.getSnapDistancePercent();
+    }
+
+    /**
      * @see PuzzleareaSettings#getShowPuzzlePreview()
      * @return
      */

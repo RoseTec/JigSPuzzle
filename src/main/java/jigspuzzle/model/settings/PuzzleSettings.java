@@ -16,9 +16,16 @@ import org.w3c.dom.NodeList;
 public class PuzzleSettings extends Observable implements Savable {
 
     /**
-     * The numbr of puzzlepieces that a new puzzle should have
+     * The number of puzzlepieces that a new puzzle should have.
      */
     private int puzzlepieceNumber = 100;
+
+    /**
+     * The distance in percentage of the size of a puzzlepiec, that two
+     * puzzlepieces must have at most, so that they can snap together and create
+     * a group.
+     */
+    private int snapDistancePercent = 20;
 
     /**
      * Gets the numbr of puzzlepieces that a new puzzle should have.
@@ -38,6 +45,28 @@ public class PuzzleSettings extends Observable implements Savable {
         puzzlepieceNumber = newNumber;
         setChanged();
         notifyObservers();
+    }
+
+    /**
+     * Gets the distance in percentage of the size of a puzzlepiec, that two
+     * puzzlepieces must have at most, so that they can snap together and create
+     * a group.
+     *
+     * @return
+     */
+    public int getSnapDistancePercent() {
+        return snapDistancePercent;
+    }
+
+    /**
+     * Sets the distance in percentage of the size of a puzzlepiec, that two
+     * puzzlepieces must have at most, so that they can snap together and create
+     * a group.
+     *
+     * @param snapDistancePercent
+     */
+    public void setSnapDistancePercent(int snapDistancePercent) {
+        this.snapDistancePercent = snapDistancePercent;
     }
 
     /**
@@ -62,6 +91,13 @@ public class PuzzleSettings extends Observable implements Savable {
                         puzzlepieceNumber = Integer.parseInt(node.getTextContent());
                     } catch (NumberFormatException ex) {
                     }
+                    break;
+                case "snap-distance-percent":
+                    try {
+                        snapDistancePercent = Integer.parseInt(node.getTextContent());
+                    } catch (NumberFormatException ex) {
+                    }
+                    break;
             }
         }
 
@@ -81,6 +117,10 @@ public class PuzzleSettings extends Observable implements Savable {
 
         tmpElement = doc.createElement("puzzlepiece-number");
         tmpElement.setTextContent(Integer.toString(puzzlepieceNumber));
+        settingsElement.appendChild(tmpElement);
+
+        tmpElement = doc.createElement("snap-distance-percent");
+        tmpElement.setTextContent(Integer.toString(snapDistancePercent));
         settingsElement.appendChild(tmpElement);
     }
 

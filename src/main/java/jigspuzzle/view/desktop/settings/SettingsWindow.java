@@ -211,6 +211,9 @@ public class SettingsWindow extends javax.swing.JDialog {
         jSlider2.setValue(SettingsController.getInstance().getPuzzlepieceNumber());
         jTextField1.setText(SettingsController.getInstance().getPuzzlepieceNumber() + "");
 
+        // distance for snapping for puzzlepieces
+        jSlider3.setValue(SettingsController.getInstance().getPuzzlepieceSnapDistancePercent());
+
         // size of the puzzle
         jSlider1.setValue((int) (SettingsController.getInstance().getUsedSizeOfPuzzleare() * 100));
         jCheckBox3.setSelected(SettingsController.getInstance().getEnlargePuzzleAutomatically());
@@ -436,6 +439,11 @@ public class SettingsWindow extends javax.swing.JDialog {
         jSlider3.setPaintTicks(true);
         jSlider3.setSnapToTicks(true);
         jSlider3.setValue(20);
+        jSlider3.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jSlider3StateChanged(evt);
+            }
+        });
         jPanel12.add(jSlider3);
 
         jPanel3.add(jPanel12);
@@ -536,6 +544,10 @@ public class SettingsWindow extends javax.swing.JDialog {
     private void jCheckBox5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox5ActionPerformed
         SettingsController.getInstance().setPlaySounds(jCheckBox5.isSelected());
     }//GEN-LAST:event_jCheckBox5ActionPerformed
+
+    private void jSlider3StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSlider3StateChanged
+        SettingsController.getInstance().setPuzzlepieceSnapDistancePercent(jSlider3.getValue());
+    }//GEN-LAST:event_jSlider3StateChanged
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
