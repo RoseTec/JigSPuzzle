@@ -1,17 +1,20 @@
 package jigspuzzle.model.puzzle;
 
-import java.awt.geom.GeneralPath;
 import java.awt.geom.Path2D;
 import java.io.IOException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * This class represents a shape for a PuzzlepieceConnection
+ * This class represents a shape for a PuzzlepieceConnection.
+ *
+ * A connector shape is created by a puzzlepieceConnection via the class
+ * <code>ConnectorShapeFactory</code>
  *
  * @author RoseTec
+ * @see ConnectorShapeFactory#createShape()
  */
-public class ConnectorShape extends AbstractPuzzlesModel {
+public abstract class ConnectorShape extends AbstractPuzzlesModel {
 
     /**
      * Creates a puzzle from the given file
@@ -22,29 +25,18 @@ public class ConnectorShape extends AbstractPuzzlesModel {
      * @see #loadFromFile(org.w3c.dom.Element)
      */
     public static ConnectorShape createFromFile(Element settingsNode) throws IOException {
-        ConnectorShape connection = new ConnectorShape();
-        connection.loadFromFile(settingsNode);
-        return connection;
+        if (!"shape".equals(settingsNode.getNodeName())) {
+            return null;
+        }
+        int id = Integer.parseInt(settingsNode.getAttribute("id"));
+        return ConnectorShapeFactory.getInstance().getConnectorShapeWithId(id);
     }
 
     /**
-     * The actual shape for this ConnectionShape
+     * {@inheritDoc}
      *
-     * // TODO: abstract from this?
+     * @return
      */
-    private Path2D shape;
-
-    protected ConnectorShape() {
-        // TODO: create more shapes...
-        shape = new GeneralPath();
-
-        shape.moveTo(0, 40);
-        shape.lineTo(15, 30);
-        shape.lineTo(25, 50);
-        shape.lineTo(15, 70);
-        shape.lineTo(0, 60);
-    }
-
     @Override
     public int hashCode() {
         int hash = 7;
@@ -52,6 +44,12 @@ public class ConnectorShape extends AbstractPuzzlesModel {
         return hash;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param obj
+     * @return
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -71,27 +69,32 @@ public class ConnectorShape extends AbstractPuzzlesModel {
     }
 
     /**
-     * Returns the shape that is used to outloine the PuzzlepieceConnection
+     * Returns the shape that is used to outline the PuzzlepieceConnection
+     *
+     * TODO: abstract from Path2D?
      *
      * @return
      */
-    public Path2D getShape() {
-        return new GeneralPath(shape);
-    }
+    public abstract Path2D getShape();
 
-    void setShape(Path2D shape) {
-        this.shape = shape;
-    }
-
+    /**
+     * {@inheritDoc}
+     *
+     * @param settingsNode
+     * @throws IOException
+     */
     @Override
     public void loadFromFile(Element settingsNode) throws IOException {
-        if (!"shape".equals(settingsNode.getNodeName())) {
-            return;
-        }
-        this.loadIdFromElement(settingsNode);
-        shape = ConnectorShapeFactory.getInstance().getShapeWithId(this.getId()).shape;
+        throw new UnsupportedOperationException("ConnectorShaps cannot be loaded. Use #createFromFile() for this.");
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param doc
+     * @param rootElement
+     * @throws IOException
+     */
     @Override
     public void saveToFile(Document doc, Element rootElement) throws IOException {
         Element element = doc.createElement("shape");

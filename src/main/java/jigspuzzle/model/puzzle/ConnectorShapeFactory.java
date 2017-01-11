@@ -2,6 +2,9 @@ package jigspuzzle.model.puzzle;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
+import jigspuzzle.model.puzzle.shapes.FlatShape;
+import jigspuzzle.model.puzzle.shapes.NormalSizeShape;
 
 /**
  * A factory for creating a shape for a puzzlepiece connector.
@@ -19,14 +22,20 @@ class ConnectorShapeFactory {
         return instance;
     }
 
-    private Map<Integer, ConnectorShape> connectorShapes;
+    private final Map<Integer, ConnectorShape> connectorShapes;
 
     private ConnectorShapeFactory() {
         connectorShapes = new HashMap<>();
         //TODO: also put in other connectorShapes for different shapes
-        ConnectorShape shape = new ConnectorShape();
+        ConnectorShape shape;
+
+        shape = new NormalSizeShape();
         connectorShapes.put(1, shape);
         shape.setId(1); // TODO: not that nice....
+
+        shape = new FlatShape();
+        connectorShapes.put(2, shape);
+        shape.setId(2);
     }
 
     /**
@@ -42,8 +51,10 @@ class ConnectorShapeFactory {
      * @return
      */
     ConnectorShape createShape() {
-        // TODO: random of other shapes....
-        return connectorShapes.get(1);
+        Random r = new Random();
+        int i = r.nextInt(connectorShapes.size()) + 1;
+
+        return connectorShapes.get(i);
     }
 
     /**
@@ -53,7 +64,7 @@ class ConnectorShapeFactory {
      * @param id
      * @return
      */
-    ConnectorShape getShapeWithId(int id) {
+    ConnectorShape getConnectorShapeWithId(int id) {
         ConnectorShape shape = connectorShapes.get(id);
 
         if (shape == null) {
