@@ -411,7 +411,10 @@ public class PuzzleController extends AbstractController {
         int pieceHeight = JigSPuzzle.getInstance().getPuzzleWindow().getPuzzlepieceHeight();
 
         // calculate the tolerance offset
-        int possibleGroupOffset = 50;
+        int possibleGroupOffsetX = JigSPuzzle.getInstance().getPuzzleWindow().getPuzzlepieceWidth()
+                * SettingsController.getInstance().getPuzzlepieceSnapDistancePercent() / 100;
+        int possibleGroupOffsetY = JigSPuzzle.getInstance().getPuzzleWindow().getPuzzlepieceHeight()
+                * SettingsController.getInstance().getPuzzlepieceSnapDistancePercent() / 100;
 
         // get the groups of the puzzlepieces
         PuzzlepieceGroup puzzlepieceGroup = piece1.getPuzzlepieceGroup();
@@ -447,10 +450,10 @@ public class PuzzleController extends AbstractController {
         // determine te result
         boolean isNear = false;
 
-        if (xOtherPiece - possibleGroupOffset < xOtherPieceExpected
-                && xOtherPieceExpected < xOtherPiece + possibleGroupOffset
-                && yOtherPiece - possibleGroupOffset < yOtherPieceExpected
-                && yOtherPieceExpected < yOtherPiece + possibleGroupOffset) {
+        if (xOtherPiece - possibleGroupOffsetX < xOtherPieceExpected
+                && xOtherPieceExpected < xOtherPiece + possibleGroupOffsetX
+                && yOtherPiece - possibleGroupOffsetY < yOtherPieceExpected
+                && yOtherPieceExpected < yOtherPiece + possibleGroupOffsetY) {
             isNear = true;
         }
 
