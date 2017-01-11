@@ -76,7 +76,7 @@
         <t id="183">Changing this value is only visible when starting a new puzzle.</t>
 
         <t id="200">Snapping puzzlepieces</t>
-        <t id="201">The distance that two puzzlepieces must have in order to let the puzzlepieces snap together.</t>
+        <t id="201">The distance that two puzzlepieces must have in order to let the puzzlepieces snap together.\nThe given percentage states the maximal distance of two puzzlepieces depending on the size of a single puzzlepiece. When for instance a value of 20% is selected, then the snap-distance is 20% of the size of a puzzlepiece.</t>
         <t id="202">small</t>
         <t id="203">big</t>
 

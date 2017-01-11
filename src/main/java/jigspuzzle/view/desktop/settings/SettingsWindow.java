@@ -25,6 +25,18 @@ import jigspuzzle.view.desktop.swing.JTabbedPane;
 public class SettingsWindow extends javax.swing.JDialog {
 
     /**
+     * The JLabel that is used on the ticking for the slider for th
+     * snap-distance. This is the tickfor the value 0.
+     */
+    private JLabel sliderSnapDistance0;
+
+    /**
+     * The JLabel that is used on the ticking for the slider for th
+     * snap-distance. This is the tickfor the value 100.
+     */
+    private JLabel sliderSnapDistance100;
+
+    /**
      * Creates new form SettingsWindow
      *
      * @param parent
@@ -42,8 +54,15 @@ public class SettingsWindow extends javax.swing.JDialog {
         jSlider1.setLabelTable(tableWindowSize);
 
         Hashtable<Integer, JLabel> tableLockSize = new Hashtable<>();
-        tableLockSize.put(0, new JLabel("small"));
-        tableLockSize.put(100, new JLabel("big"));
+        // real text is loaded in 'loadLanguageTexts()'.
+        // Only here for initial setting of the sizes for the label in the slider.
+        sliderSnapDistance0 = new JLabel("<html>0 %<br/>small</html>");
+        sliderSnapDistance100 = new JLabel("<html>100 %<br/>big</html>");
+        tableLockSize.put(0, sliderSnapDistance0);
+        tableLockSize.put(100, sliderSnapDistance100);
+        for (int i = 25; i < 100; i += 25) {
+            tableLockSize.put(i, new JLabel(i + " %"));
+        }
         jSlider3.setLabelTable(tableLockSize);
 
         // make the available languages choosable
@@ -153,10 +172,10 @@ public class SettingsWindow extends javax.swing.JDialog {
         jLabel5.setText(SettingsController.getInstance().getLanguageText(10, 183));
 
         jLabel6.setText(SettingsController.getInstance().getLanguageText(10, 201));
-        Hashtable<Integer, JLabel> tableLockSize = new Hashtable<>();
-        tableLockSize.put(0, new JLabel(SettingsController.getInstance().getLanguageText(10, 202)));
-        tableLockSize.put(100, new JLabel(SettingsController.getInstance().getLanguageText(10, 203)));
-        jSlider3.setLabelTable(tableLockSize);
+        sliderSnapDistance0.setText("<html><center>0 %<br/>"
+                + SettingsController.getInstance().getLanguageText(10, 202) + "</center></html>");
+        sliderSnapDistance100.setText("<html><center>100 %<br/>"
+                + SettingsController.getInstance().getLanguageText(10, 203) + "</center></html>");
 
         jCheckBox5.setText(SettingsController.getInstance().getLanguageText(10, 222));
 
@@ -412,11 +431,11 @@ public class SettingsWindow extends javax.swing.JDialog {
         jLabel6.setText("The distance that two puzzlepieces must have in order to let the puzzlepieces snap together.");
         jPanel12.add(jLabel6);
 
-        jSlider3.setMajorTickSpacing(10);
+        jSlider3.setMajorTickSpacing(5);
         jSlider3.setPaintLabels(true);
         jSlider3.setPaintTicks(true);
         jSlider3.setSnapToTicks(true);
-        jSlider3.setEnabled(false);
+        jSlider3.setValue(20);
         jPanel12.add(jSlider3);
 
         jPanel3.add(jPanel12);

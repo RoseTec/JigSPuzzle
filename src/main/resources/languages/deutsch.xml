@@ -76,7 +76,7 @@
         <t id="183">Änderung dieses Wertes wird bei einem neuen Puzzle sichtbar.</t>
 
         <t id="200">Einrast-Größe</t>
-        <t id="201">Der Abstand, den zwei Puzzleteile haben müssen, um einzurasten und somit als 'ineinander gesteckt' zu gelten</t>
+        <t id="201">Der Abstand, den zwei Puzzleteile haben müssen, um einzurasten und somit als 'ineinander gesteckt' zu gelten.\nDie angegebene Prozentzahl gibt den maximalen Abstand zweier Puzzleteile in Abhängigkeit der der Größe eines einzelnen Puzzleteils. Wird hier beispielsweise 20% ausgewählt, so beträgt der Abstand zum Einrasten 20% der Größe eines Puzzleteils.</t>
         <t id="202">klein</t>
         <t id="203">groß</t>
 
