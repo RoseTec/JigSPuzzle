@@ -92,10 +92,14 @@ public class Puzzlepiece extends AbstractPuzzlesModel {
         for (int i = 0; i < this.connectors.length; i++) {
             if (this.connectors[i] == null && other.connectors[i] == null) {
                 continue;
-            }
-            if (!this.connectors[i].equals(other.connectors[i])) {
+            } else if (this.connectors[i] == null && other.connectors[i] != null
+                    || this.connectors[i] != null && other.connectors[i] == null) {
                 return false;
             }
+//            if (!this.connectors[i].equals(other.connectors[i])) {
+//            // this gives a problem then comparing a puzzlepiece with the corresponding puzzlepiece of the restarted puzzle, because of different shapes.
+//                return false;
+//            }
         }
         return true;
     }
