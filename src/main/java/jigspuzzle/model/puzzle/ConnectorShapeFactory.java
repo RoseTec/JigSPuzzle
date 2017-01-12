@@ -3,9 +3,7 @@ package jigspuzzle.model.puzzle;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import jigspuzzle.model.puzzle.shapes.FlatShape;
-import jigspuzzle.model.puzzle.shapes.LongShape;
-import jigspuzzle.model.puzzle.shapes.NormalSizeShape;
+import jigspuzzle.model.puzzle.shapes.*;
 
 /**
  * A factory for creating a shape for a puzzlepiece connector.
@@ -30,7 +28,12 @@ class ConnectorShapeFactory {
         //TODO: also put in other connectorShapes for different shapes
         ConnectorShape shape;
         int id = 0;
-        Class<ConnectorShape>[] classes = new Class[]{NormalSizeShape.class, FlatShape.class, LongShape.class};
+        Class<ConnectorShape>[] classes = new Class[]{
+            NormalSizeShape.class,
+            FlatShape.class,
+            LongShape.class,
+            LongCurvedShape.class,
+            NormalCurvedShape.class};
 
         for (Class<ConnectorShape> shapeClass : classes) {
             try {
@@ -44,7 +47,7 @@ class ConnectorShapeFactory {
     }
 
     /**
-     * Creates a random shape for a puzzlepiece.
+     * Creates a random shape for a puzzlepiece connection.
      *
      * Shapes have allways the following properties: <br>
      * It is assumed, that a puzzlepiece starts at point (0,0) and ends at point
