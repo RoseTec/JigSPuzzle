@@ -13,8 +13,6 @@ public class LongShape extends ConnectorShape {
 
     /**
      * {@inheritDoc}
-     *
-     * @return
      */
     @Override
     protected Path2D constructShape() {

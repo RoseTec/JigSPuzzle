@@ -14,8 +14,6 @@ public class NormalSizeShape extends ConnectorShape {
 
     /**
      * {@inheritDoc}
-     *
-     * @return
      */
     @Override
     protected Path2D constructShape() {

@@ -43,8 +43,6 @@ public abstract class ConnectorShape extends AbstractPuzzlesModel {
 
     /**
      * {@inheritDoc}
-     *
-     * @return
      */
     @Override
     public int hashCode() {
@@ -55,9 +53,6 @@ public abstract class ConnectorShape extends AbstractPuzzlesModel {
 
     /**
      * {@inheritDoc}
-     *
-     * @param obj
-     * @return
      */
     @Override
     public boolean equals(Object obj) {
