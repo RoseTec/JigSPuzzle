@@ -33,6 +33,15 @@ public abstract class ConnectorShape extends AbstractPuzzlesModel {
     }
 
     /**
+     * The shape that this connectorShae has. It is created in the subclasses.
+     */
+    private final Path2D shape;
+
+    public ConnectorShape() {
+        shape = constructShape();
+    }
+
+    /**
      * {@inheritDoc}
      *
      * @return
@@ -69,19 +78,37 @@ public abstract class ConnectorShape extends AbstractPuzzlesModel {
     }
 
     /**
+     * Creates the shape. Each subclass creaes a different shape in this method.
+     * This method is called in the construcror of this method. At this point, a
+     * subclass is asked to create a special shape. This shape is saved and
+     * returned, when requested via <code>getShape()</code>.
+     *
+     * @return
+     * @see #getShape()
+     */
+    protected abstract Path2D constructShape();
+
+    /**
      * Returns the shape that is used to outline the PuzzlepieceConnection
      *
      * TODO: abstract from Path2D?
      *
      * @return
      */
-    public abstract Path2D getShape();
+    public Path2D getShape() {
+        return shape;
+    }
 
     /**
-     * {@inheritDoc}
+     * Implementation of the abstract method of the superclass.
+     *
+     * <b>This method is not supported.</b> Use <code>createFromFile()</code>
+     * instead.
      *
      * @param settingsNode
      * @throws IOException
+     * @see AbstractPuzzlesModel#loadFromFile(org.w3c.dom.Element)
+     * @see #createFromFile(org.w3c.dom.Element)
      */
     @Override
     public void loadFromFile(Element settingsNode) throws IOException {

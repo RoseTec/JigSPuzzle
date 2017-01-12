@@ -5,11 +5,11 @@ import java.awt.geom.Path2D;
 import jigspuzzle.model.puzzle.ConnectorShape;
 
 /**
- * A shape, that is flat and symetrical.
+ * A shape, that is long and symetrical.
  *
  * @author RoseTec
  */
-public class FlatShape extends ConnectorShape {
+public class LongShape extends ConnectorShape {
 
     /**
      * {@inheritDoc}
@@ -20,12 +20,12 @@ public class FlatShape extends ConnectorShape {
     protected Path2D constructShape() {
         GeneralPath shape = new GeneralPath();
 
-        shape.moveTo(0, 40);
-        shape.curveTo(3, 39, 3, 39, 6, 40);
-        shape.curveTo(8, 29, 20, 15, 20, 45);
-        shape.lineTo(20, 55);
-        shape.curveTo(20, 85, 8, 71, 6, 60);
-        shape.curveTo(3, 61, 3, 61, 0, 60);
+        shape.moveTo(0, 42);
+        shape.curveTo(3, 44, 8, 44, 12, 42);
+        shape.curveTo(27, 40, 33, 46, 33, 49);
+        shape.lineTo(33, 51);
+        shape.curveTo(33, 54, 27, 60, 12, 58);
+        shape.curveTo(8, 56, 3, 56, 0, 58);
 
         return shape;
     }

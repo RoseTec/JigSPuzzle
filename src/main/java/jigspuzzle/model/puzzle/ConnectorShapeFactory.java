@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import jigspuzzle.model.puzzle.shapes.FlatShape;
+import jigspuzzle.model.puzzle.shapes.LongShape;
 import jigspuzzle.model.puzzle.shapes.NormalSizeShape;
 
 /**
@@ -28,14 +29,18 @@ class ConnectorShapeFactory {
         connectorShapes = new HashMap<>();
         //TODO: also put in other connectorShapes for different shapes
         ConnectorShape shape;
+        int id = 0;
+        Class<ConnectorShape>[] classes = new Class[]{NormalSizeShape.class, FlatShape.class, LongShape.class};
 
-        shape = new NormalSizeShape();
-        connectorShapes.put(1, shape);
-        shape.setId(1); // TODO: not that nice....
-
-        shape = new FlatShape();
-        connectorShapes.put(2, shape);
-        shape.setId(2);
+        for (Class<ConnectorShape> shapeClass : classes) {
+            try {
+                shape = shapeClass.newInstance();
+                id++;
+                connectorShapes.put(id, shape);
+                shape.setId(id); // TODO: not that nice....
+            } catch (InstantiationException | IllegalAccessException ex) {
+            }
+        }
     }
 
     /**

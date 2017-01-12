@@ -12,10 +12,14 @@ import jigspuzzle.model.puzzle.ConnectorShape;
  */
 public class NormalSizeShape extends ConnectorShape {
 
-    private final Path2D shape;
-
-    public NormalSizeShape() {
-        shape = new GeneralPath();
+    /**
+     * {@inheritDoc}
+     *
+     * @return
+     */
+    @Override
+    protected Path2D constructShape() {
+        GeneralPath shape = new GeneralPath();
 
         shape.moveTo(0, 37);
         shape.curveTo(2.5, 40, 5.5, 40, 8, 37);
@@ -23,16 +27,8 @@ public class NormalSizeShape extends ConnectorShape {
         shape.lineTo(30, 52);
         shape.curveTo(30, 69, 14.9, 76, 8, 63);
         shape.curveTo(5.5, 60, 2.5, 60, 0, 63);
-    }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @return
-     */
-    @Override
-    public Path2D getShape() {
-        return new GeneralPath(shape);
+        return shape;
     }
 
 }
