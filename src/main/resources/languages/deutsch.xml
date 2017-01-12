@@ -29,8 +29,8 @@
         <t id="180">JigSPuzzle Beenden</t>
 
         <t id="300">Einstellungen</t>
-        <t id="310">Darstellungs-Einstellungen</t>
-        <t id="320">Puzzle-Optionen</t>
+        <t id="310">Oberfläche</t>
+        <t id="320">Puzzle</t>
 
         <t id="500">Über</t>
         <t id="510">Über JigSPuzzle</t>
@@ -47,7 +47,7 @@
         <t id="2">Speichern</t>
         <t id="3">Abbrechen</t>
 
-        <t id="11">Aussehen</t>
+        <t id="11">Oberfläche</t>
         <t id="12">Puzzle</t>
 
         <t id="85">Einstellungen wurden nicht gespeichert.</t>
@@ -64,8 +64,8 @@
         <t id="140">Vorschau</t>
         <t id="141">Zeige Vorschau des fertigen Puzzles an</t>
 
-        <t id="160">Puzzlegröße</t>
-        <t id="161">Verwendete Fläche der Puzzlefläche:</t>
+        <t id="160">Größe des Puzzles</t>
+        <t id="161">Es wird er folgende Anteil der Puzzlefläche für die Größe des Puzzles verwendet:\nEin Wert von 75% bedeutet, dass das Puzle auf 75% der Größe der Puzzlefläche skaliert wird.</t>
         <t id="164">Behalte Seitenverhältnisse bei</t>
         <t id="167">Verkleinere Bild automatisch</t>
         <t id="170">Vergrößere Bild automatisch</t>
@@ -76,9 +76,12 @@
         <t id="183">Änderung dieses Wertes wird bei einem neuen Puzzle sichtbar.</t>
 
         <t id="200">Einrast-Größe</t>
-        <t id="201">Der Abstand, den zwei Puzzleteile haben müssen, um einzurasten und somit als 'ineinander gesteckt' zu gelten</t>
+        <t id="201">Der Abstand, den zwei Puzzleteile haben müssen, um einzurasten und somit als 'ineinander gesteckt' zu gelten.\nDie angegebene Prozentzahl gibt den maximalen Abstand zweier Puzzleteile in Abhängigkeit der der Größe eines einzelnen Puzzleteils. Wird hier beispielsweise 20% ausgewählt, so beträgt der Abstand zum Einrasten 20% der Größe eines Puzzleteils.</t>
         <t id="202">klein</t>
         <t id="203">groß</t>
+
+        <t id="220">Sounds</t>
+        <t id="222">Spiele Sounds ab</t>
     </page>
 
     <page id="11" descr="VersionDialog">

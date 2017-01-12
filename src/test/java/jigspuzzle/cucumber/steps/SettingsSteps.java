@@ -5,6 +5,7 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.*;
 import java.awt.Color;
 import java.io.File;
+import java.io.IOException;
 import javax.swing.JColorChooser;
 import jigspuzzle.controller.SettingsController;
 import jigspuzzle.cucumber.steps.util.ColorSteps;
@@ -57,9 +58,28 @@ public class SettingsSteps {
         }
     }
 
+    @Given("^(?:that )?the function for showing a preview of the puzzle is activated$")
+    public void puzzle_preview_is_acivated() throws IOException {
+        SettingsController.getInstance().setShowPuzzlePreview(true);
+        SettingsController.getInstance().saveSettingsToFile();
+    }
+
+    @Given("^(?:that )?the function for showing a preview of the puzzle is deactivated$")
+    public void puzzle_preview_is_deacivated() throws IOException {
+        SettingsController.getInstance().setShowPuzzlePreview(false);
+        SettingsController.getInstance().saveSettingsToFile();
+    }
+
     @When("^I change the language to \"([^\"]*)\"$")
     public void change_language_to(String language) {
         get_settings_window().comboBox("language-select").selectItem(getLanguageInLanguage(language));
+    }
+
+    @When("^I decide to change the settings for showing a preview of the puzzle$")
+    public void decde_to_change_image_preview() {
+        windowsSteps.open_appearence_settings_window();
+        get_settings_window().checkBox("show-puzzle-preview").click();
+        save_settings();
     }
 
     @Then("^I should see the user interface in the language \"([^\"]*)\"$")

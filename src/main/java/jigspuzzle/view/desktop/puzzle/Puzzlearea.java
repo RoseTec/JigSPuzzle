@@ -32,14 +32,19 @@ public class Puzzlearea extends JLayeredPane {
      */
     private Puzzle puzzle;
 
+    private PuzzlePreview preview;
+
     public Puzzlearea() {
         this.setLayout(null);
         this.setOpaque(true);
         this.setName("puzzlearea");
+        this.addPuzzlePreview();
 
-        // register observer for setting the background color in the main window for live preview
+        // register observer for puzzlearea settings
         SettingsController.getInstance().addPuzzleareaSettingsObserver((Observable o, Object arg) -> {
             PuzzleareaSettings settings = (PuzzleareaSettings) o;
+
+            // background color in the main window for live preview
             Puzzlearea.this.setBackground(settings.getPuzzleareaBackgroundColor());
         });
         this.setBackground(SettingsController.getInstance().getPuzzleareaBackgroundColor());
@@ -126,6 +131,7 @@ public class Puzzlearea extends JLayeredPane {
     public void deletePuzzle() {
         puzzle = null;
         removeAll();
+        addPuzzlePreview();
         repaint();
     }
 
@@ -205,7 +211,24 @@ public class Puzzlearea extends JLayeredPane {
                 });
             }
         }
+
+        // move preview in the background
+        this.moveToBack(preview);
+
+        // make this visible
         setVisible(true);
+    }
+
+    /**
+     * Adds a panel for the preview of the puzzle.
+     */
+    private void addPuzzlePreview() {
+        if (this.getComponentCount() != 0) {
+            return;
+        }
+
+        preview = new PuzzlePreview();
+        this.add(preview);
     }
 
 }

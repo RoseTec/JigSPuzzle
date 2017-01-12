@@ -25,6 +25,18 @@ import jigspuzzle.view.desktop.swing.JTabbedPane;
 public class SettingsWindow extends javax.swing.JDialog {
 
     /**
+     * The JLabel that is used on the ticking for the slider for the
+     * snap-distance. This is the tick for the smallest value (5).
+     */
+    private JLabel sliderSnapDistanceSmall;
+
+    /**
+     * The JLabel that is used on the ticking for the slider for the
+     * snap-distance. This is the tick for the highest value (100).
+     */
+    private JLabel sliderSnapDistanceBig;
+
+    /**
      * Creates new form SettingsWindow
      *
      * @param parent
@@ -42,8 +54,15 @@ public class SettingsWindow extends javax.swing.JDialog {
         jSlider1.setLabelTable(tableWindowSize);
 
         Hashtable<Integer, JLabel> tableLockSize = new Hashtable<>();
-        tableLockSize.put(0, new JLabel("small"));
-        tableLockSize.put(100, new JLabel("big"));
+        // real text is loaded in 'loadLanguageTexts()'.
+        // Only here for initial setting of the sizes for the label in the slider.
+        sliderSnapDistanceSmall = new JLabel("<html>5 %<br/>small</html>");
+        sliderSnapDistanceBig = new JLabel("<html>100 %<br/>big</html>");
+        tableLockSize.put(jSlider3.getMinimum(), sliderSnapDistanceSmall);
+        tableLockSize.put(jSlider3.getMaximum(), sliderSnapDistanceBig);
+        for (int i = 25; i < 100; i += 25) {
+            tableLockSize.put(i, new JLabel(i + " %"));
+        }
         jSlider3.setLabelTable(tableLockSize);
 
         // make the available languages choosable
@@ -108,7 +127,7 @@ public class SettingsWindow extends javax.swing.JDialog {
      * Also sets the view in foreground where the user can change the appearence
      * of the UI.
      */
-    public void showAppearanceSettings() {
+    public void showUiSettings() {
         loadSettings();
         jTabbedPane1.setSelectedIndex(0);
         this.setVisible(true);
@@ -153,10 +172,13 @@ public class SettingsWindow extends javax.swing.JDialog {
         jLabel5.setText(SettingsController.getInstance().getLanguageText(10, 183));
 
         jLabel6.setText(SettingsController.getInstance().getLanguageText(10, 201));
-        Hashtable<Integer, JLabel> tableLockSize = new Hashtable<>();
-        tableLockSize.put(0, new JLabel(SettingsController.getInstance().getLanguageText(10, 202)));
-        tableLockSize.put(100, new JLabel(SettingsController.getInstance().getLanguageText(10, 203)));
-        jSlider3.setLabelTable(tableLockSize);
+        sliderSnapDistanceSmall.setText("<html><center>" + jSlider3.getMinimum() + " %<br/>"
+                + SettingsController.getInstance().getLanguageText(10, 202) + "</center></html>");
+        sliderSnapDistanceBig.setText("<html><center>" + jSlider3.getMaximum() + " %<br/>"
+                + SettingsController.getInstance().getLanguageText(10, 203) + "</center></html>");
+
+        jCheckBox5.setText(SettingsController.getInstance().getLanguageText(10, 222));
+
         repaint();
     }
 
@@ -181,15 +203,27 @@ public class SettingsWindow extends javax.swing.JDialog {
         } catch (IOException ex) {
         }
 
+        // background color
         jColorChooser1.setColor(SettingsController.getInstance().getPuzzleareaBackgroundColor());
         jPanel8.setBackground(jColorChooser1.getColor());
 
+        // number of puzzlepieces
         jSlider2.setValue(SettingsController.getInstance().getPuzzlepieceNumber());
         jTextField1.setText(SettingsController.getInstance().getPuzzlepieceNumber() + "");
 
+        // distance for snapping for puzzlepieces
+        jSlider3.setValue(SettingsController.getInstance().getPuzzlepieceSnapDistancePercent());
+
+        // size of the puzzle
         jSlider1.setValue((int) (SettingsController.getInstance().getUsedSizeOfPuzzleare() * 100));
         jCheckBox3.setSelected(SettingsController.getInstance().getEnlargePuzzleAutomatically());
         jCheckBox4.setSelected(SettingsController.getInstance().getDecreasePuzzleAutomatically());
+
+        // preview of the puzzle
+        jCheckBox1.setSelected(SettingsController.getInstance().getShowPuzzlePreview());
+
+        // play sounds
+        jCheckBox5.setSelected(SettingsController.getInstance().getPlaySounds());
     }
 
     /**
@@ -214,17 +248,18 @@ public class SettingsWindow extends javax.swing.JDialog {
         jPanel9 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
+        jPanel10 = new SettingsCategoryPanel(10, 220);
+        jCheckBox5 = new javax.swing.JCheckBox();
         jPanel5 = new SettingsCategoryPanel(10, 140);
         jCheckBox1 = new javax.swing.JCheckBox();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jPanel3 = new SettingViewPanel();
         jPanel6 = new SettingsCategoryPanel(10, 160);
-        jPanel10 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        jLabel1 = new ExplainingJLabel();
         jSlider1 = new javax.swing.JSlider();
         jCheckBox2 = new javax.swing.JCheckBox();
         jCheckBox4 = new javax.swing.JCheckBox();
         jCheckBox3 = new javax.swing.JCheckBox();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jPanel3 = new SettingViewPanel();
         jPanel11 = new SettingsCategoryPanel(10, 180);
         jSlider2 = new javax.swing.JSlider();
         jPanel7 = new javax.swing.JPanel();
@@ -244,7 +279,7 @@ public class SettingsWindow extends javax.swing.JDialog {
         setIconImage(ImageGetter.getInstance().getJigSPuzzleImage());
         setMinimumSize(new java.awt.Dimension(400, 300));
         setName("settings"); // NOI18N
-        setPreferredSize(new java.awt.Dimension(775, 650));
+        setPreferredSize(new java.awt.Dimension(800, 650));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
@@ -295,16 +330,36 @@ public class SettingsWindow extends javax.swing.JDialog {
 
         jPanel2.add(jPanel4);
 
+        jCheckBox5.setText("Play Sounds");
+        jCheckBox5.setName(""); // NOI18N
+        jCheckBox5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox5ActionPerformed(evt);
+            }
+        });
+        jPanel10.add(jCheckBox5);
+
+        jPanel2.add(jPanel10);
+
         jCheckBox1.setText("Show a preview of the complete puzzle");
-        jCheckBox1.setEnabled(false);
+        jCheckBox1.setName("show-puzzle-preview"); // NOI18N
+        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox1ActionPerformed(evt);
+            }
+        });
         jPanel5.add(jCheckBox1);
 
         jPanel2.add(jPanel5);
 
-        jPanel10.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        jScrollPane1.setViewportView(jPanel2);
+
+        jTabbedPane1.addTab("Appearance", jScrollPane1);
+
+        jPanel3.setPreferredSize(jPanel2.getPreferredSize());
 
         jLabel1.setText("Used Size of the puzzleare:");
-        jPanel10.add(jLabel1);
+        jPanel6.add(jLabel1);
 
         jSlider1.setMajorTickSpacing(25);
         jSlider1.setMinimum(25);
@@ -319,9 +374,7 @@ public class SettingsWindow extends javax.swing.JDialog {
                 jSlider1StateChanged(evt);
             }
         });
-        jPanel10.add(jSlider1);
-
-        jPanel6.add(jPanel10);
+        jPanel6.add(jSlider1);
 
         jCheckBox2.setSelected(true);
         jCheckBox2.setText("Keep aspect ratio");
@@ -349,13 +402,7 @@ public class SettingsWindow extends javax.swing.JDialog {
         });
         jPanel6.add(jCheckBox3);
 
-        jPanel2.add(jPanel6);
-
-        jScrollPane1.setViewportView(jPanel2);
-
-        jTabbedPane1.addTab("Appearance", jScrollPane1);
-
-        jPanel3.setPreferredSize(jPanel2.getPreferredSize());
+        jPanel3.add(jPanel6);
 
         jSlider2.setMajorTickSpacing(200);
         jSlider2.setMaximum(1000);
@@ -387,11 +434,17 @@ public class SettingsWindow extends javax.swing.JDialog {
         jLabel6.setText("The distance that two puzzlepieces must have in order to let the puzzlepieces snap together.");
         jPanel12.add(jLabel6);
 
-        jSlider3.setMajorTickSpacing(10);
+        jSlider3.setMajorTickSpacing(5);
+        jSlider3.setMinimum(5);
         jSlider3.setPaintLabels(true);
         jSlider3.setPaintTicks(true);
         jSlider3.setSnapToTicks(true);
-        jSlider3.setEnabled(false);
+        jSlider3.setValue(20);
+        jSlider3.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jSlider3StateChanged(evt);
+            }
+        });
         jPanel12.add(jSlider3);
 
         jPanel3.add(jPanel12);
@@ -485,6 +538,18 @@ public class SettingsWindow extends javax.swing.JDialog {
         SettingsController.getInstance().setCurrentLanguage(newLanguage);
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
+    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+        SettingsController.getInstance().setShowPuzzlePreview(jCheckBox1.isSelected());
+    }//GEN-LAST:event_jCheckBox1ActionPerformed
+
+    private void jCheckBox5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox5ActionPerformed
+        SettingsController.getInstance().setPlaySounds(jCheckBox5.isSelected());
+    }//GEN-LAST:event_jCheckBox5ActionPerformed
+
+    private void jSlider3StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSlider3StateChanged
+        SettingsController.getInstance().setPuzzlepieceSnapDistancePercent(jSlider3.getValue());
+    }//GEN-LAST:event_jSlider3StateChanged
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -492,6 +557,7 @@ public class SettingsWindow extends javax.swing.JDialog {
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JCheckBox jCheckBox3;
     private javax.swing.JCheckBox jCheckBox4;
+    private javax.swing.JCheckBox jCheckBox5;
     private javax.swing.JColorChooser jColorChooser1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;

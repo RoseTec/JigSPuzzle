@@ -29,8 +29,8 @@
         <t id="180">Quit JigSPuzzle</t>
 
         <t id="300">Settings</t>
-        <t id="310">Appearance-Settings</t>
-        <t id="320">Puzzle-Options</t>
+        <t id="310">User Interface</t>
+        <t id="320">Puzzle</t>
 
         <t id="500">About</t>
         <t id="510">About JigSPuzzle</t>
@@ -47,7 +47,7 @@
         <t id="2">Save</t>
         <t id="3">Abort</t>
 
-        <t id="11">Appearance</t>
+        <t id="11">User Interface</t>
         <t id="12">Puzzle</t>
 
         <t id="85">Settings could not be saved</t>
@@ -65,7 +65,7 @@
         <t id="141">Show a preview of the complete puzzle</t>
 
         <t id="160">Size of the puzzle</t>
-        <t id="161">Used Size for the puzzleare:</t>
+        <t id="161">The following percentage of the puzzlearea will be used for the size of the puzzle:\nA value of 75% means, that the puzzle will be scaled to 75% of the size of the puzzlearea.</t>
         <t id="164">Keep aspect ratio</t>
         <t id="167">Decrease picture automatically</t>
         <t id="170">Enlarge picture automatically</t>
@@ -76,9 +76,12 @@
         <t id="183">Changing this value is only visible when starting a new puzzle.</t>
 
         <t id="200">Snapping puzzlepieces</t>
-        <t id="201">The distance that two puzzlepieces must have in order to let the puzzlepieces snap together.</t>
+        <t id="201">The distance that two puzzlepieces must have in order to let the puzzlepieces snap together.\nThe given percentage states the maximal distance of two puzzlepieces depending on the size of a single puzzlepiece. When for instance a value of 20% is selected, then the snap-distance is 20% of the size of a puzzlepiece.</t>
         <t id="202">small</t>
         <t id="203">big</t>
+
+        <t id="220">Sounds</t>
+        <t id="222">Play Sounds</t>
     </page>
 
     <page id="11" descr="VersionDialog">

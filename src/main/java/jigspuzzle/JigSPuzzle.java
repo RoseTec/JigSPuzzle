@@ -2,7 +2,9 @@ package jigspuzzle;
 
 import jigspuzzle.controller.*;
 import jigspuzzle.view.IPuzzleWindow;
+import jigspuzzle.view.ISoundPlayer;
 import jigspuzzle.view.PuzzleWindow;
+import jigspuzzle.view.SoundPlayer;
 
 /**
  * The main class to start JigSPuzzle
@@ -32,8 +34,14 @@ public class JigSPuzzle {
      */
     IPuzzleWindow puzzleWindow;
 
+    /**
+     * The sound player, that can play sounds in the UI.
+     */
+    ISoundPlayer soundPlayer;
+
     private JigSPuzzle() {
         puzzleWindow = new PuzzleWindow();
+        soundPlayer = new SoundPlayer();
     }
 
     /**
@@ -59,6 +67,15 @@ public class JigSPuzzle {
      */
     public IPuzzleWindow getPuzzleWindow() {
         return puzzleWindow;
+    }
+
+    /**
+     * Returns the player, that is used for playing sounds on the UI.
+     *
+     * @return
+     */
+    public ISoundPlayer getSoundPlayer() {
+        return soundPlayer;
     }
 
     /**

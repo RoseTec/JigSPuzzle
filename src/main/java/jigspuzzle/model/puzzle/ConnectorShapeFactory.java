@@ -2,6 +2,8 @@ package jigspuzzle.model.puzzle;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
+import jigspuzzle.model.puzzle.shapes.*;
 
 /**
  * A factory for creating a shape for a puzzlepiece connector.
@@ -19,18 +21,36 @@ class ConnectorShapeFactory {
         return instance;
     }
 
-    private Map<Integer, ConnectorShape> connectorShapes;
+    private final Map<Integer, ConnectorShape> connectorShapes;
 
     private ConnectorShapeFactory() {
         connectorShapes = new HashMap<>();
         //TODO: also put in other connectorShapes for different shapes
-        ConnectorShape shape = new ConnectorShape();
-        connectorShapes.put(1, shape);
-        shape.setId(1); // TODO: not that nice....
+        ConnectorShape shape;
+        int id = 0;
+        Class<ConnectorShape>[] classes = new Class[]{
+            NormalSizeShape.class,
+            NormalCurvedShape.class,
+            NormalCurvedShapeMirrored.class,
+            FlatShape.class,
+            LongShape.class,
+            LongCurvedShape.class,
+            LongCurvedShapeMirrored.class
+        };
+
+        for (Class<ConnectorShape> shapeClass : classes) {
+            try {
+                shape = shapeClass.newInstance();
+                id++;
+                connectorShapes.put(id, shape);
+                shape.setId(id); // TODO: not that nice....
+            } catch (InstantiationException | IllegalAccessException ex) {
+            }
+        }
     }
 
     /**
-     * Creates a random shape for a puzzlepiece.
+     * Creates a random shape for a puzzlepiece connection.
      *
      * Shapes have allways the following properties: <br>
      * It is assumed, that a puzzlepiece starts at point (0,0) and ends at point
@@ -42,8 +62,10 @@ class ConnectorShapeFactory {
      * @return
      */
     ConnectorShape createShape() {
-        // TODO: random of other shapes....
-        return connectorShapes.get(1);
+        Random r = new Random();
+        int i = r.nextInt(connectorShapes.size()) + 1;
+
+        return connectorShapes.get(i);
     }
 
     /**
@@ -53,7 +75,7 @@ class ConnectorShapeFactory {
      * @param id
      * @return
      */
-    ConnectorShape getShapeWithId(int id) {
+    ConnectorShape getConnectorShapeWithId(int id) {
         ConnectorShape shape = connectorShapes.get(id);
 
         if (shape == null) {

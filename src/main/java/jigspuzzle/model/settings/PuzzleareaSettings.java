@@ -34,6 +34,18 @@ public class PuzzleareaSettings extends Observable implements Savable {
     private boolean enlargePuzzleAutomatically = true;
 
     /**
+     * Wheather there should be sounds, when something happend (e.g. snapping
+     * puzzlepieces).
+     */
+    private boolean playSounds = true;
+
+    /**
+     * The value, wheather to show a preview of the finished puzzle on the
+     * puzzlearea.
+     */
+    private boolean showPuzzlePreview = false;
+
+    /**
      * The number shows in percent, how much of the puzzleare should be used for
      * puzzeling. A number of 0.5 for instance means, that only 50% of the
      * puzzelarea should be used for the final puzzle.
@@ -89,6 +101,26 @@ public class PuzzleareaSettings extends Observable implements Savable {
     }
 
     /**
+     * Gets the value for playing sounds on the puzzlearea, e.g. whn
+     * puzzlepieces snap together and a sound should be played.
+     *
+     * @return
+     */
+    public boolean getPlaySounds() {
+        return playSounds;
+    }
+
+    /**
+     * Sets the value for playing sounds on the puzzlearea, e.g. whn
+     * puzzlepieces snap together and a sound should be played.
+     *
+     * @param playSounds
+     */
+    public void setPlaySounds(boolean playSounds) {
+        this.playSounds = playSounds;
+    }
+
+    /**
      * Gets the bckground color for the puzzlearea where the player playes
      * around with the puzzlepieces.
      *
@@ -106,6 +138,28 @@ public class PuzzleareaSettings extends Observable implements Savable {
      */
     public void setPuzzleareaBackgroundColor(Color newColor) {
         puzzleareaBackgroundColor = newColor;
+        setChanged();
+        notifyObservers();
+    }
+
+    /**
+     * Gets teh value, wheather to show a preview of the puzzle on the
+     * puzzlearea.
+     *
+     * @return
+     */
+    public boolean getShowPuzzlePreview() {
+        return showPuzzlePreview;
+    }
+
+    /**
+     * Sets teh value, wheather to show a preview of the puzzle on the
+     * puzzlearea.
+     *
+     * @param showPuzzlePreview
+     */
+    public void setShowPuzzlePreview(boolean showPuzzlePreview) {
+        this.showPuzzlePreview = showPuzzlePreview;
         setChanged();
         notifyObservers();
     }
@@ -152,20 +206,16 @@ public class PuzzleareaSettings extends Observable implements Savable {
 
             switch (node.getNodeName()) {
                 case "automatically-decrease-puzzle":
-                    try {
-                        decreasePuzzleAutomatically = Boolean.parseBoolean(node.getTextContent());
-                    } catch (NumberFormatException ex) {
-                    }
+                    decreasePuzzleAutomatically = Boolean.parseBoolean(node.getTextContent());
                 case "automatically-enlarge-puzzle":
-                    try {
-                        enlargePuzzleAutomatically = Boolean.parseBoolean(node.getTextContent());
-                    } catch (NumberFormatException ex) {
-                    }
+                    enlargePuzzleAutomatically = Boolean.parseBoolean(node.getTextContent());
                 case "background-color":
                     try {
                         puzzleareaBackgroundColor = new Color(Integer.parseInt(node.getTextContent()));
                     } catch (NumberFormatException ex) {
                     }
+                case "show-puzzle-preview":
+                    showPuzzlePreview = Boolean.parseBoolean(node.getTextContent());
                 case "used-size-of-puzzleare":
                     try {
                         usedSizeOfPuzzleare = Double.parseDouble(node.getTextContent());
@@ -198,6 +248,10 @@ public class PuzzleareaSettings extends Observable implements Savable {
 
         tmpElement = doc.createElement("background-color");
         tmpElement.setTextContent(String.valueOf(puzzleareaBackgroundColor.getRGB()));
+        settingsElement.appendChild(tmpElement);
+
+        tmpElement = doc.createElement("show-puzzle-preview");
+        tmpElement.setTextContent(String.valueOf(showPuzzlePreview));
         settingsElement.appendChild(tmpElement);
 
         tmpElement = doc.createElement("used-size-of-puzzleare");

@@ -229,6 +229,22 @@ public class SettingsController extends AbstractController {
     }
 
     /**
+     * @see PuzzleareaSettings#getPlaySounds()
+     * @return
+     */
+    public boolean getPlaySounds() {
+        return puzzleareaSettings.getPlaySounds();
+    }
+
+    /**
+     * @see PuzzleareaSettings#setPlaySounds(boolean)
+     * @param playSounds
+     */
+    public void setPlaySounds(boolean playSounds) {
+        puzzleareaSettings.setPlaySounds(playSounds);
+    }
+
+    /**
      * Gets the bckground color for the puzzlearea where the player playes
      * around with the puzzlepieces.
      *
@@ -333,6 +349,37 @@ public class SettingsController extends AbstractController {
         }
 
         return new Dimension(resizedWidth / puzzleColumns, resizedHeight / puzzleRows);
+    }
+
+    /**
+     * @see PuzzleSettings#setSnapDistancePercent(int)
+     * @param snapDistancePercent
+     */
+    public void setPuzzlepieceSnapDistancePercent(int snapDistancePercent) {
+        puzzleSettings.setSnapDistancePercent(snapDistancePercent);
+    }
+
+    /**
+     * @return @see PuzzleSettings#getSnapDistancePercent
+     */
+    public int getPuzzlepieceSnapDistancePercent() {
+        return puzzleSettings.getSnapDistancePercent();
+    }
+
+    /**
+     * @see PuzzleareaSettings#getShowPuzzlePreview()
+     * @return
+     */
+    public boolean getShowPuzzlePreview() {
+        return puzzleareaSettings.getShowPuzzlePreview();
+    }
+
+    /**
+     * @see PuzzleareaSettings#setShowPuzzlePreview(boolean)
+     * @param showPuzzlePreview
+     */
+    public void setShowPuzzlePreview(boolean showPuzzlePreview) {
+        puzzleareaSettings.setShowPuzzlePreview(showPuzzlePreview);
     }
 
     /**

@@ -116,12 +116,31 @@ public class PuzzleController extends AbstractController {
     }
 
     /**
+     * Gets the image of the puzzle.
+     *
+     * @return
+     */
+    public Image getPuzzlepieceImage() {
+        return puzzle.getImage();
+    }
+
+    /**
      * Gets the number of rows that the puzzle has.
      *
      * @return
      */
     public int getPuzzlepieceRowCount() {
         return puzzle.getRowCount();
+    }
+
+    /**
+     * Checks, wheather there is currently a puzzle beeing loaded and it is
+     * tried to solve this.
+     *
+     * @return
+     */
+    public boolean isPuzzleAcive() {
+        return puzzle != null;
     }
 
     /**
@@ -229,6 +248,9 @@ public class PuzzleController extends AbstractController {
      * @throws java.io.IOException
      */
     public void restartPuzzle(int puzzleareaHeight, int puzzleareaWidth) throws IOException {
+        if (puzzle == null) {
+            return;
+        }
         newPuzzle(puzzle.getImage(), puzzleareaHeight, puzzleareaWidth);
     }
 
@@ -366,6 +388,9 @@ public class PuzzleController extends AbstractController {
                 puzzlepieceGroup.destroy();
                 puzzlepieceGroup = otherGroup;
 
+                // play sound for snapping the puzzlepieces
+                JigSPuzzle.getInstance().getSoundPlayer().playSnapPuzzlepieces();
+
                 // bring the other group to the front
                 JigSPuzzle.getInstance().getPuzzleWindow().bringToFront(otherGroup);
             }
@@ -386,7 +411,10 @@ public class PuzzleController extends AbstractController {
         int pieceHeight = JigSPuzzle.getInstance().getPuzzleWindow().getPuzzlepieceHeight();
 
         // calculate the tolerance offset
-        int possibleGroupOffset = 50;
+        int possibleGroupOffsetX = JigSPuzzle.getInstance().getPuzzleWindow().getPuzzlepieceWidth()
+                * SettingsController.getInstance().getPuzzlepieceSnapDistancePercent() / 100;
+        int possibleGroupOffsetY = JigSPuzzle.getInstance().getPuzzleWindow().getPuzzlepieceHeight()
+                * SettingsController.getInstance().getPuzzlepieceSnapDistancePercent() / 100;
 
         // get the groups of the puzzlepieces
         PuzzlepieceGroup puzzlepieceGroup = piece1.getPuzzlepieceGroup();
@@ -422,10 +450,10 @@ public class PuzzleController extends AbstractController {
         // determine te result
         boolean isNear = false;
 
-        if (xOtherPiece - possibleGroupOffset < xOtherPieceExpected
-                && xOtherPieceExpected < xOtherPiece + possibleGroupOffset
-                && yOtherPiece - possibleGroupOffset < yOtherPieceExpected
-                && yOtherPieceExpected < yOtherPiece + possibleGroupOffset) {
+        if (xOtherPiece - possibleGroupOffsetX < xOtherPieceExpected
+                && xOtherPieceExpected < xOtherPiece + possibleGroupOffsetX
+                && yOtherPiece - possibleGroupOffsetY < yOtherPieceExpected
+                && yOtherPieceExpected < yOtherPiece + possibleGroupOffsetY) {
             isNear = true;
         }
 
