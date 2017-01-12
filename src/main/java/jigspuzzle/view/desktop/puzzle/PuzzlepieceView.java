@@ -291,9 +291,11 @@ public class PuzzlepieceView extends JPanel {
 
         // mirror and move to right
         if (position.equals(ConnectorPosition.RIGHT)) {
-            af.translate(puzzlearea.getPuzzlepieceWidth() / 2, 0);
+            double x = puzzlearea.getPuzzlepieceWidth() / 2.0;
+
+            af.translate(x, 0);
             af.scale(-1, 1);
-            af.translate(-puzzlearea.getPuzzlepieceWidth() / 2, 0);
+            af.translate(-x, 0);
         }
 
         // move to top
@@ -310,9 +312,11 @@ public class PuzzlepieceView extends JPanel {
 
         // mirror and move to buttom
         if (position.equals(ConnectorPosition.BUTTOM)) {
-            af.translate(puzzlearea.getPuzzlepieceHeight() / 2, 0);
+            double x = puzzlearea.getPuzzlepieceHeight() / 2.0;
+
+            af.translate(x, 0);
             af.scale(-1, 1);
-            af.translate(-puzzlearea.getPuzzlepieceHeight() / 2, 0);
+            af.translate(-x, 0);
         }
 
         // consider also out-conections and mirror it outside
@@ -368,8 +372,8 @@ public class PuzzlepieceView extends JPanel {
         int puzzlepieceHeight = puzzlearea.getPuzzlepieceHeight();
 
         // get position of puzzlepiece in the group
-        int xStart = piecegroup.getXPositionOfPieceInGroup(puzzlepiece) * puzzlearea.getPuzzlepieceWidth();
-        int yStart = piecegroup.getYPositionOfPieceInGroup(puzzlepiece) * puzzlearea.getPuzzlepieceHeight();
+        int xStart = piecegroup.getXPositionOfPieceInGroup(puzzlepiece) * puzzlepieceWidth;
+        int yStart = piecegroup.getYPositionOfPieceInGroup(puzzlepiece) * puzzlepieceHeight;
 
         // draw the Connections to other puzzlepiecs
         PuzzlepieceConnection connection;
@@ -419,7 +423,7 @@ public class PuzzlepieceView extends JPanel {
                     case RIGHT:
                         g2.drawImage(conImg,
                                 xStart + puzzlepieceWidth + getConnectionsSizeLeftRight(), yStart + getConnectionsSizeTopButtom(),
-                                xStart + 2 * puzzlepieceWidth + getConnectionsSizeLeftRight(), yStart + puzzlepieceHeight + getConnectionsSizeTopButtom(),
+                                xStart + 2 * puzzlepieceWidth + getConnectionsSizeLeftRight() + 1, yStart + puzzlepieceHeight + getConnectionsSizeTopButtom(),
                                 0, 0,
                                 conImg.getWidth(), conImg.getHeight(),
                                 null);
@@ -435,7 +439,7 @@ public class PuzzlepieceView extends JPanel {
                     case BUTTOM:
                         g2.drawImage(conImg,
                                 xStart + getConnectionsSizeLeftRight(), yStart + puzzlepieceHeight + getConnectionsSizeTopButtom(),
-                                xStart + puzzlepieceWidth + getConnectionsSizeLeftRight(), yStart + 2 * puzzlepieceHeight + getConnectionsSizeTopButtom(),
+                                xStart + puzzlepieceWidth + getConnectionsSizeLeftRight(), yStart + 2 * puzzlepieceHeight + getConnectionsSizeTopButtom() + 1,
                                 0, 0,
                                 conImg.getWidth(), conImg.getHeight(),
                                 null);
