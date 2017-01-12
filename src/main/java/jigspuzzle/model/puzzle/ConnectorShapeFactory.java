@@ -30,10 +30,13 @@ class ConnectorShapeFactory {
         int id = 0;
         Class<ConnectorShape>[] classes = new Class[]{
             NormalSizeShape.class,
+            NormalCurvedShape.class,
+            NormalCurvedShapeMirrored.class,
             FlatShape.class,
             LongShape.class,
             LongCurvedShape.class,
-            NormalCurvedShape.class};
+            LongCurvedShapeMirrored.class
+        };
 
         for (Class<ConnectorShape> shapeClass : classes) {
             try {
