@@ -5,6 +5,7 @@ import java.net.URL;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import jigspuzzle.JigSPuzzleResources;
@@ -54,21 +55,32 @@ public class SoundPlayer implements ISoundPlayer {
      * @throws IOException
      */
     private void playSound(URL soundpath) throws LineUnavailableException, IOException {
+        // check settings
         if (!SettingsController.getInstance().getPlaySounds()) {
             return;
         }
 
-        Clip clip;
-        AudioInputStream inputStream;
+        // play sound
+        AudioInputStream inputStream = null;
 
         try {
-            clip = AudioSystem.getClip();
+            final Clip clip = AudioSystem.getClip();
+            clip.addLineListener((LineEvent event) -> {
+                if (event.getType() == LineEvent.Type.STOP) {
+                    // close after played
+                    clip.close();
+                }
+            });
             inputStream = AudioSystem.getAudioInputStream(soundpath);
             clip.open(inputStream);
             clip.start();
         } catch (UnsupportedAudioFileException ex) {
             System.out.println("Exectued a line that should not be exectuted in:\n"
                     + this.getClass().toString() + "::playSound()");
+        } finally {
+            if (inputStream != null) {
+                inputStream.close();
+            }
         }
     }
 
