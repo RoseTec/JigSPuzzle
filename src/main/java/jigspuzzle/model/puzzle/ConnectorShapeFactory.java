@@ -1,6 +1,8 @@
 package jigspuzzle.model.puzzle;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import jigspuzzle.model.puzzle.shapes.*;
@@ -10,7 +12,7 @@ import jigspuzzle.model.puzzle.shapes.*;
  *
  * @author RoseTec
  */
-class ConnectorShapeFactory {
+public class ConnectorShapeFactory {
 
     private static ConnectorShapeFactory instance;
 
@@ -66,6 +68,15 @@ class ConnectorShapeFactory {
         int i = r.nextInt(connectorShapes.size()) + 1;
 
         return connectorShapes.get(i);
+    }
+
+    /**
+     * Returns all ids that the connector shapes can have.
+     *
+     * @return
+     */
+    public List<Integer> getAllConnectorShapeIds() {
+        return new ArrayList<>(connectorShapes.keySet());
     }
 
     /**

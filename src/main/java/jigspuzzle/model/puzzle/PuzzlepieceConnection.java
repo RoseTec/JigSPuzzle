@@ -84,6 +84,17 @@ public class PuzzlepieceConnection extends AbstractPuzzlesModel {
     }
 
     /**
+     * Converts th puzzlepiece connections. This means: The in-puzzlepiece will
+     * be converted to a out-puzzlepiece and vise-versa.
+     */
+    public void convertPuzzlepieceConnections() {
+        Puzzlepiece oldIn = inPuzzlepiece;
+
+        inPuzzlepiece = outPuzzlepiece;
+        outPuzzlepiece = oldIn;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -214,6 +225,15 @@ public class PuzzlepieceConnection extends AbstractPuzzlesModel {
         tmpElement = doc.createElement("connector-shape");
         shape.saveToFile(doc, tmpElement);
         element.appendChild(tmpElement);
+    }
+
+    /**
+     * Sets the shape to this connector to the one with the given id.
+     *
+     * @param id
+     */
+    public void setShape(int id) {
+        shape = ConnectorShapeFactory.getInstance().getConnectorShapeWithId(id);
     }
 
 }

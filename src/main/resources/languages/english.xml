@@ -82,6 +82,10 @@
 
         <t id="220">Sounds</t>
         <t id="222">Play Sounds</t>
+
+        <t id="240">Shape of the puzzlepiece connections</t>
+        <t id="241">All connections have the same shape.\nThe following shape will be used for the connections:</t>
+        <t id="245">They are choosen randomly from the available shapes.</t>
     </page>
 
     <page id="11" descr="VersionDialog">
