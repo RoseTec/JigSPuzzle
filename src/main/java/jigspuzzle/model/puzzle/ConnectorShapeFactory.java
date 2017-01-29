@@ -86,7 +86,7 @@ public class ConnectorShapeFactory {
      * @param id
      * @return
      */
-    ConnectorShape getConnectorShapeWithId(int id) {
+    public ConnectorShape getConnectorShapeWithId(int id) {
         ConnectorShape shape = connectorShapes.get(id);
 
         if (shape == null) {

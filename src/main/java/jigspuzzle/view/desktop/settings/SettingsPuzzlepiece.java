@@ -10,7 +10,6 @@ import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import jigspuzzle.model.puzzle.ConnectorPosition;
 import jigspuzzle.model.puzzle.Puzzle;
 import jigspuzzle.model.puzzle.Puzzlepiece;

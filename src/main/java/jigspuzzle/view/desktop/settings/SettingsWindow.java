@@ -150,6 +150,11 @@ public class SettingsWindow extends javax.swing.JDialog {
             selectionGroupConnectorShape.addToSelection(newPiece, shapeId);
         }
         selectionGroupConnectorShape.setSelectedValue(allIds.get(0));
+
+        // add listener for changing the selectd value of the selection group for connector shapes
+        selectionGroupConnectorShape.addChangeListener((ChangeEvent e) -> {
+            SettingsController.getInstance().setPuzzlepieceConnectorShapeId(selectionGroupConnectorShape.getSelectedValue());
+        });
     }
 
     /**
@@ -258,6 +263,11 @@ public class SettingsWindow extends javax.swing.JDialog {
 
         // play sounds
         jCheckBox5.setSelected(SettingsController.getInstance().getPlaySounds());
+
+        // shape of the puzzlepiece connectors
+        jRadioButton2.setSelected(SettingsController.getInstance().getUseRandomConnectorShape());
+        jRadioButton1.setSelected(!SettingsController.getInstance().getUseRandomConnectorShape());
+        selectionGroupConnectorShape.setSelectedValue(SettingsController.getInstance().getPuzzlepieceConnectorShapeId());
     }
 
     /**
@@ -489,6 +499,11 @@ public class SettingsWindow extends javax.swing.JDialog {
         jPanel3.add(jPanel12);
 
         jRadioButton1.setText("<html>All connections have the same shape.<br/>The following shape will be used for the connections:</html>");
+        jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton1ActionPerformed(evt);
+            }
+        });
         jPanel15.add(jRadioButton1);
 
         jScrollPaneShapeAppearance.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -496,6 +511,11 @@ public class SettingsWindow extends javax.swing.JDialog {
         jPanel15.add(jScrollPaneShapeAppearance);
 
         jRadioButton2.setText("They are choosen randomly from the available shapes.");
+        jRadioButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton2ActionPerformed(evt);
+            }
+        });
         jPanel15.add(jRadioButton2);
 
         jPanel3.add(jPanel15);
@@ -600,6 +620,14 @@ public class SettingsWindow extends javax.swing.JDialog {
     private void jSlider3StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSlider3StateChanged
         SettingsController.getInstance().setPuzzlepieceSnapDistancePercent(jSlider3.getValue());
     }//GEN-LAST:event_jSlider3StateChanged
+
+    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
+        SettingsController.getInstance().setUseRandomConnectorShape(false);
+    }//GEN-LAST:event_jRadioButton1ActionPerformed
+
+    private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
+        SettingsController.getInstance().setUseRandomConnectorShape(true);
+    }//GEN-LAST:event_jRadioButton2ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;

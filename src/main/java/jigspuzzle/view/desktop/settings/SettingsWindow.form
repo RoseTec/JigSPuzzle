@@ -384,6 +384,9 @@
                       <Properties>
                         <Property name="text" type="java.lang.String" value="&lt;html&gt;All connections have the same shape.&lt;br/&gt;The following shape will be used for the connections:&lt;/html&gt;"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jRadioButton1ActionPerformed"/>
+                      </Events>
                       <AuxValues>
                         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JRadioButton()"/>
                       </AuxValues>
@@ -400,6 +403,9 @@
                       <Properties>
                         <Property name="text" type="java.lang.String" value="They are choosen randomly from the available shapes."/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jRadioButton2ActionPerformed"/>
+                      </Events>
                       <AuxValues>
                         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JRadioButton()"/>
                       </AuxValues>

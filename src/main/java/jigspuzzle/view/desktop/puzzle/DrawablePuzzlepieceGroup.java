@@ -12,8 +12,11 @@ import java.awt.geom.Area;
 import java.awt.geom.GeneralPath;
 import java.awt.image.BufferedImage;
 import java.util.Observable;
+import java.util.Observer;
 import javax.swing.JPanel;
+import jigspuzzle.controller.SettingsController;
 import jigspuzzle.model.puzzle.ConnectorPosition;
+import jigspuzzle.model.puzzle.ConnectorShapeFactory;
 import jigspuzzle.model.puzzle.Puzzlepiece;
 import jigspuzzle.model.puzzle.PuzzlepieceConnection;
 import jigspuzzle.model.puzzle.PuzzlepieceGroup;
@@ -53,7 +56,11 @@ public abstract class DrawablePuzzlepieceGroup extends JPanel {
                 this.updateViewSize();
             }
         });
-        updateViewLocation();
+
+        // repaint this puzzlepiece when the settings for a puzzlepiece have changed
+        SettingsController.getInstance().addPuzzleSettingsObserver((Observable o, Object arg) -> {
+            this.repaint();
+        });
     }
 
     /**
@@ -214,7 +221,13 @@ public abstract class DrawablePuzzlepieceGroup extends JPanel {
     private GeneralPath getShapeOnConnectorPosition(ConnectorPosition position, Puzzlepiece puzzlepiece) {
         int shapeSize = 100; // each shape has a size of 100 x 100
 
-        GeneralPath gp = new GeneralPath(puzzlepiece.getConnectorForDirection(position).getShape());
+        Shape shape;
+        if (SettingsController.getInstance().getUseRandomConnectorShape()) {
+            shape = puzzlepiece.getConnectorForDirection(position).getShape();
+        } else {
+            shape = ConnectorShapeFactory.getInstance().getConnectorShapeWithId(SettingsController.getInstance().getPuzzlepieceConnectorShapeId()).getShape();
+        }
+        GeneralPath gp = new GeneralPath(shape);;
         AffineTransform af;
 
         // get position of puzzlepiece in the group
