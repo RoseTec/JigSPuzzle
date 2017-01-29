@@ -131,7 +131,7 @@ public abstract class DrawablePuzzlepieceGroup extends JPanel {
                 PuzzlepieceConnection connection = puzzlepiece.getConnectorForDirection(direction);
 
                 if (connection != null) {
-                    GeneralPath connectorPath = getShapeOnConnectorPosition(direction, puzzlepiece);
+                    GeneralPath connectorPath = getTransformedShapeOnConnectorPosition(direction, puzzlepiece);
 
                     if (puzzlepiece.isOutPieceInDirection(direction)) {
                         area.add(new Area(connectorPath));
@@ -211,23 +211,39 @@ public abstract class DrawablePuzzlepieceGroup extends JPanel {
     protected abstract int getPuzzlepieceWidth();
 
     /**
-     * Gets a new shap out of the shape from the given puzzlepiece, that
+     * Gets the shape of the given puzzlepiece in the given direction.
+     *
+     * Normally this method is implemented by delegating the method on the
+     * puzzlepiece and checking on the settings that are set in the system.
+     * However, it can be overriden to adapt it to special needs.
+     *
+     * @param position
+     * @param puzzlepiece
+     * @return
+     */
+    protected Shape getShapeOnConnectorPosition(ConnectorPosition position, Puzzlepiece puzzlepiece) {
+        Shape shape;
+
+        if (SettingsController.getInstance().getUseRandomConnectorShape()) {
+            shape = puzzlepiece.getConnectorForDirection(position).getShape();
+        } else {
+            shape = ConnectorShapeFactory.getInstance().getConnectorShapeWithId(SettingsController.getInstance().getPuzzlepieceConnectorShapeId()).getShape();
+        }
+        return shape;
+    }
+
+    /**
+     * Gets a new shap out of the shape from the given puzzlepiece, that is
      * transformed in the given position of the puzzlepiece.
      *
      * @param position
      * @param puzzlepiece
      * @return
      */
-    private GeneralPath getShapeOnConnectorPosition(ConnectorPosition position, Puzzlepiece puzzlepiece) {
+    private GeneralPath getTransformedShapeOnConnectorPosition(ConnectorPosition position, Puzzlepiece puzzlepiece) {
         int shapeSize = 100; // each shape has a size of 100 x 100
 
-        Shape shape;
-        if (SettingsController.getInstance().getUseRandomConnectorShape()) {
-            shape = puzzlepiece.getConnectorForDirection(position).getShape();
-        } else {
-            shape = ConnectorShapeFactory.getInstance().getConnectorShapeWithId(SettingsController.getInstance().getPuzzlepieceConnectorShapeId()).getShape();
-        }
-        GeneralPath gp = new GeneralPath(shape);;
+        GeneralPath gp = new GeneralPath(getShapeOnConnectorPosition(position, puzzlepiece));
         AffineTransform af;
 
         // get position of puzzlepiece in the group
@@ -391,7 +407,7 @@ public abstract class DrawablePuzzlepieceGroup extends JPanel {
             }
 
             // update piece
-            gp = getShapeOnConnectorPosition(position, puzzlepiece);
+            gp = getTransformedShapeOnConnectorPosition(position, puzzlepiece);
             if (puzzlepiece.isInPieceInDirection(position)) {
                 // 'delete' connection-space in the in-pieces
                 area.subtract(new Area(gp));

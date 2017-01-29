@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -83,6 +84,7 @@ class SettingsPuzzlepiece extends JPanel implements SelectionGroupSelectable<Int
         for (ConnectorPosition position : ConnectorPosition.values()) {
             puzzlepieceToShow.getConnectorForDirection(position).setShape(ShapeId);
         }
+        puzzlepieceView.forceConnectorShape();
 
         return this;
     }
@@ -193,6 +195,32 @@ class SettingsPuzzlepiece extends JPanel implements SelectionGroupSelectable<Int
 
         public SimpleDrawablePuzzlepiece(PuzzlepieceGroup pieceGroup) {
             super(pieceGroup);
+        }
+
+        /**
+         * Indicated, wheather to force the shape that the puzzlepiece has or
+         * depend on the settings.
+         */
+        private boolean forceConnectorShape = false;
+
+        /**
+         * forces this view to show the connector shape of this puzzlepiece and
+         * don't look at the settings for this
+         */
+        public void forceConnectorShape() {
+            forceConnectorShape = true;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        protected Shape getShapeOnConnectorPosition(ConnectorPosition position, Puzzlepiece puzzlepiece) {
+            if (forceConnectorShape) {
+                return puzzlepiece.getConnectorForDirection(position).getShape();
+            } else {
+                return super.getShapeOnConnectorPosition(position, puzzlepiece);
+            }
         }
 
         /**
