@@ -348,8 +348,11 @@
                   <SubComponents>
                     <Component class="javax.swing.JCheckBox" name="jCheckBox6">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="All connections have the same shape. The following shape will be used for the connections:"/>
+                        <Property name="text" type="java.lang.String" value="&lt;html&gt;All connections have the same shape.&lt;br/&gt;The following shape will be used for the connections:&lt;/html&gt;"/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JCheckBox()"/>
+                      </AuxValues>
                     </Component>
                     <Container class="javax.swing.JScrollPane" name="jScrollPaneShapeAppearance">
                       <Properties>
@@ -363,6 +366,9 @@
                       <Properties>
                         <Property name="text" type="java.lang.String" value="They are choosen randomly from the available shapes."/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JCheckBox()"/>
+                      </AuxValues>
                     </Component>
                   </SubComponents>
                 </Container>

@@ -16,6 +16,7 @@ import jigspuzzle.model.settings.PuzzleSettings;
 import jigspuzzle.view.ImageGetter;
 import jigspuzzle.view.desktop.swing.ErrorMessageDialog;
 import jigspuzzle.view.desktop.swing.JButton;
+import jigspuzzle.view.desktop.swing.JCheckBox;
 import jigspuzzle.view.desktop.swing.JComboBox;
 import jigspuzzle.view.desktop.swing.JTabbedPane;
 
@@ -191,8 +192,8 @@ public class SettingsWindow extends javax.swing.JDialog {
 
         jCheckBox5.setText(SettingsController.getInstance().getLanguageText(10, 222));
 
-        jCheckBox6.setText("<html>" + SettingsController.getInstance().getLanguageText(10, 241) + "</html>");
-        jCheckBox7.setText("<html>" + SettingsController.getInstance().getLanguageText(10, 245) + "</html>");
+        jCheckBox6.setText(SettingsController.getInstance().getLanguageText(10, 241));
+        jCheckBox7.setText(SettingsController.getInstance().getLanguageText(10, 245));
 
         repaint();
     }
@@ -283,9 +284,9 @@ public class SettingsWindow extends javax.swing.JDialog {
         jLabel3 = new ExplainingJLabel();
         jLabel5 = new ExplainingJLabel();
         jPanel15 = new SettingsCategoryPanel(10, 240);
-        jCheckBox6 = new javax.swing.JCheckBox();
+        jCheckBox6 = new JCheckBox();
         jScrollPaneShapeAppearance = new javax.swing.JScrollPane();
-        jCheckBox7 = new javax.swing.JCheckBox();
+        jCheckBox7 = new JCheckBox();
         jPanel12 = new SettingsCategoryPanel(10, 200);
         jLabel6 = new ExplainingJLabel();
         jSlider3 = new javax.swing.JSlider();
@@ -450,7 +451,7 @@ public class SettingsWindow extends javax.swing.JDialog {
 
         jPanel3.add(jPanel11);
 
-        jCheckBox6.setText("All connections have the same shape. The following shape will be used for the connections:");
+        jCheckBox6.setText("<html>All connections have the same shape.<br/>The following shape will be used for the connections:</html>");
         jPanel15.add(jCheckBox6);
 
         jScrollPaneShapeAppearance.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);

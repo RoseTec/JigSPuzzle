@@ -41,6 +41,9 @@ public class ExplainingJLabel extends JLabel {
         init();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setText(String text) {
         super.setText(makeHtmlText(text));
