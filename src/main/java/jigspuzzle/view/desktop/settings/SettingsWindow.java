@@ -5,6 +5,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Observable;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,9 +17,10 @@ import jigspuzzle.model.settings.PuzzleSettings;
 import jigspuzzle.view.ImageGetter;
 import jigspuzzle.view.desktop.swing.ErrorMessageDialog;
 import jigspuzzle.view.desktop.swing.JButton;
-import jigspuzzle.view.desktop.swing.JCheckBox;
 import jigspuzzle.view.desktop.swing.JComboBox;
+import jigspuzzle.view.desktop.swing.JRadioButton;
 import jigspuzzle.view.desktop.swing.JTabbedPane;
+import jigspuzzle.view.util.SelectionGroup;
 
 /**
  * A Window, on which the User can change the settings for the game.
@@ -38,6 +40,11 @@ public class SettingsWindow extends javax.swing.JDialog {
      * snap-distance. This is the tick for the highest value (100).
      */
     private JLabel sliderSnapDistanceBig;
+
+    /**
+     * The selection group for the shape of the puzzlepiece connectors.
+     */
+    private final SelectionGroup<Integer> selectionGroupConnectorShape;
 
     /**
      * Creates new form SettingsWindow
@@ -123,15 +130,26 @@ public class SettingsWindow extends javax.swing.JDialog {
             jPanel8.setBackground(jColorChooser1.getColor());
         });
 
+        // button group for appearance of puzzlepiece connectors
+        buttonGroup1.add(jRadioButton1);
+        buttonGroup1.add(jRadioButton2);
+        jRadioButton2.setSelected(true);
+
         // add puzzlepieces for scrollPane for showing puzzlepiece connectors
         JPanel jScrollPaneShapeAppearancePanel = new JPanel();
+        List<Integer> allIds = ConnectorShapeFactory.getInstance().getAllConnectorShapeIds();
+        selectionGroupConnectorShape = new SelectionGroup<>();
 
         jScrollPaneShapeAppearancePanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
         jScrollPaneShapeAppearance.setViewportView(jScrollPaneShapeAppearancePanel);
 
-        for (int shapeId : ConnectorShapeFactory.getInstance().getAllConnectorShapeIds()) {
-            jScrollPaneShapeAppearancePanel.add(new SettingsPuzzlepiece().withConnectorShape(shapeId));
+        for (int shapeId : allIds) {
+            SettingsPuzzlepiece newPiece = new SettingsPuzzlepiece().withConnectorShape(shapeId);
+
+            jScrollPaneShapeAppearancePanel.add(newPiece);
+            selectionGroupConnectorShape.addToSelection(newPiece, shapeId);
         }
+        selectionGroupConnectorShape.setSelectedValue(allIds.get(0));
     }
 
     /**
@@ -192,8 +210,8 @@ public class SettingsWindow extends javax.swing.JDialog {
 
         jCheckBox5.setText(SettingsController.getInstance().getLanguageText(10, 222));
 
-        jCheckBox6.setText(SettingsController.getInstance().getLanguageText(10, 241));
-        jCheckBox7.setText(SettingsController.getInstance().getLanguageText(10, 245));
+        jRadioButton1.setText(SettingsController.getInstance().getLanguageText(10, 241));
+        jRadioButton2.setText(SettingsController.getInstance().getLanguageText(10, 245));
 
         repaint();
     }
@@ -252,6 +270,7 @@ public class SettingsWindow extends javax.swing.JDialog {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jTabbedPane1 = new JTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel2 = new SettingViewPanel();
@@ -283,13 +302,13 @@ public class SettingsWindow extends javax.swing.JDialog {
         jTextField1 = new javax.swing.JTextField();
         jLabel3 = new ExplainingJLabel();
         jLabel5 = new ExplainingJLabel();
-        jPanel15 = new SettingsCategoryPanel(10, 240);
-        jCheckBox6 = new JCheckBox();
-        jScrollPaneShapeAppearance = new javax.swing.JScrollPane();
-        jCheckBox7 = new JCheckBox();
         jPanel12 = new SettingsCategoryPanel(10, 200);
         jLabel6 = new ExplainingJLabel();
         jSlider3 = new javax.swing.JSlider();
+        jPanel15 = new SettingsCategoryPanel(10, 240);
+        jRadioButton1 = new JRadioButton();
+        jScrollPaneShapeAppearance = new javax.swing.JScrollPane();
+        jRadioButton2 = new JRadioButton();
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new JButton();
         jButton2 = new JButton();
@@ -451,18 +470,6 @@ public class SettingsWindow extends javax.swing.JDialog {
 
         jPanel3.add(jPanel11);
 
-        jCheckBox6.setText("<html>All connections have the same shape.<br/>The following shape will be used for the connections:</html>");
-        jPanel15.add(jCheckBox6);
-
-        jScrollPaneShapeAppearance.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        jScrollPaneShapeAppearance.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-        jPanel15.add(jScrollPaneShapeAppearance);
-
-        jCheckBox7.setText("They are choosen randomly from the available shapes.");
-        jPanel15.add(jCheckBox7);
-
-        jPanel3.add(jPanel15);
-
         jLabel6.setText("The distance that two puzzlepieces must have in order to let the puzzlepieces snap together.");
         jPanel12.add(jLabel6);
 
@@ -480,6 +487,18 @@ public class SettingsWindow extends javax.swing.JDialog {
         jPanel12.add(jSlider3);
 
         jPanel3.add(jPanel12);
+
+        jRadioButton1.setText("<html>All connections have the same shape.<br/>The following shape will be used for the connections:</html>");
+        jPanel15.add(jRadioButton1);
+
+        jScrollPaneShapeAppearance.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        jScrollPaneShapeAppearance.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        jPanel15.add(jScrollPaneShapeAppearance);
+
+        jRadioButton2.setText("They are choosen randomly from the available shapes.");
+        jPanel15.add(jRadioButton2);
+
+        jPanel3.add(jPanel15);
 
         jScrollPane2.setViewportView(jPanel3);
 
@@ -583,6 +602,7 @@ public class SettingsWindow extends javax.swing.JDialog {
     }//GEN-LAST:event_jSlider3StateChanged
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JCheckBox jCheckBox1;
@@ -590,8 +610,6 @@ public class SettingsWindow extends javax.swing.JDialog {
     private javax.swing.JCheckBox jCheckBox3;
     private javax.swing.JCheckBox jCheckBox4;
     private javax.swing.JCheckBox jCheckBox5;
-    private javax.swing.JCheckBox jCheckBox6;
-    private javax.swing.JCheckBox jCheckBox7;
     private javax.swing.JColorChooser jColorChooser1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
@@ -616,6 +634,8 @@ public class SettingsWindow extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JRadioButton jRadioButton1;
+    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPaneShapeAppearance;
