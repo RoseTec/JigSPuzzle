@@ -102,7 +102,7 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
                 if (!isFullscreenActive()) {
                     return;
                 }
-                int borderYBecomeVisible = 10;
+                int borderYBecomeVisible = 5;
                 int borderYBecomeUnvisible = 50;
 
                 if (e.getLocationOnScreen().y > borderYBecomeUnvisible && !((HideableJMenuBar) jMenuBar1).isHidden()) {
@@ -219,7 +219,7 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
             this.setUndecorated(true);
             this.setVisible(true);
         }
-        loadLanguageTexts();
+        loadLanguageTexts(); //text for fullscreen-menuItem changed
     }
 
     /**
