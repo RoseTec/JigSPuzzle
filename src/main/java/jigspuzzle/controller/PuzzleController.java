@@ -80,8 +80,9 @@ public class PuzzleController extends AbstractController {
      * Should <b>not</b> be used exept in tests.
      *
      * @param puzzle
+     * @deprecated only use in tests
      */
-    void setPuzzle(Puzzle puzzle) {
+    public void setPuzzle(Puzzle puzzle) {
         this.puzzle = puzzle;
 
         // show puzzle on view

@@ -12,7 +12,6 @@ import java.awt.geom.Area;
 import java.awt.geom.GeneralPath;
 import java.awt.image.BufferedImage;
 import java.util.Observable;
-import java.util.Observer;
 import javax.swing.JPanel;
 import jigspuzzle.controller.SettingsController;
 import jigspuzzle.model.puzzle.ConnectorPosition;
