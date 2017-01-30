@@ -159,6 +159,7 @@
         <Menu class="javax.swing.JMenu" name="jMenu4">
           <Properties>
             <Property name="text" type="java.lang.String" value="Anicht"/>
+            <Property name="name" type="java.lang.String" value="view" noResource="true"/>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JMenu()"/>
@@ -170,6 +171,7 @@
                   <KeyStroke key="F12"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Fullscreen"/>
+                <Property name="name" type="java.lang.String" value="fullscreen" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem11ActionPerformed"/>

@@ -376,9 +376,11 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
         jMenuBar1.add(jMenu2);
 
         jMenu4.setText("Anicht");
+        jMenu4.setName("view"); // NOI18N
 
         jMenuItem11.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F12, 0));
         jMenuItem11.setText("Fullscreen");
+        jMenuItem11.setName("fullscreen"); // NOI18N
         jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem11ActionPerformed(evt);
