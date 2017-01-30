@@ -219,7 +219,9 @@ public class WindowsSteps {
         int width = gd.getDisplayMode().getWidth();
         int height = gd.getDisplayMode().getHeight();
 
-        throw new PendingException("doesn't work on travis");
+        if (true) {
+            throw new PendingException("doesn't work on travis");
+        }
         if (negation != null) {
             Assertions.assertThat(puzzleWindow.target().getWidth()).isNotEqualTo(width);
             Assertions.assertThat(puzzleWindow.target().getHeight()).isNotEqualTo(height);
