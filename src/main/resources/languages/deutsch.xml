@@ -35,6 +35,10 @@
         <t id="500">Über</t>
         <t id="510">Über JigSPuzzle</t>
         <t id="520">Auf Neue Version Prüfen</t>
+
+        <t id="700">Ansicht</t>
+        <t id="710">Vollbild</t>
+        <t id="711">Vollbild verlassen</t>
     </page>
 
     <page id="5" descr="ErrorMessageDialog">

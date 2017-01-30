@@ -35,6 +35,10 @@
         <t id="500">About</t>
         <t id="510">About JigSPuzzle</t>
         <t id="520">Check New Version</t>
+
+        <t id="700">View</t>
+        <t id="710">Fullsreen</t>
+        <t id="711">leave Fullscreen</t>
     </page>
 
     <page id="5" descr="ErrorMessageDialog">
