@@ -6,6 +6,9 @@
       <Properties>
         <Property name="name" type="java.lang.String" value="main-menu" noResource="true"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new HideableJMenuBar()"/>
+      </AuxValues>
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="jMenu1">
           <Properties>

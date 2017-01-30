@@ -3,6 +3,8 @@ package jigspuzzle.view.desktop.puzzle;
 import java.awt.Dimension;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
@@ -20,6 +22,7 @@ import jigspuzzle.view.IPuzzleWindow;
 import jigspuzzle.view.ImageGetter;
 import jigspuzzle.view.desktop.DesktopPuzzleWindow;
 import jigspuzzle.view.desktop.swing.ErrorMessageDialog;
+import jigspuzzle.view.desktop.swing.HideableJMenuBar;
 import jigspuzzle.view.desktop.swing.JFileChooser;
 import jigspuzzle.view.desktop.swing.JMenu;
 import jigspuzzle.view.desktop.swing.JMenuItem;
@@ -88,6 +91,24 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE && isFullscreenActive()) {
                     triggerFullscreen();
+                }
+            }
+        });
+
+        // show the menu on fullscreen only when the mouse is on top of the screen
+        this.addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                if (!isFullscreenActive()) {
+                    return;
+                }
+                int borderYBecomeVisible = 50;
+                int borderYBecomeUnvisible = 10;
+
+                if (e.getLocationOnScreen().y < borderYBecomeUnvisible) {
+                    ((HideableJMenuBar) jMenuBar1).setHidden(false);
+                } else if (e.getLocationOnScreen().y > borderYBecomeVisible) {
+                    ((HideableJMenuBar) jMenuBar1).setHidden(true);
                 }
             }
         });
@@ -188,8 +209,9 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
             this.dispose();
             this.setExtendedState(JFrame.NORMAL);
             this.setUndecorated(false);
-            this.setVisible(true);
+            ((HideableJMenuBar) jMenuBar1).setHidden(false); //set menu again if it was not visible
             this.setSize(sizeBeforeFullScreen);
+            this.setVisible(true);
         } else {
             sizeBeforeFullScreen = this.getSize();
             this.dispose();
@@ -210,7 +232,7 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenuBar1 = new HideableJMenuBar();
         jMenu1 = new JMenu();
         jMenuItem1 = new JMenuItem();
         jMenuItem2 = new JMenuItem();
