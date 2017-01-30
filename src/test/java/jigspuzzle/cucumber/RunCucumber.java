@@ -22,6 +22,8 @@ public class RunCucumber {
      * The timeout that is used, whn searching in a ui-element for an element to
      * change. Thgis can e.g. be, when is will become visible or change its text
      * because of the user input.
+     *
+     * The timeout is a valu in miliseconds.
      */
-    public static final int TIMEOUT_UI_UPDATED = 10000;
+    public static final int TIMEOUT_UI_UPDATED = 15000;
 }
