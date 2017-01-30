@@ -102,13 +102,13 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
                 if (!isFullscreenActive()) {
                     return;
                 }
-                int borderYBecomeVisible = 50;
-                int borderYBecomeUnvisible = 10;
+                int borderYBecomeVisible = 10;
+                int borderYBecomeUnvisible = 50;
 
-                if (e.getLocationOnScreen().y < borderYBecomeUnvisible) {
-                    ((HideableJMenuBar) jMenuBar1).setHidden(false);
-                } else if (e.getLocationOnScreen().y > borderYBecomeVisible) {
+                if (e.getLocationOnScreen().y > borderYBecomeUnvisible && !((HideableJMenuBar) jMenuBar1).isHidden()) {
                     ((HideableJMenuBar) jMenuBar1).setHidden(true);
+                } else if (e.getLocationOnScreen().y < borderYBecomeVisible && ((HideableJMenuBar) jMenuBar1).isHidden()) {
+                    ((HideableJMenuBar) jMenuBar1).setHidden(false);
                 }
             }
         });

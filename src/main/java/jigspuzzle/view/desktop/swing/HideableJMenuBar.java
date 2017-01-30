@@ -24,6 +24,10 @@ public class HideableJMenuBar extends JMenuBar {
         revalidate();
     }
 
+    public boolean isHidden() {
+        return hidden;
+    }
+
     /**
      * {@inheritDoc}
      */
