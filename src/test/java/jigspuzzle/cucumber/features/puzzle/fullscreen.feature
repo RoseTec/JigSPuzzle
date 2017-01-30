@@ -17,5 +17,5 @@ Feature: Show fullscreen
       Then I should see the menu
       When I trigger fullscreen mode
       Then I should not see the menu
-      When I leave fullscreen mode
+      When I move the mouse to the top of the screen
       And I should see the menu
