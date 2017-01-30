@@ -246,7 +246,7 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
         jMenuItem8 = new JMenuItem();
         jMenuItem7 = new JMenuItem();
         jMenu4 = new JMenu();
-        jMenuItem11 = new javax.swing.JMenuItem();
+        jMenuItem11 = new JMenuItem();
         jMenu3 = new JMenu();
         jMenuItem9 = new JMenuItem();
         jMenuItem10 = new JMenuItem();
