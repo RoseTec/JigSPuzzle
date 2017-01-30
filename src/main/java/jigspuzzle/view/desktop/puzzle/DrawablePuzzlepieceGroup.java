@@ -1,6 +1,7 @@
 package jigspuzzle.view.desktop.puzzle;
 
 import java.awt.BasicStroke;
+import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -54,6 +55,9 @@ public abstract class DrawablePuzzlepieceGroup extends JPanel {
                 updateViewLocation();
                 this.updateViewSize();
             }
+        });
+        EventQueue.invokeLater(() -> {
+            updateViewLocation();
         });
 
         // repaint this puzzlepiece when the settings for a puzzlepiece have changed

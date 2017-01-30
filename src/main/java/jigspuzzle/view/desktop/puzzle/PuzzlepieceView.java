@@ -66,7 +66,11 @@ public class PuzzlepieceView extends DrawablePuzzlepieceGroup {
      */
     @Override
     protected int getPuzzlepieceHeight() {
-        return puzzlearea.getPuzzlepieceHeight();
+        if (puzzlearea == null) {
+            return 0;
+        } else {
+            return puzzlearea.getPuzzlepieceHeight();
+        }
     }
 
     /**
@@ -74,7 +78,11 @@ public class PuzzlepieceView extends DrawablePuzzlepieceGroup {
      */
     @Override
     protected int getPuzzlepieceWidth() {
-        return puzzlearea.getPuzzlepieceWidth();
+        if (puzzlearea == null) {
+            return 0;
+        } else {
+            return puzzlearea.getPuzzlepieceWidth();
+        }
     }
 
     /**
