@@ -152,7 +152,9 @@ public class WindowsSteps {
         JMenu tmp = (JMenu) popup.getInvoker();
         JMenuBar menu = (JMenuBar) tmp.getParent();
 
-        throw new PendingException("doesn't work on travis");
+        if (true) {
+            throw new PendingException("doesn't work on travis");
+        }
         // testing
         if (negation != null) {
             Assertions.assertThat(menu.getHeight()).isEqualTo(0);
