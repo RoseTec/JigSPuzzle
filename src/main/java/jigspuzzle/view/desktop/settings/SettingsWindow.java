@@ -1,6 +1,7 @@
 package jigspuzzle.view.desktop.settings;
 
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
@@ -84,14 +85,19 @@ public class SettingsWindow extends javax.swing.JDialog {
         String[] allLanguages = SettingsController.getInstance().getAvailableLanguages();
         Map<String, Icon> comboboxLanguages = new HashMap<>();
 
-        for (int i = 0; i < allLanguages.length; i++) {
-            String lang = allLanguages[i];
-
+        for (String lang : allLanguages) {
             jComboBox1.addItem(lang);
             comboboxLanguages.put(lang, new ImageIcon(ImageGetter.getInstance().getImageForLanguage(lang, 20)));
         }
         jComboBox1.setRenderer(new IconListRenderer(comboboxLanguages));
         jComboBox1.setSelectedItem(SettingsController.getInstance().getCurrentLanguage());
+
+        // add listerner that updates the language based on the user choise of language
+        jComboBox1.addActionListener((ActionEvent evt) -> {
+            String newLanguage = (String) jComboBox1.getSelectedItem();
+
+            SettingsController.getInstance().setCurrentLanguage(newLanguage);
+        });
 
         // load language texts
         SettingsController.getInstance().addLanguageSettingsObserver((Observable o, Object arg) -> {
@@ -360,11 +366,6 @@ public class SettingsWindow extends javax.swing.JDialog {
         jPanel14.add(jLabel7);
 
         jComboBox1.setName("language-select"); // NOI18N
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
-            }
-        });
         jPanel14.add(jComboBox1);
 
         jPanel13.add(jPanel14);
@@ -616,12 +617,6 @@ public class SettingsWindow extends javax.swing.JDialog {
     private void jCheckBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox3ActionPerformed
         SettingsController.getInstance().setEnlargePuzzleAutomatically(jCheckBox3.isSelected());
     }//GEN-LAST:event_jCheckBox3ActionPerformed
-
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        String newLanguage = (String) jComboBox1.getSelectedItem();
-
-        SettingsController.getInstance().setCurrentLanguage(newLanguage);
-    }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
         SettingsController.getInstance().setShowPuzzlePreview(jCheckBox1.isSelected());
