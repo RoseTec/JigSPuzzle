@@ -35,6 +35,10 @@
         <t id="500">About</t>
         <t id="510">About JigSPuzzle</t>
         <t id="520">Check New Version</t>
+
+        <t id="700">View</t>
+        <t id="710">Fullsreen</t>
+        <t id="711">leave Fullscreen</t>
     </page>
 
     <page id="5" descr="ErrorMessageDialog">
@@ -82,6 +86,10 @@
 
         <t id="220">Sounds</t>
         <t id="222">Play Sounds</t>
+
+        <t id="240">Shape of the puzzlepiece connections</t>
+        <t id="241">All connections have the same shape.\nThe following shape will be used for the connections:</t>
+        <t id="245">They are choosen randomly from the available shapes.</t>
     </page>
 
     <page id="11" descr="VersionDialog">

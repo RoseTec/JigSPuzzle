@@ -1,11 +1,18 @@
 package jigspuzzle.cucumber.steps;
 
+import cucumber.api.PendingException;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.*;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JPopupMenu;
 import jigspuzzle.JigSPuzzle;
+import org.assertj.core.api.Assertions;
 import org.assertj.swing.core.BasicRobot;
 import org.assertj.swing.core.GenericTypeMatcher;
 import org.assertj.swing.core.Robot;
@@ -130,7 +137,32 @@ public class WindowsSteps {
     public void resize_puzzle_window_to(int width, int height) {
         puzzleWindow.resizeTo(new Dimension(width + 30, height + 90));
     }
+
+    @When("^I move the mouse to the top of the screen$")
+    public void move_mouse_screen_top() {
+        throw new PendingException("implement");
+    }
     // -- size of a window end
+
+    // Menu Bar
+    @When("^I should (not )?see the menu$")
+    public void resize_puzzle_window_to(String negation) {
+        // get the menu bar
+        JPopupMenu popup = (JPopupMenu) puzzleWindow.menuItem("puzzle-create").target().getParent();
+        JMenu tmp = (JMenu) popup.getInvoker();
+        JMenuBar menu = (JMenuBar) tmp.getParent();
+
+        if (true) {
+            throw new PendingException("doesn't work on travis");
+        }
+        // testing
+        if (negation != null) {
+            Assertions.assertThat(menu.getHeight()).isEqualTo(0);
+        } else {
+            Assertions.assertThat(menu.getHeight()).isGreaterThan(10);
+        }
+    }
+    // -- Menu Bar end
 
     // Settings window: appearance
     @Given("^(?:that )?I am on the appearance-settings window$")
@@ -169,6 +201,36 @@ public class WindowsSteps {
         settingsWindow.tabbedPane("main-tabbed-pane").requireSelectedTab(Index.atIndex(1));
     }
     // -- Settings window: puzzle end
+
+    // Fullscreen
+    @When("^I trigger fullscreen mode")
+    public void fullscreen_trigger() {
+        puzzleWindow.menuItem("fullscreen").click();
+    }
+
+    @When("^I leave fullscreen mode")
+    public void fullscreen_leave() {
+        fullscreen_trigger();
+    }
+
+    @Then("^I should (not )?see the puzzlearea in fullsceen")
+    public void see_fullscreen(String negation) {
+        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        int width = gd.getDisplayMode().getWidth();
+        int height = gd.getDisplayMode().getHeight();
+
+        if (true) {
+            throw new PendingException("doesn't work on travis");
+        }
+        if (negation != null) {
+            Assertions.assertThat(puzzleWindow.target().getWidth()).isNotEqualTo(width);
+            Assertions.assertThat(puzzleWindow.target().getHeight()).isNotEqualTo(height);
+        } else {
+            Assertions.assertThat(puzzleWindow.target().getWidth()).isEqualTo(width);
+            Assertions.assertThat(puzzleWindow.target().getHeight()).isEqualTo(height);
+        }
+    }
+    // -- Fullscreen end
 
     // Version window
     @When("^I check for a newer version$")

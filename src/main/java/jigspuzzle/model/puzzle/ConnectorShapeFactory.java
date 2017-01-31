@@ -1,6 +1,8 @@
 package jigspuzzle.model.puzzle;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import jigspuzzle.model.puzzle.shapes.*;
@@ -10,7 +12,7 @@ import jigspuzzle.model.puzzle.shapes.*;
  *
  * @author RoseTec
  */
-class ConnectorShapeFactory {
+public class ConnectorShapeFactory {
 
     private static ConnectorShapeFactory instance;
 
@@ -69,13 +71,22 @@ class ConnectorShapeFactory {
     }
 
     /**
+     * Returns all ids that the connector shapes can have.
+     *
+     * @return
+     */
+    public List<Integer> getAllConnectorShapeIds() {
+        return new ArrayList<>(connectorShapes.keySet());
+    }
+
+    /**
      * Returns the shap that has the given ID. If the ID does not exist, a
      * random shape will be returned.
      *
      * @param id
      * @return
      */
-    ConnectorShape getConnectorShapeWithId(int id) {
+    public ConnectorShape getConnectorShapeWithId(int id) {
         ConnectorShape shape = connectorShapes.get(id);
 
         if (shape == null) {

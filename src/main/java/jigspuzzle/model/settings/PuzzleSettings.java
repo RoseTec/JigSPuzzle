@@ -3,6 +3,7 @@ package jigspuzzle.model.settings;
 import java.io.IOException;
 import java.util.Observable;
 import jigspuzzle.model.Savable;
+import jigspuzzle.model.puzzle.ConnectorShapeFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -16,6 +17,12 @@ import org.w3c.dom.NodeList;
 public class PuzzleSettings extends Observable implements Savable {
 
     /**
+     * The id of the shape for the puzzlepiece connectors. This value is only
+     * used, if <code>useRandomConnectorShape == false</code>.
+     */
+    private int puzzlepieceConnectorShapeId = ConnectorShapeFactory.getInstance().getAllConnectorShapeIds().get(0);
+
+    /**
      * The number of puzzlepieces that a new puzzle should have.
      */
     private int puzzlepieceNumber = 100;
@@ -26,6 +33,37 @@ public class PuzzleSettings extends Observable implements Savable {
      * a group.
      */
     private int snapDistancePercent = 20;
+
+    /**
+     * Indicates, wheather random connector shapes should be used for the
+     * puzzlepiece connectors. If no random shapes are used, the value from
+     * <code>puzzlepieceConnectorShapeId</code> is used as shape id.
+     */
+    private boolean useRandomConnectorShape = true;
+
+    /**
+     * The id of the shape for the puzzlepiece connectors. This value is only
+     * used, if <code>getUseRandomConnectorShape() == false</code>.
+     *
+     * @return
+     * @see #getUseRandomConnectorShape()
+     */
+    public int getPuzzlepieceConnectorShapeId() {
+        return puzzlepieceConnectorShapeId;
+    }
+
+    /**
+     * The id of the shape for the puzzlepiece connectors. This value is only
+     * used, if <code>getUseRandomConnectorShape() == false</code>.
+     *
+     * @param puzzlepieceConnectorShapeId
+     * @see #getUseRandomConnectorShape()
+     */
+    public void setPuzzlepieceConnectorShapeId(int puzzlepieceConnectorShapeId) {
+        this.puzzlepieceConnectorShapeId = puzzlepieceConnectorShapeId;
+        setChanged();
+        notifyObservers();
+    }
 
     /**
      * Gets the numbr of puzzlepieces that a new puzzle should have.
@@ -70,6 +108,32 @@ public class PuzzleSettings extends Observable implements Savable {
     }
 
     /**
+     * Indicates, wheather random connector shapes should be used for the
+     * puzzlepiece connectors. If no random shapes are used, the value from
+     * <code>getPuzzlepieceConnectorShapeId()</code> is used as shape id.
+     *
+     * @return
+     * @see #getPuzzlepieceConnectorShapeId()
+     */
+    public boolean getUseRandomConnectorShape() {
+        return useRandomConnectorShape;
+    }
+
+    /**
+     * Indicates, wheather random connector shapes should be used for the
+     * puzzlepiece connectors. If no random shapes are used, the value from
+     * <code>getPuzzlepieceConnectorShapeId()</code> is used as shape id.
+     *
+     * @param useRandomConnectorShape
+     * @see #getPuzzlepieceConnectorShapeId()
+     */
+    public void setUseRandomConnectorShape(boolean useRandomConnectorShape) {
+        this.useRandomConnectorShape = useRandomConnectorShape;
+        setChanged();
+        notifyObservers();
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -98,6 +162,15 @@ public class PuzzleSettings extends Observable implements Savable {
                     } catch (NumberFormatException ex) {
                     }
                     break;
+                case "use-random-connector-shape":
+                    useRandomConnectorShape = Boolean.parseBoolean(node.getTextContent());
+                    break;
+                case "puzzlepiece-connector-shape-id":
+                    try {
+                        puzzlepieceConnectorShapeId = Integer.parseInt(node.getTextContent());
+                    } catch (NumberFormatException ex) {
+                    }
+                    break;
             }
         }
 
@@ -121,6 +194,14 @@ public class PuzzleSettings extends Observable implements Savable {
 
         tmpElement = doc.createElement("snap-distance-percent");
         tmpElement.setTextContent(Integer.toString(snapDistancePercent));
+        settingsElement.appendChild(tmpElement);
+
+        tmpElement = doc.createElement("use-random-connector-shape");
+        tmpElement.setTextContent(Boolean.toString(useRandomConnectorShape));
+        settingsElement.appendChild(tmpElement);
+
+        tmpElement = doc.createElement("puzzlepiece-connector-shape-id");
+        tmpElement.setTextContent(Integer.toString(puzzlepieceConnectorShapeId));
         settingsElement.appendChild(tmpElement);
     }
 

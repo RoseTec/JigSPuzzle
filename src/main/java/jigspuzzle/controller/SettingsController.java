@@ -265,6 +265,21 @@ public class SettingsController extends AbstractController {
     }
 
     /**
+     * @return @see PuzzleSettings#getPuzzlepieceConnectorShapeId()
+     */
+    public int getPuzzlepieceConnectorShapeId() {
+        return puzzleSettings.getPuzzlepieceConnectorShapeId();
+    }
+
+    /**
+     * @param puzzlepieceConnectorShapeId
+     * @see PuzzleSettings#setPuzzlepieceConnectorShapeId(int)
+     */
+    public void setPuzzlepieceConnectorShapeId(int puzzlepieceConnectorShapeId) {
+        puzzleSettings.setPuzzlepieceConnectorShapeId(puzzlepieceConnectorShapeId);
+    }
+
+    /**
      * Gets the numbr of puzzlepieces that a new puzzle should have.
      *
      * @return
@@ -404,6 +419,21 @@ public class SettingsController extends AbstractController {
      */
     public double getUsedSizeOfPuzzleare() {
         return puzzleareaSettings.getUsedSizeOfPuzzleare();
+    }
+
+    /**
+     * @return @see PuzzleSettings#getUseRandomConnectorShape()
+     */
+    public boolean getUseRandomConnectorShape() {
+        return puzzleSettings.getUseRandomConnectorShape();
+    }
+
+    /**
+     * @param useRandomConnectorShape
+     * @see PuzzleSettings#setUseRandomConnectorShape(boolean)
+     */
+    public void setUseRandomConnectorShape(boolean useRandomConnectorShape) {
+        puzzleSettings.setUseRandomConnectorShape(useRandomConnectorShape);
     }
 
     /**
