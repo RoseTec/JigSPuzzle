@@ -69,10 +69,7 @@ public class LanguageSettings extends Observable implements Savable {
 
             switch (node.getNodeName()) {
                 case "current-language":
-                    try {
-                        setCurrentLanguage(node.getTextContent());
-                    } catch (NumberFormatException ex) {
-                    }
+                    setCurrentLanguage(node.getTextContent());
             }
         }
 
