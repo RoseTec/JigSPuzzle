@@ -4,9 +4,13 @@ import java.awt.FlowLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
@@ -16,6 +20,7 @@ import jigspuzzle.model.puzzle.ConnectorShapeFactory;
 import jigspuzzle.model.settings.PuzzleSettings;
 import jigspuzzle.view.ImageGetter;
 import jigspuzzle.view.desktop.swing.ErrorMessageDialog;
+import jigspuzzle.view.desktop.swing.IconListRenderer;
 import jigspuzzle.view.desktop.swing.JButton;
 import jigspuzzle.view.desktop.swing.JComboBox;
 import jigspuzzle.view.desktop.swing.JRadioButton;
@@ -76,7 +81,16 @@ public class SettingsWindow extends javax.swing.JDialog {
         jSlider3.setLabelTable(tableLockSize);
 
         // make the available languages choosable
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(SettingsController.getInstance().getAvailableLanguages()));
+        String[] allLanguages = SettingsController.getInstance().getAvailableLanguages();
+        Map<String, Icon> comboboxLanguages = new HashMap<>();
+
+        for (int i = 0; i < allLanguages.length; i++) {
+            String lang = allLanguages[i];
+
+            jComboBox1.addItem(lang);
+            comboboxLanguages.put(lang, new ImageIcon(ImageGetter.getInstance().getImageForLanguage(lang, 20)));
+        }
+        jComboBox1.setRenderer(new IconListRenderer(comboboxLanguages));
         jComboBox1.setSelectedItem(SettingsController.getInstance().getCurrentLanguage());
 
         // load language texts

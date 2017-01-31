@@ -280,6 +280,16 @@ public class LanguageSettings extends Observable implements Savable {
         }
     }
 
+    /**
+     * This class represents a language, that can be used in this program. It
+     * consists of several texts, tht can be usen as texts in the ui.
+     *
+     * A language is given by the name. The same name is used as the
+     * <code>tag</code> in cass <code>Locale</code>.
+     *
+     * @author RoseTec
+     * @see Locale#forLanguageTag(java.lang.String)
+     */
     private class Language {
 
         /**
