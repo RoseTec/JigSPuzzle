@@ -1,6 +1,7 @@
 package jigspuzzle.view.desktop.puzzle;
 
 import java.awt.BasicStroke;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -188,6 +189,13 @@ public abstract class DrawablePuzzlepieceGroup extends JPanel {
     public int getNumberOfContainedPuzzlepieceGroups() {
         return piecegroup.getPuzzlepieces().size();
     }
+
+    /**
+     * Gets the size of the puzzlearea in that this puzzlepiece is included.
+     *
+     * @return
+     */
+    protected abstract Dimension getPuzzleareaSize();
 
     /**
      * Gets the start of the puzzlearea to the given point. The start
@@ -402,6 +410,14 @@ public abstract class DrawablePuzzlepieceGroup extends JPanel {
         // get position of puzzlepiece in the group
         int xStart = piecegroup.getXPositionOfPieceInGroup(puzzlepiece) * puzzlepieceWidth;
         int yStart = piecegroup.getYPositionOfPieceInGroup(puzzlepiece) * puzzlepieceHeight;
+
+        // don't draw th epiece if it is outside of the puzzlearea
+        if (xStart < -puzzlepieceWidth || yStart < -puzzlepieceHeight) {
+            return;
+        }
+        if (xStart > getPuzzleareaSize().width + puzzlepieceWidth || yStart > getPuzzleareaSize().height + puzzlepieceHeight) {
+            return;
+        }
 
         // draw the Connections to other puzzlepiecs
         PuzzlepieceConnection connection;

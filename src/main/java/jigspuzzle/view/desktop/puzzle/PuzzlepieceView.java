@@ -1,5 +1,6 @@
 package jigspuzzle.view.desktop.puzzle;
 
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -60,6 +61,14 @@ public class PuzzlepieceView extends DrawablePuzzlepieceGroup {
 
         // adapt size of this panel to the puzzlepieces inside it
         this.updateViewSize();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Dimension getPuzzleareaSize() {
+        return puzzlearea.getSize();
     }
 
     /**

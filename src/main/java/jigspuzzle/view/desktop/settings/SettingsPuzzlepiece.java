@@ -228,6 +228,14 @@ class SettingsPuzzlepiece extends JPanel implements SelectionGroupSelectable<Int
          * {@inheritDoc}
          */
         @Override
+        protected Dimension getPuzzleareaSize() {
+            return SettingsPuzzlepiece.this.getSize();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         protected Point getPuzzleareaStart() {
             return new Point(0, 0);
         }

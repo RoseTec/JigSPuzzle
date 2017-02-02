@@ -207,13 +207,16 @@ public class DesktopPuzzleWindow implements IPuzzleWindow {
      * @return
      */
     private Rectangle[] getMultiMonitorRectangles() {
-        List<GraphicsDevice> allMonitors = SettingsController.getInstance().getMonitorsForFullscreen();
-        Rectangle[] ret = new Rectangle[allMonitors.size()];
+        if (fullscreenPuzzleWindows == null) {
+            return null;
+        }
 
-        for (int i = 0; i < allMonitors.size(); i++) {
-            GraphicsDevice gd = allMonitors.get(i);
+        Rectangle[] ret = new Rectangle[fullscreenPuzzleWindows.length];
 
-            ret[i] = gd.getDefaultConfiguration().getBounds();
+        for (int i = 0; i < fullscreenPuzzleWindows.length; i++) {
+            DesktopPuzzleMainWindow monitor = fullscreenPuzzleWindows[i];
+
+            ret[i] = monitor.getBounds();
         }
         return ret;
     }
