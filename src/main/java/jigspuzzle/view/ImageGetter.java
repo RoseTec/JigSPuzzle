@@ -66,6 +66,15 @@ public class ImageGetter {
         return img.getScaledInstance(width, height, Image.SCALE_DEFAULT);
     }
 
+    /**
+     * Gets an image that shows a monitor.
+     *
+     * @return
+     */
+    public Image getMonitorImage() {
+        return getImage("monitor.png");
+    }
+
     private Image getImage(String imageName) {
         URL url = JigSPuzzleResources.getResource("/images/" + imageName);
 

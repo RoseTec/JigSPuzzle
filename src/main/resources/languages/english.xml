@@ -90,6 +90,10 @@
         <t id="240">Shape of the puzzlepiece connections</t>
         <t id="241">All connections have the same shape.\nThe following shape will be used for the connections:</t>
         <t id="245">They are choosen randomly from the available shapes.</t>
+
+        <t id="260">Fullscreen</t>
+        <t id="261">Fullscreen will spread only over the following screens:</t>
+        <t id="265">Changes here are visible when restarting fullscreen.</t>
     </page>
 
     <page id="11" descr="VersionDialog">

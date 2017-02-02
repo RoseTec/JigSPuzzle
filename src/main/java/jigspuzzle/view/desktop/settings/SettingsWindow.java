@@ -1,6 +1,7 @@
 package jigspuzzle.view.desktop.settings;
 
 import java.awt.FlowLayout;
+import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -22,6 +23,7 @@ import jigspuzzle.model.settings.PuzzleSettings;
 import jigspuzzle.view.ImageGetter;
 import jigspuzzle.view.desktop.swing.ErrorMessageDialog;
 import jigspuzzle.view.desktop.swing.IconListRenderer;
+import jigspuzzle.view.desktop.swing.ImageJPanel;
 import jigspuzzle.view.desktop.swing.JButton;
 import jigspuzzle.view.desktop.swing.JComboBox;
 import jigspuzzle.view.desktop.swing.JRadioButton;
@@ -51,6 +53,13 @@ public class SettingsWindow extends javax.swing.JDialog {
      * The selection group for the shape of the puzzlepiece connectors.
      */
     private final SelectionGroup<Integer> selectionGroupConnectorShape;
+
+    /**
+     * The panel, that is used as viewport in the scoll pane for selection
+     * monitors for fullscreen mode. Available monitors are added to thi panel
+     * instead of the scroll pane directly.
+     */
+    JPanel jScrollPaneFullscreenMonitorsPanel;
 
     /**
      * Creates new form SettingsWindow
@@ -175,6 +184,12 @@ public class SettingsWindow extends javax.swing.JDialog {
         selectionGroupConnectorShape.addChangeListener((ChangeEvent e) -> {
             SettingsController.getInstance().setPuzzlepieceConnectorShapeId(selectionGroupConnectorShape.getSelectedValue());
         });
+
+        // adjust scroll panel for fullscreen selection
+        jScrollPaneFullscreenMonitorsPanel = new JPanel();
+
+        jScrollPaneFullscreenMonitorsPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 0));
+        jScrollPaneFullscreenMonitors.setViewportView(jScrollPaneFullscreenMonitorsPanel);
     }
 
     /**
@@ -184,7 +199,7 @@ public class SettingsWindow extends javax.swing.JDialog {
      * of the UI.
      */
     public void showUiSettings() {
-        loadSettings();
+        beforeBeeingVisible();
         jTabbedPane1.setSelectedIndex(0);
         this.setVisible(true);
     }
@@ -196,9 +211,33 @@ public class SettingsWindow extends javax.swing.JDialog {
      * of the puzzles.
      */
     public void showPuzzleSettings() {
-        loadSettings();
+        beforeBeeingVisible();
         jTabbedPane1.setSelectedIndex(1);
         this.setVisible(true);
+    }
+
+    /**
+     * This method is called before this window is beeing visible.
+     */
+    private void beforeBeeingVisible() {
+        // renew information about available monitors for fullsceen
+        int numberOfMonitorsAvalable = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices().length;
+
+        while (numberOfMonitorsAvalable != jScrollPaneFullscreenMonitorsPanel.getComponentCount()) {
+            if (numberOfMonitorsAvalable < jScrollPaneFullscreenMonitorsPanel.getComponentCount()) {
+                jScrollPaneFullscreenMonitorsPanel.remove(jScrollPaneFullscreenMonitorsPanel.getComponentCount() - 1);
+            } else if (numberOfMonitorsAvalable > jScrollPaneFullscreenMonitorsPanel.getComponentCount()) {
+                ImageJPanel newPanel = new ImageJPanel(ImageGetter.getInstance().getMonitorImage());
+                int marginTopButtom = 5;
+                int marginLeftRight = 5;
+
+                newPanel.setMargin(marginTopButtom, marginTopButtom, marginLeftRight, marginLeftRight);
+                jScrollPaneFullscreenMonitorsPanel.add(newPanel);
+            }
+        }
+
+        // load settings
+        loadSettings();
     }
 
     /**
@@ -237,6 +276,9 @@ public class SettingsWindow extends javax.swing.JDialog {
 
         jRadioButton1.setText(SettingsController.getInstance().getLanguageText(10, 241));
         jRadioButton2.setText(SettingsController.getInstance().getLanguageText(10, 245));
+
+        jLabel8.setText(SettingsController.getInstance().getLanguageText(10, 261));
+        jLabel9.setText(SettingsController.getInstance().getLanguageText(10, 265));
 
         repaint();
     }
@@ -317,6 +359,10 @@ public class SettingsWindow extends javax.swing.JDialog {
         jCheckBox5 = new javax.swing.JCheckBox();
         jPanel5 = new SettingsCategoryPanel(10, 140);
         jCheckBox1 = new javax.swing.JCheckBox();
+        jPanel16 = new SettingsCategoryPanel(10, 260);
+        jLabel8 = new javax.swing.JLabel();
+        jScrollPaneFullscreenMonitors = new javax.swing.JScrollPane();
+        jLabel9 = new ExplainingJLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jPanel3 = new SettingViewPanel();
         jPanel6 = new SettingsCategoryPanel(10, 160);
@@ -415,6 +461,15 @@ public class SettingsWindow extends javax.swing.JDialog {
         jPanel5.add(jCheckBox1);
 
         jPanel2.add(jPanel5);
+
+        jLabel8.setText("jLabel8");
+        jPanel16.add(jLabel8);
+        jPanel16.add(jScrollPaneFullscreenMonitors);
+
+        jLabel9.setText("jLabel9");
+        jPanel16.add(jLabel9);
+
+        jPanel2.add(jPanel16);
 
         jScrollPane1.setViewportView(jPanel2);
 
@@ -656,6 +711,8 @@ public class SettingsWindow extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -663,6 +720,7 @@ public class SettingsWindow extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
+    private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -675,6 +733,7 @@ public class SettingsWindow extends javax.swing.JDialog {
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPaneFullscreenMonitors;
     private javax.swing.JScrollPane jScrollPaneShapeAppearance;
     private javax.swing.JSlider jSlider1;
     private javax.swing.JSlider jSlider2;

@@ -90,6 +90,10 @@
         <t id="240">Form der Puzzleteil-Verbindungen</t>
         <t id="241">Alle Verbindungen sehen gleich aus.\nEs wird die folgende Form der Verbindungen verwendet:</t>
         <t id="245">Sie werden zufällig aus den vorhandenen Formen gewählt.</t>
+
+        <t id="260">Vollbild</t>
+        <t id="261">Der Vollbild-Modus erstreckt sich ausschließlich über die folgenden Monitore:</t>
+        <t id="265">Eine Änderung hier wird beim Neustarten des Vollbild-Modus sichtbar.</t>
     </page>
 
     <page id="11" descr="VersionDialog">
