@@ -2,8 +2,13 @@ package jigspuzzle.controller;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import javax.xml.parsers.DocumentBuilder;
@@ -226,6 +231,15 @@ public class SettingsController extends AbstractController {
      */
     public String getLanguageText(int pageId, int textId) {
         return languageSettings.getText(pageId, textId);
+    }
+
+    // TODO: add real JavaDoc
+    public List<GraphicsDevice> getMonitorsForFullscreen() {
+        // TODO: return correct values from model
+        List<GraphicsDevice> ret = new ArrayList<>(Arrays.asList(GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()));
+
+//        ret.remove(2);
+        return ret;
     }
 
     /**

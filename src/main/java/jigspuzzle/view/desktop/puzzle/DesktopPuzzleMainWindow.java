@@ -1,7 +1,7 @@
 package jigspuzzle.view.desktop.puzzle;
 
 import java.awt.Dimension;
-import java.awt.LayoutManager;
+import java.awt.Point;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.Observable;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import jigspuzzle.JigSPuzzle;
 import jigspuzzle.controller.PuzzleController;
@@ -21,7 +20,6 @@ import jigspuzzle.model.puzzle.PuzzlepieceGroup;
 import jigspuzzle.model.settings.PuzzleareaSettings;
 import jigspuzzle.view.IPuzzleWindow;
 import jigspuzzle.view.ImageGetter;
-import jigspuzzle.view.desktop.DesktopPuzzleWindow;
 import jigspuzzle.view.desktop.swing.ErrorMessageDialog;
 import jigspuzzle.view.desktop.swing.HideableJMenuBar;
 import jigspuzzle.view.desktop.swing.JFileChooser;
@@ -34,16 +32,6 @@ import jigspuzzle.view.desktop.swing.ThumbnailView;
  * @author RoseTec
  */
 public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
-
-    /**
-     * The size of this frame before fullscreen was triggered.
-     */
-    private Dimension sizeBeforeFullScreen;
-
-    /**
-     * The layout manager of the first panel before fullscreen was triggered.
-     */
-    private LayoutManager layoutBeforeFullscreen;
 
     /**
      * the area, where the user can play with puzzlepieces
@@ -77,6 +65,7 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
         puzzlearea = new Puzzlearea();
 
         jPanel1.add(puzzlearea);
+        setPuzzleareaStart(new Point(0, 0));
 
         // load language texts
         SettingsController.getInstance().addLanguageSettingsObserver((Observable o, Object arg) -> {
@@ -95,8 +84,8 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
         this.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ESCAPE && isFullscreenActive()) {
-                    triggerFullscreen();
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE && desktopPuzzleWindow.isFullscreenActive()) {
+                    desktopPuzzleWindow.triggerFullscreen();
                 }
             }
         });
@@ -105,7 +94,7 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
         this.addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
-                if (!isFullscreenActive()) {
+                if (!desktopPuzzleWindow.isFullscreenActive()) {
                     return;
                 }
                 int borderYBecomeVisible = 5;
@@ -133,6 +122,20 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
     }
 
     /**
+     * @see Puzzlearea#disableNotDragPuzzlepiecesOverEdges()
+     */
+    void disableNotDragPuzzlepiecesOverEdges() {
+        puzzlearea.disableNotDragPuzzlepiecesOverEdges();
+    }
+
+    /**
+     * @see Puzzlearea#setPuzzleareaStart(java.awt.Point)
+     */
+    void setPuzzleareaStart(Point p) {
+        puzzlearea.setPuzzleareaStart(p);
+    }
+
+    /**
      * @see IPuzzleWindow#getPuzzlepieceHeight()
      */
     public int getPuzzlepieceHeight() {
@@ -144,15 +147,6 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
      */
     public int getPuzzlepieceWidth() {
         return puzzlearea.getPuzzlepieceWidth();
-    }
-
-    /**
-     * Checks if the fullsceen is active.
-     *
-     * @return
-     */
-    protected boolean isFullscreenActive() {
-        return this.isUndecorated();
     }
 
     /**
@@ -202,7 +196,7 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
         jMenuItem10.setText(SettingsController.getInstance().getLanguageText(1, 520));
 
         jMenu4.setText(SettingsController.getInstance().getLanguageText(1, 700));
-        textId = isFullscreenActive() ? 711 : 710;
+        textId = desktopPuzzleWindow.isFullscreenActive() ? 711 : 710;
         jMenuItem11.setText(SettingsController.getInstance().getLanguageText(1, textId));
 
         // also set the default locale of the swing components
@@ -211,33 +205,13 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
     }
 
     /**
-     * Triggers this view to be on fullscreen.
-     *
-     * If the view is allready on fullscreen, the fullscreen is exited.
+     * Will be call, when the fullscreen is triggered.
      */
-    private void triggerFullscreen() {
-        if (isFullscreenActive()) {
-            this.dispose();
-            this.setExtendedState(JFrame.NORMAL);
-            this.setUndecorated(false);
+    void fullscreenTriggered() {
+        if (desktopPuzzleWindow.isFullscreenActive()) {
+            ((HideableJMenuBar) jMenuBar1).setHidden(true);
 
-            ((HideableJMenuBar) jMenuBar1).setHidden(false); //set menu again if it was not visible
-            this.setSize(sizeBeforeFullScreen);
-            jPanel1.setLayout(layoutBeforeFullscreen);
-
-            this.setVisible(true);
-        } else {
-            sizeBeforeFullScreen = this.getSize();
-            this.dispose();
-            this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            this.setUndecorated(true);
-
-            // todo: make a layoutmanager out of this
-            layoutBeforeFullscreen = jPanel1.getLayout();
             jPanel1.setLayout(null);
-
-            this.setVisible(true);
-            jPanel1.setSize(getSize());
             puzzlearea.setSize(getSize());
         }
         loadLanguageTexts(); //text for fullscreen-menuItem changed
@@ -531,7 +505,7 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
-        triggerFullscreen();
+        desktopPuzzleWindow.triggerFullscreen();
     }//GEN-LAST:event_jMenuItem11ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

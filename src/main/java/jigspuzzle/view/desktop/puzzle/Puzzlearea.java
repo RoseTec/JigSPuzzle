@@ -1,6 +1,8 @@
 package jigspuzzle.view.desktop.puzzle;
 
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Point;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DnDConstants;
@@ -28,9 +30,21 @@ import jigspuzzle.model.settings.PuzzleareaSettings;
 public class Puzzlearea extends JLayeredPane {
 
     /**
+     * @see #disableNotDragPuzzlepiecesOverEdges()
+     */
+    private boolean isDraggingPuzzlepiecesOverEdgesDisabled = false;
+
+    /**
      * The current puzzle that the user tries to solve.
      */
     private Puzzle puzzle;
+
+    /**
+     * The point where the puzzlearea of this window starts for the puzzle.
+     *
+     * @see #setPuzzleareaStart(java.awt.Point)
+     */
+    private Point puzzleareStart;
 
     private PuzzlePreview preview;
 
@@ -136,6 +150,22 @@ public class Puzzlearea extends JLayeredPane {
     }
 
     /**
+     * Disables the function that it is not possible to drag a puzzlepiece out
+     * of this window. This is done in fullscreen mode, when there are several
+     * windows.
+     */
+    void disableNotDragPuzzlepiecesOverEdges() {
+        isDraggingPuzzlepiecesOverEdgesDisabled = true;
+    }
+
+    /**
+     * @see #setPuzzleareaStart(java.awt.Point)
+     */
+    Point getPuzzleareaStart() {
+        return new Point(puzzleareStart);
+    }
+
+    /**
      * Gets the height of one puzzlepiece that is shown to the user.
      *
      * @return
@@ -154,6 +184,13 @@ public class Puzzlearea extends JLayeredPane {
     }
 
     /**
+     * @see #disableNotDragPuzzlepiecesOverEdges()
+     */
+    boolean isDraggingPuzzlepiecesOverEgdesDisabled() {
+        return isDraggingPuzzlepiecesOverEdgesDisabled;
+    }
+
+    /**
      * Sets a new puzzle to this Puzzlearea
      *
      * @param puzzle
@@ -161,6 +198,9 @@ public class Puzzlearea extends JLayeredPane {
     public void setNewPuzzle(Puzzle puzzle) {
         // delete old puzzle before
         this.deletePuzzle();
+        if (puzzle == null) {
+            return;
+        }
 
         // set new puzzle
         List<PuzzlepieceGroup> piecegroups = puzzle.getPuzzlepieceGroups();
@@ -217,6 +257,13 @@ public class Puzzlearea extends JLayeredPane {
 
         // make this visible
         setVisible(true);
+    }
+
+    /**
+     * @see DrawablePuzzlepieceGroup#getPuzzleareaStart()
+     */
+    void setPuzzleareaStart(Point p) {
+        puzzleareStart = new Point(p);
     }
 
     /**

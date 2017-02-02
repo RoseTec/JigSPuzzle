@@ -6,6 +6,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Observable;
+import jigspuzzle.JigSPuzzle;
 import jigspuzzle.controller.PuzzleController;
 import jigspuzzle.controller.SettingsController;
 import jigspuzzle.model.puzzle.PuzzlepieceGroup;
@@ -53,12 +54,24 @@ public class PuzzlepieceView extends DrawablePuzzlepieceGroup {
                 Point p = new Point(getPuzzlepieceGroup().getX(), getPuzzlepieceGroup().getY());
 
                 correctPointToFitInPuzzleare(p);
-                getPuzzlepieceGroup().setPosition(p.x, p.y);
+                setPuzzlepieceGroupPosition(p);
             }
         });
 
         // adapt size of this panel to the puzzlepieces inside it
         this.updateViewSize();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Point getPuzzleareaStart() {
+        if (puzzlearea == null) {
+            return new Point(0, 0);
+        } else {
+            return puzzlearea.getPuzzleareaStart();
+        }
     }
 
     /**
@@ -86,11 +99,22 @@ public class PuzzlepieceView extends DrawablePuzzlepieceGroup {
     }
 
     /**
+     * Sets the position of this puzzlepiece group.
+     *
+     * @param position The position of the group <b>in the puzzlearea</b>.
+     */
+    private void setPuzzlepieceGroupPosition(Point position) {
+        position.x += puzzlearea.getPuzzleareaStart().x;
+        position.y += puzzlearea.getPuzzleareaStart().y;
+        getPuzzlepieceGroup().setPosition(position.x, position.y);
+    }
+
+    /**
      * moves this piece before all other pieces such that it is in the
      * foreground now.
      */
     private void moveToFront() {
-        puzzlearea.bringToFront(this);
+        JigSPuzzle.getInstance().getPuzzleWindow().bringToFront(getPuzzlepieceGroup());
     }
 
     /**
@@ -112,6 +136,10 @@ public class PuzzlepieceView extends DrawablePuzzlepieceGroup {
                 || puzzlearea.getHeight() <= getHeight() - 2 * getConnectionsSizeTopButtom()) {
             return;
         }
+        if (puzzlearea.isDraggingPuzzlepiecesOverEgdesDisabled()) {
+            return;
+        }
+
         if (p.x < 0) {
             p.x = 0;
         }
@@ -176,8 +204,8 @@ public class PuzzlepieceView extends DrawablePuzzlepieceGroup {
                 int newY = puzzlepieceView.getY() + e.getY() - initY + getConnectionsSizeTopButtom();
                 Point p = new Point(newX, newY);
 
-                correctPointToFitInPuzzleare(p);
-                getPuzzlepieceGroup().setPosition(p.x, p.y);
+                puzzlepieceView.correctPointToFitInPuzzleare(p);
+                puzzlepieceView.setPuzzlepieceGroupPosition(p);
             }
         }
 

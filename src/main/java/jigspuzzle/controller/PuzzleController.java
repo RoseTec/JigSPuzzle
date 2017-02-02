@@ -66,11 +66,11 @@ public class PuzzleController extends AbstractController {
     /**
      * Gets the current puzzle.
      *
-     * Should <b>not</b> be used exept in tests.
+     * Do <b>not</b> modify atributes of the puzzle.
      *
      * @return
      */
-    Puzzle getPuzzle() {
+    public Puzzle getPuzzle() {
         return puzzle;
     }
 

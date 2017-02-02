@@ -190,6 +190,19 @@ public abstract class DrawablePuzzlepieceGroup extends JPanel {
     }
 
     /**
+     * Gets the start of the puzzlearea to the given point. The start
+     * determinated from what position a puzzlepiece will be displayed. For
+     * instance if the start is (500,0) and we have a puzzlepiece at position
+     * (0,0), it will not be visible in the puzzlearea of this window. It will
+     * become visible, when it is moved to position (500,n).
+     *
+     * The default value is (0,0).
+     *
+     * @return
+     */
+    protected abstract Point getPuzzleareaStart();
+
+    /**
      * @return The model od the puzzlepiece group, that this view shows. This
      * value will be set in the constructor.
      */
@@ -368,8 +381,8 @@ public abstract class DrawablePuzzlepieceGroup extends JPanel {
      * puzzlepiece-model.
      */
     private void updateViewLocation() {
-        int x = piecegroup.getX();
-        int y = piecegroup.getY();
+        int x = piecegroup.getX() - getPuzzleareaStart().x;
+        int y = piecegroup.getY() - getPuzzleareaStart().y;
 
         setLocation(x - getConnectionsSizeLeftRight(), y - getConnectionsSizeTopButtom());
     }

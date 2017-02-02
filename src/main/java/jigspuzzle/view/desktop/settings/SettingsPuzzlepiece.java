@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Shape;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -221,6 +222,14 @@ class SettingsPuzzlepiece extends JPanel implements SelectionGroupSelectable<Int
             } else {
                 return super.getShapeOnConnectorPosition(position, puzzlepiece);
             }
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        protected Point getPuzzleareaStart() {
+            return new Point(0, 0);
         }
 
         /**
