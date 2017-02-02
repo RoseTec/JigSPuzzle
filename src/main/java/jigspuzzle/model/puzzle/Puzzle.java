@@ -285,6 +285,7 @@ public class Puzzle extends AbstractPuzzlesModel {
      * before the next puzzlepiece gets a new coordinate.
      */
     public void shufflePuzzlepieces(int maxX, int maxY, int waitBetweenShuffle) {
+        // todo: should this not be in PuzzleController?
         Random r = new Random();
 
         for (int i = 0; i < puzzlepieceseGroups.size(); i++) {

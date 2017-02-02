@@ -53,6 +53,7 @@ public class ImageGetter {
      * have the given height.
      *
      * @param language
+     * @param height
      * @return Can be <code>null</code>, if there is no image for the given
      * language.
      */
