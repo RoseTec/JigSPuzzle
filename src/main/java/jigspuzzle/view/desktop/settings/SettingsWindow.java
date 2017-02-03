@@ -1,6 +1,7 @@
 package jigspuzzle.view.desktop.settings;
 
 import java.awt.FlowLayout;
+import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
@@ -53,6 +54,11 @@ public class SettingsWindow extends javax.swing.JDialog {
      * The selection group for the shape of the puzzlepiece connectors.
      */
     private final SelectionGroup<Integer> selectionGroupConnectorShape;
+
+    /**
+     * The selection group for selecting monitors.
+     */
+    private final SelectionGroup<Integer> selectionGroupFullscreen;
 
     /**
      * The panel, that is used as viewport in the scoll pane for selection
@@ -176,13 +182,13 @@ public class SettingsWindow extends javax.swing.JDialog {
             SettingsPuzzlepiece newPiece = new SettingsPuzzlepiece().withConnectorShape(shapeId);
 
             jScrollPaneShapeAppearancePanel.add(newPiece);
-            selectionGroupConnectorShape.addToSelection(newPiece, shapeId);
+            selectionGroupConnectorShape.addToSelectionGroup(newPiece, shapeId);
         }
         selectionGroupConnectorShape.setSelectedValue(allIds.get(0));
 
         // add listener for changing the selectd value of the selection group for connector shapes
         selectionGroupConnectorShape.addChangeListener((ChangeEvent e) -> {
-            SettingsController.getInstance().setPuzzlepieceConnectorShapeId(selectionGroupConnectorShape.getSelectedValue());
+            SettingsController.getInstance().setPuzzlepieceConnectorShapeId(selectionGroupConnectorShape.getSelectedValues().get(0));
         });
 
         // adjust scroll panel for fullscreen selection
@@ -190,6 +196,28 @@ public class SettingsWindow extends javax.swing.JDialog {
 
         jScrollPaneFullscreenMonitorsPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 0));
         jScrollPaneFullscreenMonitors.setViewportView(jScrollPaneFullscreenMonitorsPanel);
+
+        // make monitors for fullsceen selectable
+        selectionGroupFullscreen = new SelectionGroup<>();
+
+        selectionGroupFullscreen.setOnlyOneValueSelectable(false);
+        selectionGroupFullscreen.addEmptyListener((ChangeEvent e) -> {
+            int mainMonitorIndex = 0;
+            GraphicsDevice[] allMonitors = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
+
+            for (int i = 0; i < allMonitors.length; i++) {
+                GraphicsDevice gd = allMonitors[i];
+
+                if (gd == GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice()) {
+                    mainMonitorIndex = i;
+                    break;
+                }
+            }
+            selectionGroupFullscreen.setSelectedValue(mainMonitorIndex);
+        });
+        selectionGroupFullscreen.addChangeListener((ChangeEvent e) -> {
+            System.out.println("selected Monitors: " + selectionGroupFullscreen.getSelectedValues());
+        });
     }
 
     /**
@@ -225,7 +253,9 @@ public class SettingsWindow extends javax.swing.JDialog {
 
         while (numberOfMonitorsAvalable != jScrollPaneFullscreenMonitorsPanel.getComponentCount()) {
             if (numberOfMonitorsAvalable < jScrollPaneFullscreenMonitorsPanel.getComponentCount()) {
-                jScrollPaneFullscreenMonitorsPanel.remove(jScrollPaneFullscreenMonitorsPanel.getComponentCount() - 1);
+                ImageJPanel monitorToRemove = (ImageJPanel) jScrollPaneFullscreenMonitorsPanel.getComponents()[jScrollPaneFullscreenMonitorsPanel.getComponentCount() - 1];
+                jScrollPaneFullscreenMonitorsPanel.remove(monitorToRemove);
+                selectionGroupFullscreen.removeFromSelectionGroup(monitorToRemove);
             } else if (numberOfMonitorsAvalable > jScrollPaneFullscreenMonitorsPanel.getComponentCount()) {
                 ImageJPanel newPanel = new ImageJPanel(ImageGetter.getInstance().getMonitorImage());
                 int marginTopButtom = 5;
@@ -233,6 +263,7 @@ public class SettingsWindow extends javax.swing.JDialog {
 
                 newPanel.setMargin(marginTopButtom, marginTopButtom, marginLeftRight, marginLeftRight);
                 jScrollPaneFullscreenMonitorsPanel.add(newPanel);
+                selectionGroupFullscreen.addToSelectionGroup(newPanel, jScrollPaneFullscreenMonitorsPanel.getComponentCount() - 1);
             }
         }
 

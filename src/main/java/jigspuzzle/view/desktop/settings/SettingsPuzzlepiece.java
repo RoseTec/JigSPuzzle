@@ -105,8 +105,7 @@ class SettingsPuzzlepiece extends JPanel implements SelectionGroupSelectable<Int
 
         // paint an overlay if this puzzlepiece is selected
         if (selectionGroup != null && selectionGroup.isSelected(this)) {
-            int alpha = 127; // 50% transparent
-            g2.setColor(new Color(106, 188, 255, alpha));
+            g2.setColor(SelectionGroupSelectable.COLOR_SELECTED_OBJECT);
             g2.fillRect(0, 0, this.getWidth(), this.getHeight());
         }
     }

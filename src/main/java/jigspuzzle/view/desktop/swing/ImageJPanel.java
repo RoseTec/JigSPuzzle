@@ -5,7 +5,12 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.LayoutManager;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
+import javax.swing.event.ChangeEvent;
+import jigspuzzle.view.util.SelectionGroup;
+import jigspuzzle.view.util.SelectionGroupSelectable;
 
 /**
  * A JPanel that only draws an image. That image is strechted over the width of
@@ -13,7 +18,7 @@ import javax.swing.JPanel;
  *
  * @author RoseTec
  */
-public class ImageJPanel extends JPanel {
+public class ImageJPanel extends JPanel implements SelectionGroupSelectable<Integer> {
 
     /**
      * The image that this panels displays in its background.
@@ -81,6 +86,56 @@ public class ImageJPanel extends JPanel {
         Graphics2D g2 = (Graphics2D) g;
 
         g2.drawImage(image, marginLeft, marginTop, getWidth() - marginLeft - marginRight, getHeight() - marginTop - marginButtom, null);
+
+        // paint an overlay if this puzzlepiece is selected
+        if (selectionGroup != null && selectionGroup.isSelected(this)) {
+            g2.setColor(SelectionGroupSelectable.COLOR_SELECTED_OBJECT);
+            g2.fillRect(0, 0, this.getWidth(), this.getHeight());
+        }
+    }
+
+    private SelectionGroup<Integer> selectionGroup;
+    private Integer selectionValue;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Integer getSelectionValue() {
+        return selectionValue;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setSelectionGroup(SelectionGroup<Integer> selectionGroup) {
+        // add click listener
+        if (this.selectionGroup == null) {
+            this.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    ImageJPanel.this.selectionGroup.changeSelectedValue(selectionValue);
+                }
+            });
+        }
+
+        // set the selection group
+        this.selectionGroup = selectionGroup;
+
+        // repaint on changes on theselected value
+        this.selectionGroup.addChangeListener((ChangeEvent e) -> {
+            this.repaint();
+        });
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setSelectionValue(Integer value) {
+        selectionValue = value;
     }
 
 }
