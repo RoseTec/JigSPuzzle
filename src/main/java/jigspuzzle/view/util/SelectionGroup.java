@@ -1,6 +1,7 @@
 package jigspuzzle.view.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,8 +20,6 @@ import javax.swing.event.ChangeListener;
 public class SelectionGroup<T> {
 
     private List<ChangeListener> changeListeners = new ArrayList<>();
-
-    private List<ChangeListener> emptyListeners = new ArrayList<>();
 
     private boolean onlyOneValueSelectable = true;
 
@@ -42,17 +41,6 @@ public class SelectionGroup<T> {
     }
 
     /**
-     * Adds a listener to this group. This listener will be called, when onjects
-     * are unselected so that no object is selected in this group at that
-     * moment.
-     *
-     * @param listener
-     */
-    public void addEmptyListener(ChangeListener listener) {
-        emptyListeners.add(listener);
-    }
-
-    /**
      * Adds the given obects for the given value to the selection group.
      *
      * @param selector
@@ -62,6 +50,7 @@ public class SelectionGroup<T> {
     public SelectionGroupSelectable<T> addToSelectionGroup(SelectionGroupSelectable<T> selector, T value) {
         selector.setSelectionValue(value);
         selector.setSelectionGroup(this);
+        selectedValues.put(value, false);
         return selectors.put(value, selector);
     }
 
@@ -163,6 +152,36 @@ public class SelectionGroup<T> {
     }
 
     /**
+     * Selects the given values. After this call, the given values will be
+     * selected.
+     *
+     * @param values
+     * @param forceUnselectOther <code>true</code> if the the other values in
+     * this group should be forced to unselected.
+     */
+    public void setSelectedValues(T[] values, boolean forceUnselectOther) {
+        boolean hasChanged = false;
+        List<T> keySet = new ArrayList<>(selectedValues.keySet());
+        List<T> valueList = new ArrayList<>(Arrays.asList(values));
+
+        for (int i = 0; i < keySet.size(); i++) {
+            if (valueList.contains(keySet.get(i))) {
+                if (selectedValues.put(keySet.get(i), true) == false) {
+                    hasChanged = true;
+                }
+            } else if (!valueList.contains(keySet.get(i)) && forceUnselectOther) {
+                if (selectedValues.put(keySet.get(i), false) == true) {
+                    hasChanged = true;
+                }
+            }
+        }
+        if (hasChanged) {
+            checkOnlyOneSelected(null);
+            fireChangeListeners();
+        }
+    }
+
+    /**
      * Checks, if it is true that only one value is selected after the given
      * value has changed. This option does nothing, when
      * <code>onlyOneValueSelectable == false</code>.
@@ -173,6 +192,9 @@ public class SelectionGroup<T> {
         if (!onlyOneValueSelectable) {
             return;
         }
+        if (value == null && getSelectedValues().size() > 0) {
+            value = getSelectedValues().get(0);
+        }
 
         for (T object : selectedValues.keySet()) {
             if (value != object && isValueSelected(object)) {
@@ -182,17 +204,7 @@ public class SelectionGroup<T> {
     }
 
     private void fireChangeListeners() {
-        if (!selectedValues.values().contains(true)) {
-            fireEmptyListeners();
-            return;
-        }
         for (ChangeListener listener : changeListeners) {
-            listener.stateChanged(new ChangeEvent(this));
-        }
-    }
-
-    private void fireEmptyListeners() {
-        for (ChangeListener listener : emptyListeners) {
             listener.stateChanged(new ChangeEvent(this));
         }
     }

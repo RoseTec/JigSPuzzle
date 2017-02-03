@@ -1,7 +1,6 @@
 package jigspuzzle.view.desktop.settings;
 
 import java.awt.FlowLayout;
-import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
@@ -201,22 +200,14 @@ public class SettingsWindow extends javax.swing.JDialog {
         selectionGroupFullscreen = new SelectionGroup<>();
 
         selectionGroupFullscreen.setOnlyOneValueSelectable(false);
-        selectionGroupFullscreen.addEmptyListener((ChangeEvent e) -> {
-            int mainMonitorIndex = 0;
-            GraphicsDevice[] allMonitors = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
-
-            for (int i = 0; i < allMonitors.length; i++) {
-                GraphicsDevice gd = allMonitors[i];
-
-                if (gd == GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice()) {
-                    mainMonitorIndex = i;
-                    break;
-                }
-            }
-            selectionGroupFullscreen.setSelectedValue(mainMonitorIndex);
-        });
         selectionGroupFullscreen.addChangeListener((ChangeEvent e) -> {
-            System.out.println("selected Monitors: " + selectionGroupFullscreen.getSelectedValues());
+            SettingsController.getInstance().setMonitorForFullscreen(selectionGroupFullscreen.getSelectedValues());
+        });
+        SettingsController.getInstance().addPuzzleareaSettingsObserver((Observable o, Object arg) -> {
+            List<Integer> selectedMonitors = SettingsController.getInstance().getMonitorsForFullscreen();
+
+            selectionGroupFullscreen.setSelectedValues(selectedMonitors.toArray(new Integer[0]), true);
+            jScrollPaneFullscreenMonitors.repaint();
         });
     }
 
@@ -338,6 +329,11 @@ public class SettingsWindow extends javax.swing.JDialog {
         // background color
         jColorChooser1.setColor(SettingsController.getInstance().getPuzzleareaBackgroundColor());
         jPanel8.setBackground(jColorChooser1.getColor());
+
+        // monitors used for fullscreen
+        List<Integer> selectedMonitors = SettingsController.getInstance().getMonitorsForFullscreen();
+
+        selectionGroupFullscreen.setSelectedValues(selectedMonitors.toArray(new Integer[0]), true);
 
         // number of puzzlepieces
         jSlider2.setValue(SettingsController.getInstance().getPuzzlepieceNumber());

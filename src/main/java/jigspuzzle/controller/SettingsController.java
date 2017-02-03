@@ -2,12 +2,8 @@ package jigspuzzle.controller;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -233,13 +229,18 @@ public class SettingsController extends AbstractController {
         return languageSettings.getText(pageId, textId);
     }
 
-    // TODO: add real JavaDoc
-    public List<GraphicsDevice> getMonitorsForFullscreen() {
-        // TODO: return correct values from model
-        List<GraphicsDevice> ret = new ArrayList<>(Arrays.asList(GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()));
+    /**
+     * @see PuzzleareaSettings#getMonitorForFullscreen()
+     */
+    public List<Integer> getMonitorsForFullscreen() {
+        return puzzleareaSettings.getMonitorForFullscreen();
+    }
 
-//        ret.remove(2);
-        return ret;
+    /**
+     * @see PuzzleareaSettings#setMonitorForFullscreen(java.util.List)
+     */
+    public void setMonitorForFullscreen(List<Integer> monitorForFullscreen) {
+        puzzleareaSettings.setMonitorForFullscreen(monitorForFullscreen);
     }
 
     /**

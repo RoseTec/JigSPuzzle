@@ -1,7 +1,9 @@
 package jigspuzzle.view.desktop.puzzle;
 
 import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import jigspuzzle.controller.PuzzleController;
@@ -175,11 +177,24 @@ public class DesktopPuzzleWindow implements IPuzzleWindow {
             mainWindow.setVisible(true);
         } else {
             mainWindow.setVisible(false);
-            List<GraphicsDevice> allMonitors = SettingsController.getInstance().getMonitorsForFullscreen();
 
-            fullscreenPuzzleWindows = new DesktopPuzzleMainWindow[allMonitors.size()];
-            for (int i = 0; i < allMonitors.size(); i++) {
-                GraphicsDevice gd = allMonitors.get(i);
+            // get monitors from the settings
+            List<Integer> allMonitorIndex = SettingsController.getInstance().getMonitorsForFullscreen();
+
+            // get the real monitors
+            List<GraphicsDevice> monitorsForFullsceen = new ArrayList<>();
+            GraphicsDevice[] allAvailableMonitors = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
+
+            for (Integer monitorIndex : allMonitorIndex) {
+                GraphicsDevice monitorToAdd = allAvailableMonitors[monitorIndex];
+
+                monitorsForFullsceen.add(monitorToAdd);
+            }
+
+            // trigger fullscreen for the seleced monitors
+            fullscreenPuzzleWindows = new DesktopPuzzleMainWindow[monitorsForFullsceen.size()];
+            for (int i = 0; i < monitorsForFullsceen.size(); i++) {
+                GraphicsDevice gd = monitorsForFullsceen.get(i);
                 DesktopPuzzleMainWindow newWindow = new DesktopPuzzleMainWindow(this);
 
                 newWindow.setPuzzleareaStart(gd.getDefaultConfiguration().getBounds().getLocation());

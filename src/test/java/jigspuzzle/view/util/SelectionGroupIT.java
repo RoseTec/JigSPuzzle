@@ -2,8 +2,6 @@ package jigspuzzle.view.util;
 
 import java.util.Arrays;
 import java.util.List;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import jigspuzzle.testutils.mockups.DummySelectionGroupSelectable;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -31,37 +29,6 @@ public class SelectionGroupIT {
 
     @After
     public void tearDown() {
-    }
-
-    @Test
-    public void testAddEmptyListener() {
-        SelectionGroup<Integer> instance = new SelectionGroup<>();
-        SelectionGroupSelectable<Integer> object1 = new DummySelectionGroupSelectable<>();
-        SelectionGroupSelectable<Integer> object2 = new DummySelectionGroupSelectable<>();
-
-        instance.setOnlyOneValueSelectable(false);
-        instance.addToSelectionGroup(object1, 1);
-        instance.addToSelectionGroup(object2, 2);
-        instance.changeSelectedValue(object1);
-        instance.changeSelectedValue(object2);
-
-        instance.addEmptyListener((ChangeEvent e) -> {
-            // change 2
-            assertEquals(0, instance.getSelectedValues().size());
-            instance.addToSelectionGroup(object2, 2);
-            assertFalse(instance.isSelected(object2));
-            instance.changeSelectedValue(object2);
-        });
-        instance.addChangeListener((ChangeEvent e) -> {
-            // change 1 and
-            // change 2 after adding something in the empty listener
-            assertEquals(1, instance.getSelectedValues().size());
-        });
-        instance.changeSelectedValue(object1);
-        instance.changeSelectedValue(object2);
-
-        assertEquals(1, instance.getSelectedValues().size());
-        assertTrue(instance.isSelected(object2));
     }
 
     @Test
@@ -141,6 +108,61 @@ public class SelectionGroupIT {
 
         instance.setSelectedValue(value);
         assertTrue(instance.isSelected(object));
+    }
+
+    @Test
+    public void testSetSelectedValues1() {
+        SelectionGroup<Integer> instance = new SelectionGroup<>();
+        SelectionGroupSelectable<Integer> object1 = new DummySelectionGroupSelectable<>();
+        SelectionGroupSelectable<Integer> object2 = new DummySelectionGroupSelectable<>();
+        SelectionGroupSelectable<Integer> object3 = new DummySelectionGroupSelectable<>();
+
+        instance.setOnlyOneValueSelectable(false);
+        instance.addToSelectionGroup(object1, 1);
+        instance.addToSelectionGroup(object2, 2);
+        instance.addToSelectionGroup(object3, 3);
+        instance.setSelectedValue(2);
+        instance.setSelectedValues(new Integer[]{1, 3}, true);
+
+        assertTrue(instance.isSelected(object1));
+        assertFalse(instance.isSelected(object2));
+        assertTrue(instance.isSelected(object3));
+    }
+
+    @Test
+    public void testSetSelectedValues2() {
+        SelectionGroup<Integer> instance = new SelectionGroup<>();
+        SelectionGroupSelectable<Integer> object1 = new DummySelectionGroupSelectable<>();
+        SelectionGroupSelectable<Integer> object2 = new DummySelectionGroupSelectable<>();
+        SelectionGroupSelectable<Integer> object3 = new DummySelectionGroupSelectable<>();
+
+        instance.addToSelectionGroup(object1, 1);
+        instance.addToSelectionGroup(object2, 2);
+        instance.addToSelectionGroup(object3, 3);
+        instance.setSelectedValue(2);
+        instance.setSelectedValues(new Integer[]{1, 3}, true);
+
+        assertTrue(instance.isSelected(object1));
+        assertFalse(instance.isSelected(object2));
+        assertFalse(instance.isSelected(object3));
+    }
+
+    @Test
+    public void testSetSelectedValues3() {
+        SelectionGroup<Integer> instance = new SelectionGroup<>();
+        SelectionGroupSelectable<Integer> object1 = new DummySelectionGroupSelectable<>();
+        SelectionGroupSelectable<Integer> object2 = new DummySelectionGroupSelectable<>();
+        SelectionGroupSelectable<Integer> object3 = new DummySelectionGroupSelectable<>();
+
+        instance.setOnlyOneValueSelectable(false);
+        instance.addToSelectionGroup(object1, 1);
+        instance.addToSelectionGroup(object2, 2);
+        instance.addToSelectionGroup(object3, 3);
+        instance.setSelectedValues(new Integer[]{2}, true);
+
+        assertFalse(instance.isSelected(object1));
+        assertTrue(instance.isSelected(object2));
+        assertFalse(instance.isSelected(object3));
     }
 
 }
