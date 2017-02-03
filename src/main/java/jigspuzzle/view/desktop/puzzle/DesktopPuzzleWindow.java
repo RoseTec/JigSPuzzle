@@ -5,6 +5,7 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import jigspuzzle.controller.PuzzleController;
 import jigspuzzle.controller.SettingsController;
@@ -199,7 +200,11 @@ public class DesktopPuzzleWindow implements IPuzzleWindow {
 
                 newWindow.setPuzzleareaStart(gd.getDefaultConfiguration().getBounds().getLocation());
                 newWindow.disableNotDragPuzzlepiecesOverEdges();
-                gd.setFullScreenWindow(newWindow); //TODO: do not use this, but relay on JFrame suff
+                newWindow.dispose();
+                newWindow.setUndecorated(true);
+                newWindow.setLocation(gd.getDefaultConfiguration().getBounds().getLocation());
+                newWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                newWindow.setVisible(true);
                 fullscreenPuzzleWindows[i] = newWindow;
 
                 newWindow.setNewPuzzle(PuzzleController.getInstance().getPuzzle());
