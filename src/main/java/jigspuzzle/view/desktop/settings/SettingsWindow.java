@@ -27,6 +27,7 @@ import jigspuzzle.view.desktop.swing.ImageJPanel;
 import jigspuzzle.view.desktop.swing.JButton;
 import jigspuzzle.view.desktop.swing.JComboBox;
 import jigspuzzle.view.desktop.swing.JRadioButton;
+import jigspuzzle.view.desktop.swing.JScrollPane;
 import jigspuzzle.view.desktop.swing.JTabbedPane;
 import jigspuzzle.view.util.SelectionGroup;
 
@@ -372,7 +373,7 @@ public class SettingsWindow extends javax.swing.JDialog {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         jTabbedPane1 = new JTabbedPane();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        jScrollPane1 = new JScrollPane();
         jPanel2 = new SettingViewPanel();
         jPanel13 = new SettingsCategoryPanel(10, 100);
         jPanel14 = new javax.swing.JPanel();
@@ -390,9 +391,9 @@ public class SettingsWindow extends javax.swing.JDialog {
         jPanel16 = new SettingsCategoryPanel(10, 260);
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new ExplainingJLabel();
-        jScrollPaneFullscreenMonitors = new javax.swing.JScrollPane();
+        jScrollPaneFullscreenMonitors = new JScrollPane();
         jLabel9 = new ExplainingJLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
+        jScrollPane2 = new JScrollPane();
         jPanel3 = new SettingViewPanel();
         jPanel6 = new SettingsCategoryPanel(10, 160);
         jLabel1 = new ExplainingJLabel();
@@ -412,7 +413,7 @@ public class SettingsWindow extends javax.swing.JDialog {
         jSlider3 = new javax.swing.JSlider();
         jPanel15 = new SettingsCategoryPanel(10, 240);
         jRadioButton1 = new JRadioButton();
-        jScrollPaneShapeAppearance = new javax.swing.JScrollPane();
+        jScrollPaneShapeAppearance = new JScrollPane();
         jRadioButton2 = new JRadioButton();
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new JButton();
