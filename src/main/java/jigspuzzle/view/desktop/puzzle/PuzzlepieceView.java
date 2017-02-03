@@ -60,6 +60,7 @@ public class PuzzlepieceView extends DrawablePuzzlepieceGroup {
         });
 
         // adapt size of this panel to the puzzlepieces inside it
+        this.updateViewLocation();
         this.updateViewSize();
     }
 

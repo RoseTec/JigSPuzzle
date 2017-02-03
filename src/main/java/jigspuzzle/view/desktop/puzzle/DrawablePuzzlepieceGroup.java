@@ -388,7 +388,7 @@ public abstract class DrawablePuzzlepieceGroup extends JPanel {
      * Updates the view of this puzzlepiece-view to the coordinates of the
      * puzzlepiece-model.
      */
-    private void updateViewLocation() {
+    protected void updateViewLocation() {
         int x = piecegroup.getX() - getPuzzleareaStart().x;
         int y = piecegroup.getY() - getPuzzleareaStart().y;
 
