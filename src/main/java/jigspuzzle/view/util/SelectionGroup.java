@@ -75,10 +75,12 @@ public class SelectionGroup<T> {
      *
      * @param object
      */
-    public void changeSelectedValue(T object) {
-        if (selectors.get(object) == null) {
-        } else {
-            selectedValues.put(object, !isValueSelected(object));
+    public void changeSelectedValue(SelectionGroupSelectable<T> object) {
+        T value = object.getSelectionValue();
+
+        if (selectors.get(value) != null) {
+            selectedValues.put(value, !isValueSelected(value));
+            checkOnlyOneSelected(value);
             fireChangeListeners();
         }
     }
@@ -133,6 +135,7 @@ public class SelectionGroup<T> {
         T value = selector.getSelectionValue();
 
         selector.setSelectionGroup(null);
+        selectedValues.remove(value);
         return selectors.remove(value);
     }
 
@@ -154,7 +157,27 @@ public class SelectionGroup<T> {
         if (selectors.get(value) == null) {
         } else {
             selectedValues.put(value, true);
+            checkOnlyOneSelected(value);
             fireChangeListeners();
+        }
+    }
+
+    /**
+     * Checks, if it is true that only one value is selected after the given
+     * value has changed. This option does nothing, when
+     * <code>onlyOneValueSelectable == false</code>.
+     *
+     * @param value
+     */
+    private void checkOnlyOneSelected(T value) {
+        if (!onlyOneValueSelectable) {
+            return;
+        }
+
+        for (T object : selectedValues.keySet()) {
+            if (value != object && isValueSelected(object)) {
+                selectedValues.put(object, false);
+            }
         }
     }
 

@@ -115,7 +115,7 @@ public class ImageJPanel extends JPanel implements SelectionGroupSelectable<Inte
             this.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    ImageJPanel.this.selectionGroup.changeSelectedValue(selectionValue);
+                    ImageJPanel.this.selectionGroup.changeSelectedValue(ImageJPanel.this);
                 }
             });
         }
