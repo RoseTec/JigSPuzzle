@@ -211,6 +211,14 @@
                         <Property name="text" type="java.lang.String" value="jLabel8"/>
                       </Properties>
                     </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel10">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="jLabel10"/>
+                      </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new ExplainingJLabel()"/>
+                      </AuxValues>
+                    </Component>
                     <Container class="javax.swing.JScrollPane" name="jScrollPaneFullscreenMonitors">
 
                       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>

@@ -93,6 +93,7 @@
 
         <t id="260">Fullscreen</t>
         <t id="261">Fullscreen will spread only over the following screens:</t>
+        <t id="262">When no screen is selected, the default screen will automatically be selected.</t>
         <t id="265">Changes here are visible when restarting fullscreen.</t>
     </page>
 

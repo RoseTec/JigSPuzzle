@@ -93,6 +93,7 @@
 
         <t id="260">Vollbild</t>
         <t id="261">Der Vollbild-Modus erstreckt sich ausschließlich über die folgenden Monitore:</t>
+        <t id="262">Wenn kein Monitor ausgewählt ist, wird automatisch der Statdard-Monitor ausgewählt.</t>
         <t id="265">Eine Änderung hier wird beim Neustarten des Vollbild-Modus sichtbar.</t>
     </page>
 

@@ -300,6 +300,7 @@ public class SettingsWindow extends javax.swing.JDialog {
         jRadioButton2.setText(SettingsController.getInstance().getLanguageText(10, 245));
 
         jLabel8.setText(SettingsController.getInstance().getLanguageText(10, 261));
+        jLabel10.setText(SettingsController.getInstance().getLanguageText(10, 262));
         jLabel9.setText(SettingsController.getInstance().getLanguageText(10, 265));
 
         repaint();
@@ -388,6 +389,7 @@ public class SettingsWindow extends javax.swing.JDialog {
         jCheckBox1 = new javax.swing.JCheckBox();
         jPanel16 = new SettingsCategoryPanel(10, 260);
         jLabel8 = new javax.swing.JLabel();
+        jLabel10 = new ExplainingJLabel();
         jScrollPaneFullscreenMonitors = new javax.swing.JScrollPane();
         jLabel9 = new ExplainingJLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -491,6 +493,9 @@ public class SettingsWindow extends javax.swing.JDialog {
 
         jLabel8.setText("jLabel8");
         jPanel16.add(jLabel8);
+
+        jLabel10.setText("jLabel10");
+        jPanel16.add(jLabel10);
         jPanel16.add(jScrollPaneFullscreenMonitors);
 
         jLabel9.setText("jLabel9");
@@ -732,6 +737,7 @@ public class SettingsWindow extends javax.swing.JDialog {
     private javax.swing.JColorChooser jColorChooser1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
