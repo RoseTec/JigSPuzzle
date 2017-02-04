@@ -667,7 +667,7 @@ public class SettingsWindow extends javax.swing.JDialog {
         try {
             SettingsController.getInstance().saveSettingsToFile();
 
-            this.setVisible(false);
+            this.dispose();
         } catch (IOException ex) {
             new ErrorMessageDialog(SettingsController.getInstance().getLanguageText(10, 85),
                     SettingsController.getInstance().getLanguageText(10, 86),
@@ -679,7 +679,7 @@ public class SettingsWindow extends javax.swing.JDialog {
         try {
             SettingsController.getInstance().loadSettingsFromFile();
 
-            this.setVisible(false);
+            this.dispose();
         } catch (IOException ex) {
             new ErrorMessageDialog(SettingsController.getInstance().getLanguageText(10, 87),
                     SettingsController.getInstance().getLanguageText(10, 88),

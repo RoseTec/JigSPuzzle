@@ -126,6 +126,7 @@ public class VersionCheckDialog extends javax.swing.JDialog {
         jPanel7 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
 
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(330, 276));
         setMinimumSize(new java.awt.Dimension(330, 276));
         setName("version-window"); // NOI18N
@@ -262,7 +263,7 @@ public class VersionCheckDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusLost
-        this.setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_formFocusLost
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
