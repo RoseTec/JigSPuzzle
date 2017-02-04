@@ -2,14 +2,18 @@ package jigspuzzle.view.desktop.puzzle;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Area;
 import java.util.Observable;
 import jigspuzzle.JigSPuzzle;
 import jigspuzzle.controller.PuzzleController;
 import jigspuzzle.controller.SettingsController;
+import jigspuzzle.model.puzzle.Puzzlepiece;
 import jigspuzzle.model.puzzle.PuzzlepieceGroup;
 
 /**
@@ -54,7 +58,7 @@ public class PuzzlepieceView extends DrawablePuzzlepieceGroup {
             public void componentResized(ComponentEvent e) {
                 Point p = new Point(getPuzzlepieceGroup().getX(), getPuzzlepieceGroup().getY());
 
-                correctPointToFitInPuzzleare(p);
+                correctPuzzlepieceGroupToFitInPuzzlearea(p);
                 setPuzzlepieceGroupPosition(p);
             }
         });
@@ -139,30 +143,80 @@ public class PuzzlepieceView extends DrawablePuzzlepieceGroup {
      * into the puzzlearea. So it is not possible, tht the puzzlepiece is 'out
      * of the puzzlearea' and therefore not visible.
      *
-     * @param p
+     * @param newLocation
      */
-    private void correctPointToFitInPuzzleare(Point p) {
-        if (puzzlearea.getWidth() <= getWidth() - 2 * getConnectionsSizeLeftRight()
-                || puzzlearea.getHeight() <= getHeight() - 2 * getConnectionsSizeTopButtom()) {
-            return;
-        }
-        if (puzzlearea.isDraggingPuzzlepiecesOverEgdesDisabled()) {
-            return;
-        }
+    private void correctPuzzlepieceGroupToFitInPuzzlearea(Point newLocation) {
+        // correct the point first to be in this puzzlearea
+        newLocation.x += puzzlearea.getPuzzleareaStart().x;
+        newLocation.y += puzzlearea.getPuzzleareaStart().y;
 
-        if (p.x < 0) {
-            p.x = 0;
-        }
-        if (p.x > puzzlearea.getWidth() - getWidthOfThisGroup() + 2 * getConnectionsSizeLeftRight()) {
-            p.x = puzzlearea.getWidth() - getWidthOfThisGroup() + 2 * getConnectionsSizeLeftRight();
-        }
+        try {
+            //
+            if (puzzlearea.getWidth() <= getWidth() - 2 * getConnectionsSizeLeftRight()
+                    || puzzlearea.getHeight() <= getHeight() - 2 * getConnectionsSizeTopButtom()) {
+                return;
+            }
+            // create a shape for the puzzlepiece group
+            Area groupShape = getShapeForPuzzlepeceGroup(newLocation);
 
-        if (p.y < 0) {
-            p.y = 0;
+            // checks if the point is in the screen
+            if (JigSPuzzle.getInstance().getPuzzleWindow().getPuzzleareaBounds().contains(groupShape.getBounds())) {
+                return;
+            }
+
+            // correct point to be in sceen
+            //todo: it should be the puzzlearea where the mouse is in, not this one
+            if (newLocation.x < getPuzzleareaStart().x) {
+                newLocation.x = getPuzzleareaStart().x;
+            }
+            if (newLocation.x > getPuzzleareaStart().x + puzzlearea.getWidth() - getWidthOfThisGroup() + 2 * getConnectionsSizeLeftRight()) {
+                newLocation.x = getPuzzleareaStart().x + puzzlearea.getWidth() - getWidthOfThisGroup() + 2 * getConnectionsSizeLeftRight();
+            }
+
+            if (newLocation.y < getPuzzleareaStart().y) {
+                newLocation.y = getPuzzleareaStart().y;
+            }
+            if (newLocation.y > getPuzzleareaStart().y + puzzlearea.getHeight() - getHeightOfThisGroup() + 2 * getConnectionsSizeTopButtom()) {
+                newLocation.y = getPuzzleareaStart().y + puzzlearea.getHeight() - getHeightOfThisGroup() + 2 * getConnectionsSizeTopButtom();
+            }
+        } finally {
+            // undo the correction from the start
+            newLocation.x -= puzzlearea.getPuzzleareaStart().x;
+            newLocation.y -= puzzlearea.getPuzzleareaStart().y;
         }
-        if (p.y > puzzlearea.getHeight() - getHeightOfThisGroup() + 2 * getConnectionsSizeTopButtom()) {
-            p.y = puzzlearea.getHeight() - getHeightOfThisGroup() + 2 * getConnectionsSizeTopButtom();
+    }
+
+    /**
+     * Gets a shape that contains all puzzlepieces in this group completely.
+     *
+     * Delegated to
+     * <code>getShapeForPuzzlepeceGroup(getPuzzlepieceGroup().x, getPuzzlepieceGroup().y)</code>.
+     *
+     * @return
+     */
+    private Shape getShapeForPuzzlepeceGroup() {
+        return getShapeForPuzzlepeceGroup(new Point(getPuzzlepieceGroup().getX(), getPuzzlepieceGroup().getY()));
+    }
+
+    /**
+     * Gets a shape that contains all puzzlepieces in this group completely.
+     *
+     * @param startOfGroup The start point of this puzzlepiece group.
+     * @return
+     */
+    private Area getShapeForPuzzlepeceGroup(Point startOfGroup) {
+        Area ret = new Area();
+
+        for (Puzzlepiece piece : getPuzzlepieceGroup().getPuzzlepieces()) {
+            int x = startOfGroup.x + getPuzzlepieceGroup().getXPositionOfPieceInGroup(piece) * getPuzzlepieceWidth();
+            int y = startOfGroup.y + getPuzzlepieceGroup().getYPositionOfPieceInGroup(piece) * getPuzzlepieceHeight();
+            int width = getPuzzlepieceWidth();
+            int height = getPuzzlepieceHeight();
+            Area pieceShape = new Area(new Rectangle(x, y, width, height));
+
+            ret.add(pieceShape);
         }
+        return ret;
     }
 
     /**
@@ -214,7 +268,7 @@ public class PuzzlepieceView extends DrawablePuzzlepieceGroup {
                 int newY = puzzlepieceView.getY() + e.getY() - initY + getConnectionsSizeTopButtom();
                 Point p = new Point(newX, newY);
 
-                puzzlepieceView.correctPointToFitInPuzzleare(p);
+                puzzlepieceView.correctPuzzlepieceGroupToFitInPuzzlearea(p);
                 puzzlepieceView.setPuzzlepieceGroupPosition(p);
             }
         }

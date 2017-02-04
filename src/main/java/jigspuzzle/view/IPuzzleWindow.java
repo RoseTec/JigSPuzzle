@@ -1,5 +1,6 @@
 package jigspuzzle.view;
 
+import java.awt.geom.Area;
 import jigspuzzle.model.puzzle.Puzzle;
 import jigspuzzle.model.puzzle.PuzzlepieceGroup;
 
@@ -32,6 +33,18 @@ public interface IPuzzleWindow {
      * @param message The text to be displayed.
      */
     public void displayFatalError(String message);
+
+    /**
+     * Gets the bounds of the puzzleare. Normally this is delegated to return
+     * the bounds of the component that acts as the puzzlearea.
+     *
+     * If the puzzlearea consists of several monitors, the bounds of each
+     * monitor will be united, such that this method returns a shape of all
+     * monitor bounds.
+     *
+     * @return
+     */
+    public Area getPuzzleareaBounds();
 
     /**
      * Gets the height of one puzzlepiece in the puzzleare.

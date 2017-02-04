@@ -1,5 +1,6 @@
 package jigspuzzle.view;
 
+import java.awt.geom.Area;
 import javax.swing.UIManager;
 import jigspuzzle.model.puzzle.Puzzle;
 import jigspuzzle.model.puzzle.PuzzlepieceGroup;
@@ -41,6 +42,14 @@ public class PuzzleWindow implements IPuzzleWindow {
     @Override
     public void displayFatalError(String message) {
         puzzleWindow.displayFatalError(message);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Area getPuzzleareaBounds() {
+        return puzzleWindow.getPuzzleareaBounds();
     }
 
     /**

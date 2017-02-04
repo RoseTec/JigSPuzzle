@@ -3,6 +3,7 @@ package jigspuzzle.view.desktop.puzzle;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
+import java.awt.geom.Area;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFrame;
@@ -67,6 +68,23 @@ public class DesktopPuzzleWindow implements IPuzzleWindow {
     @Override
     public void displayFatalError(String message) {
         JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Area getPuzzleareaBounds() {
+        if (isFullscreenActive()) {
+            Area ret = new Area();
+
+            for (int i = 0; i < fullscreenPuzzleWindows.length; i++) {
+                ret.add(fullscreenPuzzleWindows[i].getPuzzleareaBounds());
+            }
+            return ret;
+        } else {
+            return mainWindow.getPuzzleareaBounds();
+        }
     }
 
     /**
@@ -199,7 +217,6 @@ public class DesktopPuzzleWindow implements IPuzzleWindow {
                 DesktopPuzzleMainWindow newWindow = new DesktopPuzzleMainWindow(this);
 
                 newWindow.setPuzzleareaStart(gd.getDefaultConfiguration().getBounds().getLocation());
-                newWindow.disableNotDragPuzzlepiecesOverEdges();
                 newWindow.dispose();
                 newWindow.setUndecorated(true);
                 newWindow.setLocation(gd.getDefaultConfiguration().getBounds().getLocation());

@@ -30,11 +30,6 @@ import jigspuzzle.model.settings.PuzzleareaSettings;
 public class Puzzlearea extends JLayeredPane {
 
     /**
-     * @see #disableNotDragPuzzlepiecesOverEdges()
-     */
-    private boolean isDraggingPuzzlepiecesOverEdgesDisabled = false;
-
-    /**
      * The current puzzle that the user tries to solve.
      */
     private Puzzle puzzle;
@@ -150,15 +145,6 @@ public class Puzzlearea extends JLayeredPane {
     }
 
     /**
-     * Disables the function that it is not possible to drag a puzzlepiece out
-     * of this window. This is done in fullscreen mode, when there are several
-     * windows.
-     */
-    void disableNotDragPuzzlepiecesOverEdges() {
-        isDraggingPuzzlepiecesOverEdgesDisabled = true;
-    }
-
-    /**
      * @see #setPuzzleareaStart(java.awt.Point)
      */
     Point getPuzzleareaStart() {
@@ -181,13 +167,6 @@ public class Puzzlearea extends JLayeredPane {
      */
     public int getPuzzlepieceWidth() {
         return SettingsController.getInstance().getPuzzlepieceSize(this.getHeight(), this.getWidth()).width;
-    }
-
-    /**
-     * @see #disableNotDragPuzzlepiecesOverEdges()
-     */
-    boolean isDraggingPuzzlepiecesOverEgdesDisabled() {
-        return isDraggingPuzzlepiecesOverEdgesDisabled;
     }
 
     /**
