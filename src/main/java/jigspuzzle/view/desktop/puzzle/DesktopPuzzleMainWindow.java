@@ -210,13 +210,16 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
      * Will be call, when the fullscreen is triggered.
      */
     void fullscreenTriggered() {
-        if (desktopPuzzleWindow.isFullscreenActive()) {
+        if (this.isUndecorated()) {
+            // adjust window only for the jframes in fullscreen
             ((HideableJMenuBar) jMenuBar1).setHidden(true);
 
             jPanel1.setLayout(null);
             puzzlearea.setSize(getSize());
         }
-        loadLanguageTexts(); //text for fullscreen-menuItem changed
+
+        // text for fullscreen-menuItem changed
+        loadLanguageTexts();
     }
 
     /**
