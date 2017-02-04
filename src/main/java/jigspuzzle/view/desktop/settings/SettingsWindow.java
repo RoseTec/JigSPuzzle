@@ -69,12 +69,9 @@ public class SettingsWindow extends javax.swing.JDialog {
 
     /**
      * Creates new form SettingsWindow
-     *
-     * @param parent
-     * @param modal
      */
-    public SettingsWindow(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public SettingsWindow() {
+//        super(parent, modal);
         initComponents();
 
         // modify the ticks of the sliders
@@ -219,9 +216,13 @@ public class SettingsWindow extends javax.swing.JDialog {
      * of the UI.
      */
     public void showUiSettings() {
-        beforeBeeingVisible();
         jTabbedPane1.setSelectedIndex(0);
-        this.setVisible(true);
+        if (!this.isVisible()) {
+            beforeBeeingVisible();
+            this.setVisible(true);
+            this.setLocationRelativeTo(this.getParent());
+        }
+        this.requestFocus();
     }
 
     /**
@@ -231,9 +232,13 @@ public class SettingsWindow extends javax.swing.JDialog {
      * of the puzzles.
      */
     public void showPuzzleSettings() {
-        beforeBeeingVisible();
         jTabbedPane1.setSelectedIndex(1);
-        this.setVisible(true);
+        if (!this.isVisible()) {
+            beforeBeeingVisible();
+            this.setVisible(true);
+            this.setLocationRelativeTo(this.getParent());
+        }
+        this.requestFocus();
     }
 
     /**
@@ -421,6 +426,7 @@ public class SettingsWindow extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Einstellungen");
+        setAlwaysOnTop(true);
         setIconImage(ImageGetter.getInstance().getJigSPuzzleImage());
         setMinimumSize(new java.awt.Dimension(400, 300));
         setName("settings"); // NOI18N

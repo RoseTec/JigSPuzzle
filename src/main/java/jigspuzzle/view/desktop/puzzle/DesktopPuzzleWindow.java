@@ -46,7 +46,7 @@ public class DesktopPuzzleWindow implements IPuzzleWindow {
 
     public DesktopPuzzleWindow() {
         mainWindow = new DesktopPuzzleMainWindow(this);
-        settingsWindow = new SettingsWindow(mainWindow, false);
+        settingsWindow = new SettingsWindow();
         versionCheckWindow = new VersionCheckDialog(mainWindow);
     }
 
