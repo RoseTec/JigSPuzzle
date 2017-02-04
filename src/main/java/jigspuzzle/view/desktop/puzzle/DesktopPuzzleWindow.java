@@ -4,6 +4,8 @@ import java.awt.EventQueue;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.geom.Area;
 import java.util.ArrayList;
 import java.util.List;
@@ -154,11 +156,14 @@ public class DesktopPuzzleWindow implements IPuzzleWindow {
      */
     @Override
     public void showPuzzleWindow() {
-        mainWindow.showPuzzleWindow();
-        if (fullscreenPuzzleWindows != null) {
-            for (DesktopPuzzleMainWindow w : fullscreenPuzzleWindows) {
-                w.showPuzzleWindow();
+        if (isFullscreenActive()) {
+            if (fullscreenPuzzleWindows != null) {
+                for (DesktopPuzzleMainWindow w : fullscreenPuzzleWindows) {
+                    w.showPuzzleWindow();
+                }
             }
+        } else {
+            mainWindow.showPuzzleWindow();
         }
     }
 
@@ -217,6 +222,13 @@ public class DesktopPuzzleWindow implements IPuzzleWindow {
                 GraphicsDevice gd = monitorsForFullsceen.get(i);
                 DesktopPuzzleMainWindow newWindow = new DesktopPuzzleMainWindow(this);
 
+                newWindow.addFocusListener(new FocusAdapter() {
+                    @Override
+                    public void focusGained(FocusEvent e) {
+                        // When one window is focused, the other windows also should be in foreground
+                        showPuzzleWindow();
+                    }
+                });
                 newWindow.setPuzzleareaStart(gd.getDefaultConfiguration().getBounds().getLocation());
                 newWindow.dispose();
                 newWindow.setUndecorated(true);
