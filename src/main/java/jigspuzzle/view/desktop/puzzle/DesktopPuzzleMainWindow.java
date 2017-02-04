@@ -3,6 +3,7 @@ package jigspuzzle.view.desktop.puzzle;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -216,6 +217,9 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
 
             jPanel1.setLayout(null);
             puzzlearea.setSize(getSize());
+        } else {
+            // trigger component resized to ensure, the puzlepieces are in the puzzlearea
+            puzzlearea.dispatchEvent(new ComponentEvent(this, ComponentEvent.COMPONENT_RESIZED));
         }
 
         // text for fullscreen-menuItem changed

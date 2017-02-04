@@ -1,5 +1,6 @@
 package jigspuzzle.view.desktop.puzzle;
 
+import java.awt.EventQueue;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
@@ -224,7 +225,9 @@ public class DesktopPuzzleWindow implements IPuzzleWindow {
                 newWindow.setVisible(true);
                 fullscreenPuzzleWindows[i] = newWindow;
 
-                newWindow.setNewPuzzle(PuzzleController.getInstance().getPuzzle());
+                EventQueue.invokeLater(() -> { //invoke later, so that the window is finished with size before puzzlepieces are added
+                    newWindow.setNewPuzzle(PuzzleController.getInstance().getPuzzle());
+                });
             }
         }
 
