@@ -15,6 +15,7 @@ import jigspuzzle.controller.PuzzleController;
 import jigspuzzle.controller.SettingsController;
 import jigspuzzle.model.puzzle.Puzzlepiece;
 import jigspuzzle.model.puzzle.PuzzlepieceGroup;
+import jigspuzzle.util.MathUtil;
 
 /**
  * This class represents a puzzlepiece group that can be drawn on a puzzlearea.
@@ -161,28 +162,33 @@ public class PuzzlepieceView extends DrawablePuzzlepieceGroup {
 
             // checks if the point is in the screen
             Area screnArea = new Area();
+            Rectangle[] allScreens = JigSPuzzle.getInstance().getPuzzleWindow().getPuzzleareaBounds();
 
-            for (Rectangle rect : JigSPuzzle.getInstance().getPuzzleWindow().getPuzzleareaBounds()) {
+            for (Rectangle rect : allScreens) {
                 screnArea.add(new Area(rect));
             }
             if (screnArea.contains(groupShape.getBounds())) {
                 return;
             }
 
+            // get the screen that the new point is nearest to
+            Rectangle puzzleareaRect;
+
+            puzzleareaRect = MathUtil.getRectangleNearestToPoint(newLocation, allScreens);
+
             // correct point to be in sceen
-            //todo: it should be the puzzlearea where the mouse is in, not this one
-            if (newLocation.x < getPuzzleareaStart().x) {
-                newLocation.x = getPuzzleareaStart().x;
+            if (newLocation.x < puzzleareaRect.x) {
+                newLocation.x = puzzleareaRect.x;
             }
-            if (newLocation.x > getPuzzleareaStart().x + puzzlearea.getWidth() - getWidthOfThisGroup() + 2 * getConnectionsSizeLeftRight()) {
-                newLocation.x = getPuzzleareaStart().x + puzzlearea.getWidth() - getWidthOfThisGroup() + 2 * getConnectionsSizeLeftRight();
+            if (newLocation.x > puzzleareaRect.x + puzzleareaRect.width - getWidthOfThisGroup() + 2 * getConnectionsSizeLeftRight()) {
+                newLocation.x = puzzleareaRect.x + puzzleareaRect.width - getWidthOfThisGroup() + 2 * getConnectionsSizeLeftRight();
             }
 
-            if (newLocation.y < getPuzzleareaStart().y) {
-                newLocation.y = getPuzzleareaStart().y;
+            if (newLocation.y < puzzleareaRect.y) {
+                newLocation.y = puzzleareaRect.y;
             }
-            if (newLocation.y > getPuzzleareaStart().y + puzzlearea.getHeight() - getHeightOfThisGroup() + 2 * getConnectionsSizeTopButtom()) {
-                newLocation.y = getPuzzleareaStart().y + puzzlearea.getHeight() - getHeightOfThisGroup() + 2 * getConnectionsSizeTopButtom();
+            if (newLocation.y > puzzleareaRect.y + puzzleareaRect.height - getHeightOfThisGroup() + 2 * getConnectionsSizeTopButtom()) {
+                newLocation.y = puzzleareaRect.y + puzzleareaRect.height - getHeightOfThisGroup() + 2 * getConnectionsSizeTopButtom();
             }
         } finally {
             // undo the correction from the start
