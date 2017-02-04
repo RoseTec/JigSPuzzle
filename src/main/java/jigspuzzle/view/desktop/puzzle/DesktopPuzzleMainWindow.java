@@ -1,6 +1,5 @@
 package jigspuzzle.view.desktop.puzzle;
 
-import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ComponentEvent;
@@ -8,7 +7,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Area;
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
@@ -127,8 +125,8 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
     /**
      * @see IPuzzleWindow#getPuzzleareaBounds()
      */
-    public Area getPuzzleareaBounds() {
-        return new Area(new Rectangle(puzzlearea.getSize()));
+    public Rectangle getPuzzleareaBounds() {
+        return new Rectangle(this.getLocation(), puzzlearea.getSize());
     }
 
     /**
@@ -429,7 +427,7 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
         // make a puzzle out of the file
         new Thread(() -> {
             try {
-                PuzzleController.getInstance().newPuzzle(selectedFile, puzzlearea.getHeight(), puzzlearea.getWidth());
+                PuzzleController.getInstance().newPuzzle(selectedFile);
             } catch (IOException ex) {
                 new ErrorMessageDialog(SettingsController.getInstance().getLanguageText(1, 55),
                         SettingsController.getInstance().getLanguageText(1, 56),
@@ -439,12 +437,8 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        Dimension puzzleDim = SettingsController.getInstance().getPuzzlepieceSize(puzzlearea.getHeight(), puzzlearea.getWidth());
-        int pieceWidth = puzzleDim.width;
-        int pieceHeight = puzzleDim.height;
-
         new Thread(() -> {
-            PuzzleController.getInstance().shufflePuzzlepieces(puzzlearea.getWidth() - pieceWidth, puzzlearea.getHeight() - pieceHeight);
+            PuzzleController.getInstance().shufflePuzzlepieces();
         }).start();
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
@@ -500,7 +494,7 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         new Thread(() -> {
             try {
-                PuzzleController.getInstance().restartPuzzle(puzzlearea.getHeight(), puzzlearea.getWidth());
+                PuzzleController.getInstance().restartPuzzle();
             } catch (IOException ex) {
                 new ErrorMessageDialog(SettingsController.getInstance().getLanguageText(1, 57),
                         SettingsController.getInstance().getLanguageText(1, 58),

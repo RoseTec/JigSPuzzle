@@ -1,6 +1,6 @@
 package jigspuzzle.view;
 
-import java.awt.geom.Area;
+import java.awt.Rectangle;
 import javax.swing.UIManager;
 import jigspuzzle.model.puzzle.Puzzle;
 import jigspuzzle.model.puzzle.PuzzlepieceGroup;
@@ -48,7 +48,7 @@ public class PuzzleWindow implements IPuzzleWindow {
      * {@inheritDoc}
      */
     @Override
-    public Area getPuzzleareaBounds() {
+    public Rectangle[] getPuzzleareaBounds() {
         return puzzleWindow.getPuzzleareaBounds();
     }
 

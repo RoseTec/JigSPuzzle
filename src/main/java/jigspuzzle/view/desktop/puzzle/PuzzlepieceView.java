@@ -160,7 +160,12 @@ public class PuzzlepieceView extends DrawablePuzzlepieceGroup {
             Area groupShape = getShapeForPuzzlepeceGroup(newLocation);
 
             // checks if the point is in the screen
-            if (JigSPuzzle.getInstance().getPuzzleWindow().getPuzzleareaBounds().contains(groupShape.getBounds())) {
+            Area screnArea = new Area();
+
+            for (Rectangle rect : JigSPuzzle.getInstance().getPuzzleWindow().getPuzzleareaBounds()) {
+                screnArea.add(new Area(rect));
+            }
+            if (screnArea.contains(groupShape.getBounds())) {
                 return;
             }
 

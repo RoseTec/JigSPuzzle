@@ -81,9 +81,8 @@ public class JigSPuzzle {
     /**
      * Sets the window on that the user can puzzle.
      *
-     * Use only, in special cases, e.g. tests.
-     *
      * @param puzzleWindow
+     * @deprecated Use only, in special cases, e.g. tests.
      */
     public void setPuzzleWindow(IPuzzleWindow puzzleWindow) {
         this.puzzleWindow = puzzleWindow;

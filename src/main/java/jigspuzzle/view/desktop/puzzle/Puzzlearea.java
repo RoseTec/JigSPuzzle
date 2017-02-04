@@ -1,7 +1,7 @@
 package jigspuzzle.view.desktop.puzzle;
 
-import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -78,7 +78,7 @@ public class Puzzlearea extends JLayeredPane {
                                         PuzzleController.getInstance().loadPuzzle(draggedFile);
                                     } else {
                                         // load image
-                                        PuzzleController.getInstance().newPuzzle(draggedFile, Puzzlearea.this.getHeight(), Puzzlearea.this.getWidth());
+                                        PuzzleController.getInstance().newPuzzle(draggedFile);
                                     }
                                 } catch (IOException ex) {
                                 }
@@ -157,7 +157,7 @@ public class Puzzlearea extends JLayeredPane {
      * @return
      */
     public int getPuzzlepieceHeight() {
-        return SettingsController.getInstance().getPuzzlepieceSize(this.getHeight(), this.getWidth()).height;
+        return SettingsController.getInstance().getPuzzlepieceSize().height;
     }
 
     /**
@@ -166,7 +166,7 @@ public class Puzzlearea extends JLayeredPane {
      * @return
      */
     public int getPuzzlepieceWidth() {
-        return SettingsController.getInstance().getPuzzlepieceSize(this.getHeight(), this.getWidth()).width;
+        return SettingsController.getInstance().getPuzzlepieceSize().width;
     }
 
     /**
@@ -207,8 +207,7 @@ public class Puzzlearea extends JLayeredPane {
             }
         }
 
-        // display new puzzle
-        setVisible(false);
+        // add observer to the puzzlepieces
         for (int x = 0; x < puzzle.getRowCount(); x++) {
             for (int y = 0; y < puzzle.getColumnCount(); y++) {
                 int listIndex = x * puzzle.getColumnCount() + y;
@@ -221,7 +220,7 @@ public class Puzzlearea extends JLayeredPane {
                 newView = piecegroupsViews.get(listIndex);
                 group = piecegroups.get(listIndex);
 
-                add(newView);
+//                add(newView);
                 group.addObserver((Observable o, Object arg) -> {
                     if (!group.isInPuzzle()) {
                         Puzzlearea.this.remove(newView);
@@ -231,11 +230,18 @@ public class Puzzlearea extends JLayeredPane {
             }
         }
 
+        // display all puzzlepieces on the puzzlearea
+        Dimension size = getSize();
+
+        setVisible(false);
+        for (PuzzlepieceView view : piecegroupsViews) {
+            add(view);
+        }
+        setVisible(true);
+        setSize(size); //<- so that getSize() not just returns (0,0)
+
         // move preview in the background
         this.moveToBack(preview);
-
-        // make this visible
-        setVisible(true);
     }
 
     /**

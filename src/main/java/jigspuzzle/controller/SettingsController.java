@@ -2,6 +2,7 @@ package jigspuzzle.controller;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -16,6 +17,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import jigspuzzle.JigSPuzzle;
 import jigspuzzle.model.settings.LanguageSettings;
 import jigspuzzle.model.settings.PuzzleSettings;
 import jigspuzzle.model.settings.PuzzleareaSettings;
@@ -317,13 +319,10 @@ public class SettingsController extends AbstractController {
      * given size of the puzzlearea. The settings for modifiing the size of a
      * puzzlepiece is considered in here.
      *
-     * @param puzzleareaHeight
-     * @param puzzleareaWidth
      * @return
      */
-    public Dimension getPuzzlepieceSize(int puzzleareaHeight, int puzzleareaWidth) {
-        return getPuzzlepieceSize(puzzleareaHeight,
-                puzzleareaWidth,
+    public Dimension getPuzzlepieceSize() {
+        return getPuzzlepieceSize(
                 PuzzleController.getInstance().getPuzzleHeight(),
                 PuzzleController.getInstance().getPuzzleWidth(),
                 PuzzleController.getInstance().getPuzzlepieceRowCount(),
@@ -335,8 +334,6 @@ public class SettingsController extends AbstractController {
      * given size of the puzzlearea. The settings for modifiing the size of a
      * puzzlepiece is considered in here.
      *
-     * @param puzzleareaHeight
-     * @param puzzleareaWidth
      * @param puzzleHeight
      * @param puzzleWidth
      * @param puzzleRows
@@ -344,41 +341,53 @@ public class SettingsController extends AbstractController {
      * @return
      * @see #getPuzzlepieceSize(int, int)
      */
-    Dimension getPuzzlepieceSize(int puzzleareaHeight, int puzzleareaWidth, double puzzleHeight, double puzzleWidth, int puzzleRows, int puzzleColumns) {
-        // resize puzzlearea depending on setting for size of puzzlearea
-        puzzleareaWidth *= puzzleareaSettings.getUsedSizeOfPuzzleare();
-        puzzleareaHeight *= puzzleareaSettings.getUsedSizeOfPuzzleare();
+    Dimension getPuzzlepieceSize(double puzzleHeight, double puzzleWidth, int puzzleRows, int puzzleColumns) {
+        int maxHeight = 0, maxWidth = 0;
 
-        // Gets the dimension, that restricts the puzzlesie more
-        boolean topRestricsMoreThanLeft;
+        for (Rectangle screen : JigSPuzzle.getInstance().getPuzzleWindow().getPuzzleareaBounds()) {
+            int puzzleareaWidth = screen.width;
+            int puzzleareaHeight = screen.height;
+            // resize puzzlearea depending on setting for size of puzzlearea
+            puzzleareaWidth *= puzzleareaSettings.getUsedSizeOfPuzzlearea();
+            puzzleareaHeight *= puzzleareaSettings.getUsedSizeOfPuzzlearea();
 
-        topRestricsMoreThanLeft = (puzzleHeight / puzzleareaHeight > puzzleWidth / puzzleareaWidth);
+            // Gets the dimension, that restricts the puzzlesie more
+            boolean topRestricsMoreThanLeft;
 
-        // resize the puzzlepiece-size depending of the size of puzzlearea
-        int resizedHeight = (int) (puzzleHeight);
-        int resizedWidth = (int) (puzzleWidth);
+            topRestricsMoreThanLeft = (puzzleHeight / puzzleareaHeight > puzzleWidth / puzzleareaWidth);
 
-        if (puzzleareaSettings.getDecreasePuzzleAutomatically()
-                && (puzzleareaHeight < puzzleHeight || puzzleareaWidth < puzzleWidth)) {
-            if (topRestricsMoreThanLeft && puzzleareaHeight < puzzleHeight) {
-                resizedHeight = puzzleareaHeight;
-                resizedWidth = (int) (resizedHeight * puzzleWidth / puzzleHeight);
-            } else if (!topRestricsMoreThanLeft && puzzleareaWidth < puzzleWidth) {
-                resizedWidth = puzzleareaWidth;
-                resizedHeight = (int) (resizedWidth * puzzleHeight / puzzleWidth);
+            // resize the puzzlepiece-size depending of the size of puzzlearea
+            int resizedHeight = (int) (puzzleHeight);
+            int resizedWidth = (int) (puzzleWidth);
+
+            if (puzzleareaSettings.getDecreasePuzzleAutomatically()
+                    && (puzzleareaHeight < puzzleHeight || puzzleareaWidth < puzzleWidth)) {
+                if (topRestricsMoreThanLeft && puzzleareaHeight < puzzleHeight) {
+                    resizedHeight = puzzleareaHeight;
+                    resizedWidth = (int) (resizedHeight * puzzleWidth / puzzleHeight);
+                } else if (!topRestricsMoreThanLeft && puzzleareaWidth < puzzleWidth) {
+                    resizedWidth = puzzleareaWidth;
+                    resizedHeight = (int) (resizedWidth * puzzleHeight / puzzleWidth);
+                }
+            } else if (puzzleareaSettings.getEnlargePuzzleAutomatically()
+                    && (puzzleareaHeight > puzzleHeight || puzzleareaWidth > puzzleWidth)) {
+                if (topRestricsMoreThanLeft && puzzleareaHeight > puzzleHeight) {
+                    resizedHeight = puzzleareaHeight;
+                    resizedWidth = (int) (resizedHeight * puzzleWidth / puzzleHeight);
+                } else if (!topRestricsMoreThanLeft && puzzleareaWidth > puzzleWidth) {
+                    resizedWidth = puzzleareaWidth;
+                    resizedHeight = (int) (resizedWidth * puzzleHeight / puzzleWidth);
+                }
             }
-        } else if (puzzleareaSettings.getEnlargePuzzleAutomatically()
-                && (puzzleareaHeight > puzzleHeight || puzzleareaWidth > puzzleWidth)) {
-            if (topRestricsMoreThanLeft && puzzleareaHeight > puzzleHeight) {
-                resizedHeight = puzzleareaHeight;
-                resizedWidth = (int) (resizedHeight * puzzleWidth / puzzleHeight);
-            } else if (!topRestricsMoreThanLeft && puzzleareaWidth > puzzleWidth) {
-                resizedWidth = puzzleareaWidth;
-                resizedHeight = (int) (resizedWidth * puzzleHeight / puzzleWidth);
+
+            // set this size to the current, if it is greater than the current
+            if (resizedHeight * resizedWidth > maxHeight * maxWidth) {
+                maxHeight = resizedHeight;
+                maxWidth = resizedWidth;
             }
         }
 
-        return new Dimension(resizedWidth / puzzleColumns, resizedHeight / puzzleRows);
+        return new Dimension(maxWidth / puzzleColumns, maxHeight / puzzleRows);
     }
 
     /**
@@ -420,8 +429,8 @@ public class SettingsController extends AbstractController {
      * @param number
      * @see #getPuzzlepieceSize(int, int)
      */
-    public void setUsedSizeOfPuzzleare(double number) {
-        puzzleareaSettings.setUsedSizeOfPuzzleare(number);
+    public void setUsedSizeOfPuzzlearea(double number) {
+        puzzleareaSettings.setUsedSizeOfPuzzlearea(number);
     }
 
     /**
@@ -432,8 +441,8 @@ public class SettingsController extends AbstractController {
      * @return
      * @see #getPuzzlepieceSize(int, int)
      */
-    public double getUsedSizeOfPuzzleare() {
-        return puzzleareaSettings.getUsedSizeOfPuzzleare();
+    public double getUsedSizeOfPuzzlearea() {
+        return puzzleareaSettings.getUsedSizeOfPuzzlearea();
     }
 
     /**

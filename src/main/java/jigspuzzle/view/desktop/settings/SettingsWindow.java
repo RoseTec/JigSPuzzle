@@ -350,7 +350,7 @@ public class SettingsWindow extends javax.swing.JDialog {
         jSlider3.setValue(SettingsController.getInstance().getPuzzlepieceSnapDistancePercent());
 
         // size of the puzzle
-        jSlider1.setValue((int) (SettingsController.getInstance().getUsedSizeOfPuzzleare() * 100));
+        jSlider1.setValue((int) (SettingsController.getInstance().getUsedSizeOfPuzzlearea() * 100));
         jCheckBox3.setSelected(SettingsController.getInstance().getEnlargePuzzleAutomatically());
         jCheckBox4.setSelected(SettingsController.getInstance().getDecreasePuzzleAutomatically());
 
@@ -705,7 +705,7 @@ public class SettingsWindow extends javax.swing.JDialog {
     }//GEN-LAST:event_jCheckBox4ActionPerformed
 
     private void jSlider1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSlider1StateChanged
-        SettingsController.getInstance().setUsedSizeOfPuzzleare(jSlider1.getValue() / (double) 100);
+        SettingsController.getInstance().setUsedSizeOfPuzzlearea(jSlider1.getValue() / (double) 100);
     }//GEN-LAST:event_jSlider1StateChanged
 
     private void jCheckBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox3ActionPerformed

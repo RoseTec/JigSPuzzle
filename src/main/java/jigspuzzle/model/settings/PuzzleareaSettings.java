@@ -206,7 +206,7 @@ public class PuzzleareaSettings extends Observable implements Savable {
      *
      * @return
      */
-    public double getUsedSizeOfPuzzleare() {
+    public double getUsedSizeOfPuzzlearea() {
         return usedSizeOfPuzzleare;
     }
 
@@ -217,7 +217,7 @@ public class PuzzleareaSettings extends Observable implements Savable {
      *
      * @param number
      */
-    public void setUsedSizeOfPuzzleare(double number) {
+    public void setUsedSizeOfPuzzlearea(double number) {
         usedSizeOfPuzzleare = number;
         setChanged();
         notifyObservers();

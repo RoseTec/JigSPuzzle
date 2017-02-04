@@ -6,7 +6,6 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.awt.geom.Area;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFrame;
@@ -77,16 +76,16 @@ public class DesktopPuzzleWindow implements IPuzzleWindow {
      * {@inheritDoc}
      */
     @Override
-    public Area getPuzzleareaBounds() {
+    public Rectangle[] getPuzzleareaBounds() {
         if (isFullscreenActive()) {
-            Area ret = new Area();
+            Rectangle[] ret = new Rectangle[fullscreenPuzzleWindows.length];
 
             for (int i = 0; i < fullscreenPuzzleWindows.length; i++) {
-                ret.add(fullscreenPuzzleWindows[i].getPuzzleareaBounds());
+                ret[i] = fullscreenPuzzleWindows[i].getPuzzleareaBounds();
             }
             return ret;
         } else {
-            return mainWindow.getPuzzleareaBounds();
+            return new Rectangle[]{mainWindow.getPuzzleareaBounds()};
         }
     }
 
@@ -95,18 +94,7 @@ public class DesktopPuzzleWindow implements IPuzzleWindow {
      */
     @Override
     public int getPuzzlepieceHeight() {
-        if (isFullscreenActive()) {
-            Rectangle[] allMonitors = getMultiMonitorRectangles();
-            Rectangle virtualBounds = new Rectangle(allMonitors[0]);
-
-            for (int i = 1; i < allMonitors.length; i++) {
-                // todo: this also includes space that is not visible in a monitor...
-                virtualBounds = virtualBounds.union(allMonitors[i].getBounds());
-            }
-            return SettingsController.getInstance().getPuzzlepieceSize(virtualBounds.height, virtualBounds.width).height;
-        } else {
-            return mainWindow.getPuzzlepieceHeight();
-        }
+        return SettingsController.getInstance().getPuzzlepieceSize().height;
     }
 
     /**
@@ -114,18 +102,7 @@ public class DesktopPuzzleWindow implements IPuzzleWindow {
      */
     @Override
     public int getPuzzlepieceWidth() {
-        if (isFullscreenActive()) {
-            Rectangle[] allMonitors = getMultiMonitorRectangles();
-            Rectangle virtualBounds = new Rectangle(allMonitors[0]);
-
-            for (int i = 1; i < allMonitors.length; i++) {
-                // todo: this also includes space that is not visible in a monitor...
-                virtualBounds = virtualBounds.union(allMonitors[i].getBounds());
-            }
-            return SettingsController.getInstance().getPuzzlepieceSize(virtualBounds.height, virtualBounds.width).width;
-        } else {
-            return mainWindow.getPuzzlepieceWidth();
-        }
+        return SettingsController.getInstance().getPuzzlepieceSize().width;
     }
 
     /**

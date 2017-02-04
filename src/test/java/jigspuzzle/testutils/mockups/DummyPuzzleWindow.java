@@ -13,6 +13,18 @@ import jigspuzzle.view.IPuzzleWindow;
  */
 public class DummyPuzzleWindow implements IPuzzleWindow {
 
+    int puzzleareaWidth;
+    int puzzleareaHeight;
+
+    public DummyPuzzleWindow() {
+        this(1680, 1050);
+    }
+
+    public DummyPuzzleWindow(int puzzleareaWidth, int puzzleareaHeight) {
+        this.puzzleareaWidth = puzzleareaWidth;
+        this.puzzleareaHeight = puzzleareaHeight;
+    }
+
     @Override
     public void bringToFront(PuzzlepieceGroup puzzlepieceGroup) {
     }
@@ -40,8 +52,8 @@ public class DummyPuzzleWindow implements IPuzzleWindow {
     }
 
     @Override
-    public Area getPuzzleareaBounds() {
-        return new Area(new Rectangle(0, 0, 1680, 1050));
+    public Rectangle[] getPuzzleareaBounds() {
+        return new Rectangle[]{new Rectangle(0, 0, puzzleareaWidth, puzzleareaHeight)};
     }
 
 }
