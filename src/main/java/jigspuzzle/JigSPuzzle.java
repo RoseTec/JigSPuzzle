@@ -53,10 +53,7 @@ public class JigSPuzzle {
         } catch (Exception ex) {
             // in the assertJ - tests it is not possible to exit...
             // instead, we 'reset' this class and the controller.
-            instance = null;
-            PuzzleController.getInstance().resetInstance();
-            SettingsController.getInstance().resetInstance();
-            VersionController.getInstance().resetInstance();
+            resetInstances();
         }
     }
 
@@ -76,6 +73,20 @@ public class JigSPuzzle {
      */
     public ISoundPlayer getSoundPlayer() {
         return soundPlayer;
+    }
+
+    /**
+     * A methods that resets all instances to null. With this is is simulated,
+     * that the programm has exited. However, opened windows are still there.
+     * Terefore: Use only for tests.
+     *
+     * @deprecated Use only in tests.
+     */
+    public void resetInstances() {
+        instance = null;
+        PuzzleController.getInstance().resetInstance();
+        SettingsController.getInstance().resetInstance();
+        VersionController.getInstance().resetInstance();
     }
 
     /**

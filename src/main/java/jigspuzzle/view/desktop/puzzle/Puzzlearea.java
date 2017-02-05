@@ -39,7 +39,7 @@ public class Puzzlearea extends JLayeredPane {
      *
      * @see #setPuzzleareaStart(java.awt.Point)
      */
-    private Point puzzleareStart;
+    private Point puzzleareStart = new Point(0, 0);
 
     private PuzzlePreview preview;
 

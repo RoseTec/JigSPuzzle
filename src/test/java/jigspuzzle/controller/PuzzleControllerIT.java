@@ -24,7 +24,6 @@ public class PuzzleControllerIT {
 
     @BeforeClass
     public static void setUpClass() {
-        JigSPuzzle.getInstance().setPuzzleWindow(new DummyPuzzleWindow());
     }
 
     @AfterClass
@@ -33,6 +32,7 @@ public class PuzzleControllerIT {
 
     @Before
     public void setUp() {
+        JigSPuzzle.getInstance().setPuzzleWindow(new DummyPuzzleWindow());
     }
 
     @After
@@ -43,6 +43,9 @@ public class PuzzleControllerIT {
             file.delete();
         } catch (Exception ex) {
         }
+
+        // reset all controllers
+        JigSPuzzle.getInstance().resetInstances();
     }
 
     @Test

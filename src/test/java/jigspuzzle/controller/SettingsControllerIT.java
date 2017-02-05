@@ -41,6 +41,9 @@ public class SettingsControllerIT {
         File file = new File(SettingsController.SETTINGS_FILE_NAME);
 
         file.delete();
+
+        // reset all controllers
+        JigSPuzzle.getInstance().resetInstances();
     }
 
     @Test
