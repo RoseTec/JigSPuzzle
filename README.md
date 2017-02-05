@@ -17,11 +17,11 @@ A program that allows you to create jigsaw puzzles from your image files. You ca
 - fullscreen support for multiple monitors
 - several customizable settings for doing jigsaw puzzles
 
-# Installation
-No installation required. Just download JigSPuzzle and run it on a mashine with [Java](https://java.com/download/) installed.
-
 # Download
 Go to the [release page on GitHub](https://github.com/RoseTec/JigSPuzzle/releases) and download the latest version. All releases contain a \*.zip file with an executable \*.jar. Extract the \*.jar and run it!
+
+# Installation
+No installation required! Just download JigSPuzzle and run it on a mashine with [Java](https://java.com/download/) installed.
 
 # Gallery
 
