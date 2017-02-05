@@ -202,8 +202,10 @@ public class DesktopPuzzleWindow implements IPuzzleWindow {
                 newWindow.addFocusListener(new FocusAdapter() {
                     @Override
                     public void focusGained(FocusEvent e) {
-                        // When one window is focused, the other windows also should be in foreground
-                        showPuzzleWindow();
+                        // When one window is focused back again, the other windows also should be in foreground, when they are not already
+                        if (e.getOppositeComponent() == null) {
+                            showPuzzleWindow();
+                        }
                     }
                 });
                 newWindow.setPuzzleareaStart(gd.getDefaultConfiguration().getBounds().getLocation());
