@@ -449,11 +449,7 @@ public abstract class DrawablePuzzlepieceGroup extends JPanel {
                 Shape oldClip = g2.getClip();
                 Area outConn = new Area(gp);
 
-                if (yStart == 0 && this.getY() < 0 && ConnectorPosition.TOP.equals(position)) {
-                    // don't draw the connector above the puzzleare, because it
-                    // could then be painted in the menu, that doesn't look nice...
-                    outConn.subtract(new Area(new Rectangle(getConnectionsSizeLeftRight(), 0, getPuzzlepieceWidth(), -this.getY())));
-                }
+                outConn.intersect(new Area(oldClip)); // don't draw outside the visible shape of this puzzlepiece
                 g2.setClip(outConn);
                 switch (position) {
                     case LEFT:
