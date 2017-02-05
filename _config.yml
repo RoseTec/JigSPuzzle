@@ -1,1 +1,4 @@
 theme: jekyll-theme-architect
+
+title: <img src="/src/main/resources/images/icon.png?raw=true" height="100" width="100" /> JigSPuzzle
+show_downloads: true
