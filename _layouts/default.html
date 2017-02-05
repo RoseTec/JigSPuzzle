@@ -43,7 +43,7 @@
               {% if release.draft %}
                 {% continue %}
               {% endif %}
-              <p>Last release: <a href="{{ release.github.html_url }}">{{ release.tag_name }}</a></p>
+              <p>Last release: <a href="{{ release.html_url }}">{{ release.tag_name }}</a></p>
           
               {% for man_download in release.assets %}
                 <a href="{{ man_download.browser_download_url }}" class="button">
@@ -56,13 +56,13 @@
                 </a>
               {% endfor %}
               <p>Sourcecode:</p>
-              <a href="{{ release.zip_url }}" class="button">
+              <a href="{{ release.zipball_url }}" class="button">
                 <small>Download Sources</small>
-                {{ release.tag_name }}
+                {{ release.tag_name }} (.zip)
               </a>
-              <a href="{{ release.tar_url }}" class="button">
+              <a href="{{ release.tarball_url }}" class="button">
                 <small>Download Sources</small>
-                {{ release.tag_name }}
+                {{ release.tag_name }} (.tar.gz)
               </a>
               {% break %}
             {% endfor %}
