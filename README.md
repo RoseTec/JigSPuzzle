@@ -1,37 +1,27 @@
-## Welcome to GitHub Pages
+# Welcome to JigSPuzzle
 
-You can use the [editor on GitHub](https://github.com/RoseTec/JigSPuzzle/edit/gh-pages/README.md) to maintain and preview the content for your website in Markdown files.
+You have fun doing jigsaw puzzles?
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+<img src="https://github.com/RoseTec/JigSPuzzle/blob/master/src/main/resources/images/icon.png?raw=true" height="100" width="100" />
+Then here is the right program for you: JigSPuzzle
 
-### Markdown
+A program that allows you to create jigsaw puzzles from your image files. You can then try to solve them on your computer.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+## Features
 
-```markdown
-Syntax highlighted code block
+- create jigsaw puzzles from your image files
+- solve jigsaw puzzleswith your mouse on your computer
+- save jigsaw puzzles and load them later again, when you want to continue playing
+- restart jigsaw puzzles at any time
+- fullscreen support for multiple monitors
+- several customizable settings for doing jigsaw puzzles
 
-# Header 1
-## Header 2
-### Header 3
+## Download & Installation
 
-- Bulleted
-- List
+No installation required. Just download JigSPuzzle and run it on a mashine with [Java](https://java.com/download/) installed.
 
-1. Numbered
-2. List
+### Download
+Go to the [release page on GitHub](https://github.com/RoseTec/JigSPuzzle/releases) and download the latest version. All releases contain a \*.zip file with an executable \*.jar. Extract the \*.jar and run it!
 
-**Bold** and _Italic_ and `Code` text
+## Gallery
 
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/RoseTec/JigSPuzzle/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
