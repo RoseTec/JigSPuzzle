@@ -55,13 +55,14 @@
                   {% endif %}
                 </a>
               {% endfor %}
+              <p>Sourcecode:</p>
               <a href="{{ release.zip_url }}" class="button">
-                <small>Download</small>
-                source (.zip)
+                <small>Download Sources</small>
+                {{ release.tag_name }}
               </a>
               <a href="{{ release.tar_url }}" class="button">
-                <small>Download</small>
-                source (.tar.gz)
+                <small>Download Sources</small>
+                {{ release.tag_name }}
               </a>
               {% break %}
             {% endfor %}
