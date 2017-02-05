@@ -126,7 +126,11 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
      * @see IPuzzleWindow#getPuzzleareaBounds()
      */
     public Rectangle getPuzzleareaBounds() {
-        return new Rectangle(this.getLocation(), puzzlearea.getSize());
+        if (desktopPuzzleWindow.isFullscreenActive()) {
+            return new Rectangle(this.getLocation(), puzzlearea.getSize());
+        } else {
+            return new Rectangle(puzzlearea.getSize());
+        }
     }
 
     /**
