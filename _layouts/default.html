@@ -19,7 +19,7 @@
     <header>
       <div class="inner">
         <a href="{{ '/' | absolute_url }}">
-          <h1>{{ site.title | default: site.github.repository_name }}</h1>
+          <h1><img src="https://github.com/RoseTec/JigSPuzzle/blob/master/src/main/resources/images/icon.png?raw=true" height="100" width="100" /> {{ site.title | default: site.github.repository_name }}</h1>
         </a>
         <h2>{{ site.description | default: site.github.project_tagline }}</h2>
         {% if site.github.is_project_page %}
@@ -45,10 +45,10 @@
               {% endif %}
               <p>Last release: {{ release.tag_name }}</p>
           
-              { for man_download in release.assets }
+              {% for man_download in release.assets %}
                 <a href="{{ man_download.browser_download_url }}" class="button">
                   <small>Download</small>
-                  { if man_download.name == 'JigSPuzzle.zip'}
+                  {% if man_download.name == 'JigSPuzzle.zip' %}
                     latest version
                   {% else %}
                     {{ man_download.name }}
