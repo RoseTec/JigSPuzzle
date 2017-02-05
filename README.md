@@ -32,4 +32,4 @@ No installation required! Just download JigSPuzzle and run it on a mashine with 
 - have a small preview of the final image<br/>![preview](images/preview.png)
 - several customizable settings<br/>![custom settings](images/settings_puzzle.png)
 - changing settings take live effect<br/>![live changes](images/settings_live_change.png)
-- fullscreen support for multiple monitors<br/>![multiple monitors](images/fullscreen.png)
+- fullscreen support for multiple monitors<br/>![multiple monitors](images/multi_fullscreen.png)
