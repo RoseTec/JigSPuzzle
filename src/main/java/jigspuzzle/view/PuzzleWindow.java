@@ -56,22 +56,6 @@ public class PuzzleWindow implements IPuzzleWindow {
      * {@inheritDoc}
      */
     @Override
-    public int getPuzzlepieceHeight() {
-        return puzzleWindow.getPuzzlepieceHeight();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int getPuzzlepieceWidth() {
-        return puzzleWindow.getPuzzlepieceWidth();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void showPuzzleWindow() {
         puzzleWindow.showPuzzleWindow();
     }

@@ -1,7 +1,6 @@
 package jigspuzzle.view;
 
 import java.awt.Rectangle;
-import java.awt.geom.Area;
 import jigspuzzle.model.puzzle.Puzzle;
 import jigspuzzle.model.puzzle.PuzzlepieceGroup;
 
@@ -46,20 +45,6 @@ public interface IPuzzleWindow {
      * @return
      */
     public Rectangle[] getPuzzleareaBounds();
-
-    /**
-     * Gets the height of one puzzlepiece in the puzzleare.
-     *
-     * @return
-     */
-    public int getPuzzlepieceHeight();
-
-    /**
-     * Gets the width of one puzzlepiece in the puzzleare.
-     *
-     * @return
-     */
-    public int getPuzzlepieceWidth();
 
     /**
      * Shows the settings window to the user.

@@ -90,22 +90,6 @@ public class DesktopPuzzleWindow implements IPuzzleWindow {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int getPuzzlepieceHeight() {
-        return SettingsController.getInstance().getPuzzlepieceSize().height;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int getPuzzlepieceWidth() {
-        return SettingsController.getInstance().getPuzzlepieceSize().width;
-    }
-
-    /**
      * Checks if the fullsceen is active.
      *
      * @return

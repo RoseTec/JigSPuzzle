@@ -394,14 +394,12 @@ public class PuzzleController extends AbstractController {
      * @return
      */
     private boolean isPuzzlepieceNearOtherPieceInDirection(Puzzlepiece piece1, Puzzlepiece otherPiece, ConnectorPosition direction) {
-        int pieceWidth = JigSPuzzle.getInstance().getPuzzleWindow().getPuzzlepieceWidth();
-        int pieceHeight = JigSPuzzle.getInstance().getPuzzleWindow().getPuzzlepieceHeight();
+        int pieceWidth = SettingsController.getInstance().getPuzzlepieceSize().width;
+        int pieceHeight = SettingsController.getInstance().getPuzzlepieceSize().height;
 
         // calculate the tolerance offset
-        int possibleGroupOffsetX = JigSPuzzle.getInstance().getPuzzleWindow().getPuzzlepieceWidth()
-                * SettingsController.getInstance().getPuzzlepieceSnapDistancePercent() / 100;
-        int possibleGroupOffsetY = JigSPuzzle.getInstance().getPuzzleWindow().getPuzzlepieceHeight()
-                * SettingsController.getInstance().getPuzzlepieceSnapDistancePercent() / 100;
+        int possibleGroupOffsetX = pieceWidth * SettingsController.getInstance().getPuzzlepieceSnapDistancePercent() / 100;
+        int possibleGroupOffsetY = pieceHeight * SettingsController.getInstance().getPuzzlepieceSnapDistancePercent() / 100;
 
         // get the groups of the puzzlepieces
         PuzzlepieceGroup puzzlepieceGroup = piece1.getPuzzlepieceGroup();

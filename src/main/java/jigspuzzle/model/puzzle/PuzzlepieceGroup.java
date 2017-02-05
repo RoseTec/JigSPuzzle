@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Observable;
-import jigspuzzle.JigSPuzzle;
+import jigspuzzle.controller.SettingsController;
 import jigspuzzle.model.Savable;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -144,12 +144,15 @@ public class PuzzlepieceGroup extends Observable implements Savable {
         }
 
         // adjust the dimensions of the arraylists if necessary
+        int puzzlepieceHeight = SettingsController.getInstance().getPuzzlepieceSize().height;
+        int puzzlepieceWidth = SettingsController.getInstance().getPuzzlepieceSize().width;
+
         if (rPositionOther - rPositionInOtherGroup < rPositionThis) {
             int toAdd = rPositionThis + rPositionInOtherGroup - rPositionOther;
             for (int i = 0; i < toAdd; i++) {
                 puzzlepiecesList.add(0, new ArrayList<>());
             }
-            y -= JigSPuzzle.getInstance().getPuzzleWindow().getPuzzlepieceHeight() * toAdd;
+            y -= puzzlepieceHeight * toAdd;
             rPositionThis += toAdd;
             rPositionOther += toAdd;
         }
@@ -160,7 +163,7 @@ public class PuzzlepieceGroup extends Observable implements Savable {
                     row.add(0, null);
                 }
             }
-            x -= JigSPuzzle.getInstance().getPuzzleWindow().getPuzzlepieceWidth() * toAdd;
+            x -= puzzlepieceWidth * toAdd;
             cPositionThis += toAdd;
             cPositionOther += toAdd;
         }
@@ -193,7 +196,7 @@ public class PuzzlepieceGroup extends Observable implements Savable {
                 }
                 if (firstRowOnlyNullValues) {
                     puzzlepiecesList.remove(0);
-                    y += JigSPuzzle.getInstance().getPuzzleWindow().getPuzzlepieceHeight();
+                    y += puzzlepieceHeight;
                 }
             }
         } catch (IndexOutOfBoundsException ex) {
@@ -216,7 +219,7 @@ public class PuzzlepieceGroup extends Observable implements Savable {
                     for (ArrayList<Puzzlepiece> row : puzzlepiecesList) {
                         row.remove(0);
                     }
-                    x += JigSPuzzle.getInstance().getPuzzleWindow().getPuzzlepieceWidth();
+                    x += puzzlepieceWidth;
                 }
             }
         } catch (IndexOutOfBoundsException ex) {
