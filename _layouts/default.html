@@ -39,7 +39,7 @@
 
         <aside id="sidebar">
           {% if site.show_downloads %}
-            { for release in site.releases }
+            {% for release in site.github.releases %}
               {% if release.draft %}
                 {% continue %}
               {% endif %}
