@@ -300,7 +300,6 @@ public class Puzzle extends AbstractPuzzlesModel {
         Random r = new Random();
         Dimension pieceSize = SettingsController.getInstance().getPuzzlepieceSize();
 
-        System.out.println("screenBounds: " + screenBounds);
         for (int i = 0; i < puzzlepieceseGroups.size(); i++) {
             PuzzlepieceGroup group = puzzlepieceseGroups.get(i);
             try {
