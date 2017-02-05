@@ -27,9 +27,9 @@ Go to the [release page on GitHub](https://github.com/RoseTec/JigSPuzzle/release
 No installation required! Just download JigSPuzzle and run it on a mashine with [Java](https://java.com/download/) installed.
 
 # Gallery
-- load a image from your computer to create a jigsaw puzzle<br/>![load](/images/loading.png)
-- solve a jigsaw puzzle<br/>![jigsaw](/images/main.png)
-- have a small preview of the final image<br/>![preview](/images/preview.png)
-- several customizable settings<br/>![custom settings](/images/settings_puzzle.png)
-- changing settings take live effect<br/>![live changes](/images/settings_live_change.png)
-- fullscreen support for multiple monitors<br/>![multiple monitors](/images/fullscreen.png)
+- load a image from your computer to create a jigsaw puzzle<br/>![load](images/loading.png)
+- solve a jigsaw puzzle<br/>![jigsaw](images/main.png)
+- have a small preview of the final image<br/>![preview](images/preview.png)
+- several customizable settings<br/>![custom settings](images/settings_puzzle.png)
+- changing settings take live effect<br/>![live changes](images/settings_live_change.png)
+- fullscreen support for multiple monitors<br/>![multiple monitors](images/fullscreen.png)
