@@ -39,14 +39,32 @@
 
         <aside id="sidebar">
           {% if site.show_downloads %}
-            <a href="{{ site.github.zip_url }}" class="button">
-              <small>Download</small>
-              .zip file
-            </a>
-            <a href="{{ site.github.tar_url }}" class="button">
-              <small>Download</small>
-              .tar.gz file
-            </a>
+            { for release in site.releases }
+              {% if release.draft %}
+                {% continue %}
+              {% endif %}
+              <p>Last release: {{ release.tag_name }}</p>
+          
+              { for man_download in release.assets }
+                <a href="{{ man_download.browser_download_url }}" class="button">
+                  <small>Download</small>
+                  { if man_download.name == 'JigSPuzzle.zip'}
+                    latest version
+                  {% else %}
+                    {{ man_download.name }}
+                  {% endif %}
+                </a>
+              {% endfor %}
+              <a href="{{ release.zip_url }}" class="button">
+                <small>Download</small>
+                .zip file
+              </a>
+              <a href="{{ release.tar_url }}" class="button">
+                <small>Download</small>
+                .tar.gz file
+              </a>
+              {% break %}
+            {% endfor %}
           {% endif %}
 
           {% if site.github.is_project_page %}
@@ -70,9 +88,9 @@
         } catch(err) {}
       </script>
     {% endif %}
+    
+    {% if site.debug_gh_pages %}
+<!-- {{ site }} -->
+    {% endif %}
   </body>
-  
-      <script type="text/javascript">
-      console.log("{{ site.github }}");
-      </script>
 </html>
