@@ -10,12 +10,15 @@ A program that allows you to create jigsaw puzzles from your image files. You ca
 
 # Features
 
-- create jigsaw puzzles from your image files
+- create jigsaw puzzles from your image files either with a file chosser or with drag&drop
 - solve jigsaw puzzleswith your mouse on your computer
+- have a small preview of the final image
+- possibility to automatically adjust size of jigsaw puzzle to the window size used for puzzeling
 - save jigsaw puzzles and load them later again, when you want to continue playing
 - restart jigsaw puzzles at any time
-- fullscreen support for multiple monitors
 - several customizable settings for doing jigsaw puzzles
+- fullscreen support for multiple monitors
+- supported languages up to now: english, german
 
 # Download
 Go to the [release page on GitHub](https://github.com/RoseTec/JigSPuzzle/releases) and download the latest version. All releases contain a \*.zip file with an executable \*.jar. Extract the \*.jar and run it!
@@ -24,4 +27,9 @@ Go to the [release page on GitHub](https://github.com/RoseTec/JigSPuzzle/release
 No installation required! Just download JigSPuzzle and run it on a mashine with [Java](https://java.com/download/) installed.
 
 # Gallery
-
+- load a image from your computer to create a jigsaw puzzle<br/>![load](_images/loading.png)
+- solve a jigsaw puzzle<br/>![jigsaw](_images/main.png)
+- have a small preview of the final image<br/>![preview](_images/preview.png)
+- several customizable settings<br/>![custom settings](_images/settings_puzzle.png)
+- changing settings take live effect<br/>![live changes](_images/settings_live_change.png)
+- fullscreen support for multiple monitors<br/>![multiple monitors](_images/fullscreen.png)
