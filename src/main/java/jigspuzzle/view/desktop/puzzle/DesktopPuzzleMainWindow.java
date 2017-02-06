@@ -1,7 +1,9 @@
 package jigspuzzle.view.desktop.puzzle;
 
 import java.awt.Dimension;
-import java.awt.LayoutManager;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -10,8 +12,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.Observable;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import jigspuzzle.JigSPuzzle;
 import jigspuzzle.controller.PuzzleController;
@@ -19,9 +21,9 @@ import jigspuzzle.controller.SettingsController;
 import jigspuzzle.model.puzzle.Puzzle;
 import jigspuzzle.model.puzzle.PuzzlepieceGroup;
 import jigspuzzle.model.settings.PuzzleareaSettings;
+import jigspuzzle.util.ImageUtil;
 import jigspuzzle.view.IPuzzleWindow;
 import jigspuzzle.view.ImageGetter;
-import jigspuzzle.view.desktop.DesktopPuzzleWindow;
 import jigspuzzle.view.desktop.swing.ErrorMessageDialog;
 import jigspuzzle.view.desktop.swing.HideableJMenuBar;
 import jigspuzzle.view.desktop.swing.JFileChooser;
@@ -34,16 +36,6 @@ import jigspuzzle.view.desktop.swing.ThumbnailView;
  * @author RoseTec
  */
 public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
-
-    /**
-     * The size of this frame before fullscreen was triggered.
-     */
-    private Dimension sizeBeforeFullScreen;
-
-    /**
-     * The layout manager of the first panel before fullscreen was triggered.
-     */
-    private LayoutManager layoutBeforeFullscreen;
 
     /**
      * the area, where the user can play with puzzlepieces
@@ -65,6 +57,11 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
     private File lastSavedFile = null;
 
     /**
+     * The size of the icons of the menu items.
+     */
+    private Dimension menuItemIconSize = new Dimension(20, 20);
+
+    /**
      * Creates new form PuzzleWindow
      *
      * @param desktopPuzzleWindow
@@ -73,10 +70,19 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
         this.desktopPuzzleWindow = desktopPuzzleWindow;
         initComponents();
 
+        jMenuItem1.setIcon(ImageUtil.transformImageToIcon(ImageGetter.getInstance().getNewPuzzleImage(), menuItemIconSize));
+        jMenuItem2.setIcon(ImageUtil.transformImageToIcon(ImageGetter.getInstance().getLoadImage(), menuItemIconSize));
+        jMenuItem3.setIcon(ImageUtil.transformImageToIcon(ImageGetter.getInstance().getSaveImage(), menuItemIconSize));
+        jMenuItem4.setIcon(ImageUtil.transformImageToIcon(ImageGetter.getInstance().getShuffleImage(), menuItemIconSize));
+        jMenuItem5.setIcon(ImageUtil.transformImageToIcon(ImageGetter.getInstance().getRestartImage(), menuItemIconSize));
+        jMenuItem6.setIcon(ImageUtil.transformImageToIcon(ImageGetter.getInstance().getExitImage(), menuItemIconSize));
+        jMenuItem11.setIcon(ImageUtil.transformImageToIcon(ImageGetter.getInstance().getFullscreenImage(), menuItemIconSize));
+
         // create Puzzlearea
         puzzlearea = new Puzzlearea();
 
         jPanel1.add(puzzlearea);
+        setPuzzleareaStart(new Point(0, 0));
 
         // load language texts
         SettingsController.getInstance().addLanguageSettingsObserver((Observable o, Object arg) -> {
@@ -95,8 +101,8 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
         this.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ESCAPE && isFullscreenActive()) {
-                    triggerFullscreen();
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE && desktopPuzzleWindow.isFullscreenActive()) {
+                    desktopPuzzleWindow.triggerFullscreen();
                 }
             }
         });
@@ -105,7 +111,7 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
         this.addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
-                if (!isFullscreenActive()) {
+                if (!desktopPuzzleWindow.isFullscreenActive()) {
                     return;
                 }
                 int borderYBecomeVisible = 5;
@@ -133,6 +139,24 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
     }
 
     /**
+     * @see IPuzzleWindow#getPuzzleareaBounds()
+     */
+    public Rectangle getPuzzleareaBounds() {
+        if (desktopPuzzleWindow.isFullscreenActive()) {
+            return new Rectangle(this.getLocation(), puzzlearea.getSize());
+        } else {
+            return new Rectangle(puzzlearea.getSize());
+        }
+    }
+
+    /**
+     * @see Puzzlearea#setPuzzleareaStart(java.awt.Point)
+     */
+    void setPuzzleareaStart(Point p) {
+        puzzlearea.setPuzzleareaStart(p);
+    }
+
+    /**
      * @see IPuzzleWindow#getPuzzlepieceHeight()
      */
     public int getPuzzlepieceHeight() {
@@ -144,15 +168,6 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
      */
     public int getPuzzlepieceWidth() {
         return puzzlearea.getPuzzlepieceWidth();
-    }
-
-    /**
-     * Checks if the fullsceen is active.
-     *
-     * @return
-     */
-    protected boolean isFullscreenActive() {
-        return this.isUndecorated();
     }
 
     /**
@@ -202,7 +217,7 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
         jMenuItem10.setText(SettingsController.getInstance().getLanguageText(1, 520));
 
         jMenu4.setText(SettingsController.getInstance().getLanguageText(1, 700));
-        textId = isFullscreenActive() ? 711 : 710;
+        textId = desktopPuzzleWindow.isFullscreenActive() ? 711 : 710;
         jMenuItem11.setText(SettingsController.getInstance().getLanguageText(1, textId));
 
         // also set the default locale of the swing components
@@ -211,36 +226,23 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
     }
 
     /**
-     * Triggers this view to be on fullscreen.
-     *
-     * If the view is allready on fullscreen, the fullscreen is exited.
+     * Will be call, when the fullscreen is triggered.
      */
-    private void triggerFullscreen() {
-        if (isFullscreenActive()) {
-            this.dispose();
-            this.setExtendedState(JFrame.NORMAL);
-            this.setUndecorated(false);
+    void fullscreenTriggered() {
+        if (this.isUndecorated()) {
+            // adjust window only for the jframes in fullscreen
+            ((HideableJMenuBar) jMenuBar1).setHidden(true);
+            jMenuItem11.setIcon(ImageUtil.transformImageToIcon(ImageGetter.getInstance().getFullscreenCloseImage(), menuItemIconSize));
 
-            ((HideableJMenuBar) jMenuBar1).setHidden(false); //set menu again if it was not visible
-            this.setSize(sizeBeforeFullScreen);
-            jPanel1.setLayout(layoutBeforeFullscreen);
-
-            this.setVisible(true);
-        } else {
-            sizeBeforeFullScreen = this.getSize();
-            this.dispose();
-            this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            this.setUndecorated(true);
-
-            // todo: make a layoutmanager out of this
-            layoutBeforeFullscreen = jPanel1.getLayout();
             jPanel1.setLayout(null);
-
-            this.setVisible(true);
-            jPanel1.setSize(getSize());
             puzzlearea.setSize(getSize());
+        } else {
+            // trigger component resized to ensure, the puzlepieces are in the puzzlearea
+            puzzlearea.dispatchEvent(new ComponentEvent(this, ComponentEvent.COMPONENT_RESIZED));
         }
-        loadLanguageTexts(); //text for fullscreen-menuItem changed
+
+        // text for fullscreen-menuItem changed
+        loadLanguageTexts();
     }
 
     /**
@@ -446,7 +448,7 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
         // make a puzzle out of the file
         new Thread(() -> {
             try {
-                PuzzleController.getInstance().newPuzzle(selectedFile, puzzlearea.getHeight(), puzzlearea.getWidth());
+                PuzzleController.getInstance().newPuzzle(selectedFile);
             } catch (IOException ex) {
                 new ErrorMessageDialog(SettingsController.getInstance().getLanguageText(1, 55),
                         SettingsController.getInstance().getLanguageText(1, 56),
@@ -456,12 +458,8 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        Dimension puzzleDim = SettingsController.getInstance().getPuzzlepieceSize(puzzlearea.getHeight(), puzzlearea.getWidth());
-        int pieceWidth = puzzleDim.width;
-        int pieceHeight = puzzleDim.height;
-
         new Thread(() -> {
-            PuzzleController.getInstance().shufflePuzzlepieces(puzzlearea.getWidth() - pieceWidth, puzzlearea.getHeight() - pieceHeight);
+            PuzzleController.getInstance().shufflePuzzlepieces();
         }).start();
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
@@ -517,7 +515,7 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         new Thread(() -> {
             try {
-                PuzzleController.getInstance().restartPuzzle(puzzlearea.getHeight(), puzzlearea.getWidth());
+                PuzzleController.getInstance().restartPuzzle();
             } catch (IOException ex) {
                 new ErrorMessageDialog(SettingsController.getInstance().getLanguageText(1, 57),
                         SettingsController.getInstance().getLanguageText(1, 58),
@@ -531,7 +529,7 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
-        triggerFullscreen();
+        desktopPuzzleWindow.triggerFullscreen();
     }//GEN-LAST:event_jMenuItem11ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

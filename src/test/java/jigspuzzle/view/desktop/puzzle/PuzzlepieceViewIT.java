@@ -1,6 +1,7 @@
 package jigspuzzle.view.desktop.puzzle;
 
 import java.awt.Shape;
+import jigspuzzle.JigSPuzzle;
 import jigspuzzle.controller.PuzzleController;
 import jigspuzzle.controller.SettingsController;
 import jigspuzzle.model.puzzle.ConnectorPosition;
@@ -34,6 +35,8 @@ public class PuzzlepieceViewIT {
 
     @After
     public void tearDown() {
+        // reset all controllers
+        JigSPuzzle.getInstance().resetInstances();
     }
 
     @Test

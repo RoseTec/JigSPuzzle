@@ -1,9 +1,10 @@
 package jigspuzzle.view;
 
+import java.awt.Rectangle;
 import javax.swing.UIManager;
 import jigspuzzle.model.puzzle.Puzzle;
 import jigspuzzle.model.puzzle.PuzzlepieceGroup;
-import jigspuzzle.view.desktop.DesktopPuzzleWindow;
+import jigspuzzle.view.desktop.puzzle.DesktopPuzzleWindow;
 
 /**
  * A class for the puzzlewindow used for puzzeling. All methods are delegated to
@@ -47,16 +48,8 @@ public class PuzzleWindow implements IPuzzleWindow {
      * {@inheritDoc}
      */
     @Override
-    public int getPuzzlepieceHeight() {
-        return puzzleWindow.getPuzzlepieceHeight();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int getPuzzlepieceWidth() {
-        return puzzleWindow.getPuzzlepieceWidth();
+    public Rectangle[] getPuzzleareaBounds() {
+        return puzzleWindow.getPuzzleareaBounds();
     }
 
     /**

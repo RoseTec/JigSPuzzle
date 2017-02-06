@@ -6,22 +6,17 @@ import jigspuzzle.model.puzzle.PuzzlepieceGroup;
 import jigspuzzle.view.IPuzzleWindow;
 
 /**
- * A dummy implementation of a puzzle window. All methods are empty.
+ * A dummy implementation of a puzzle window, that can spread over several
+ * monitors. All methods are empty.
  *
  * @author RoseTec
  */
-public class DummyPuzzleWindow implements IPuzzleWindow {
+public class DummyMultiMonitorPuzzleWindow implements IPuzzleWindow {
 
-    int puzzleareaWidth;
-    int puzzleareaHeight;
+    Rectangle[] screens;
 
-    public DummyPuzzleWindow() {
-        this(1680, 1050);
-    }
-
-    public DummyPuzzleWindow(int puzzleareaWidth, int puzzleareaHeight) {
-        this.puzzleareaWidth = puzzleareaWidth;
-        this.puzzleareaHeight = puzzleareaHeight;
+    public DummyMultiMonitorPuzzleWindow(Rectangle[] screens) {
+        this.screens = screens;
     }
 
     @Override
@@ -34,7 +29,7 @@ public class DummyPuzzleWindow implements IPuzzleWindow {
 
     @Override
     public Rectangle[] getPuzzleareaBounds() {
-        return new Rectangle[]{new Rectangle(0, 0, puzzleareaWidth, puzzleareaHeight)};
+        return screens;
     }
 
     @Override

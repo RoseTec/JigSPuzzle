@@ -1,7 +1,11 @@
 package jigspuzzle.model.settings;
 
 import java.awt.Color;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import jigspuzzle.model.Savable;
 import org.w3c.dom.Document;
@@ -33,6 +37,8 @@ public class PuzzleareaSettings extends Observable implements Savable {
      */
     private boolean enlargePuzzleAutomatically = true;
 
+    private List<Integer> monitorForFullscreen;
+
     /**
      * Wheather there should be sounds, when something happend (e.g. snapping
      * puzzlepieces).
@@ -51,6 +57,11 @@ public class PuzzleareaSettings extends Observable implements Savable {
      * puzzelarea should be used for the final puzzle.
      */
     private double usedSizeOfPuzzleare = 1;
+
+    public PuzzleareaSettings() {
+        monitorForFullscreen = new ArrayList<>();
+        monitorForFullscreen.add(getDefaultMonitorIndex());
+    }
 
     /**
      * Gets the value for automatically decrease the size of the puzzle, if it
@@ -95,6 +106,30 @@ public class PuzzleareaSettings extends Observable implements Savable {
     public void setEnlargePuzzleAutomatically(boolean value) {
         if (enlargePuzzleAutomatically != value) {
             enlargePuzzleAutomatically = value;
+            setChanged();
+            notifyObservers();
+        }
+    }
+
+    /**
+     * Gets the monitors that should be used for fullscreen mode.
+     *
+     * @return An array with the indeces of the screens used for fullscreen.
+     */
+    public List<Integer> getMonitorForFullscreen() {
+        return new ArrayList<>(monitorForFullscreen);
+    }
+
+    /**
+     * @see #getMonitorForFullscreen()
+     */
+    public void setMonitorForFullscreen(List<Integer> monitorForFullscreen) {
+        if (!this.monitorForFullscreen.equals(monitorForFullscreen)) {
+            this.monitorForFullscreen = new ArrayList<>(monitorForFullscreen);
+            if (this.monitorForFullscreen.isEmpty()) {
+                // do not allow no monitors selected
+                this.monitorForFullscreen.add(getDefaultMonitorIndex());
+            }
             setChanged();
             notifyObservers();
         }
@@ -171,7 +206,7 @@ public class PuzzleareaSettings extends Observable implements Savable {
      *
      * @return
      */
-    public double getUsedSizeOfPuzzleare() {
+    public double getUsedSizeOfPuzzlearea() {
         return usedSizeOfPuzzleare;
     }
 
@@ -182,7 +217,7 @@ public class PuzzleareaSettings extends Observable implements Savable {
      *
      * @param number
      */
-    public void setUsedSizeOfPuzzleare(double number) {
+    public void setUsedSizeOfPuzzlearea(double number) {
         usedSizeOfPuzzleare = number;
         setChanged();
         notifyObservers();
@@ -207,20 +242,39 @@ public class PuzzleareaSettings extends Observable implements Savable {
             switch (node.getNodeName()) {
                 case "automatically-decrease-puzzle":
                     decreasePuzzleAutomatically = Boolean.parseBoolean(node.getTextContent());
+                    break;
                 case "automatically-enlarge-puzzle":
                     enlargePuzzleAutomatically = Boolean.parseBoolean(node.getTextContent());
+                    break;
                 case "background-color":
                     try {
                         puzzleareaBackgroundColor = new Color(Integer.parseInt(node.getTextContent()));
                     } catch (NumberFormatException ex) {
                     }
+                    break;
                 case "show-puzzle-preview":
                     showPuzzlePreview = Boolean.parseBoolean(node.getTextContent());
+                    break;
+                case "monitor-for-fullscreen":
+                    try {
+                        String[] numbersString = node.getTextContent().split(",");
+                        List<Integer> numbersInt = new ArrayList<>();
+
+                        for (int i2 = 0; i2 < numbersString.length; i2++) {
+                            numbersInt.add(Integer.parseInt(numbersString[i2]));
+                        }
+                        monitorForFullscreen = numbersInt;
+                    } catch (NumberFormatException ex) {
+                        monitorForFullscreen = new ArrayList<>();
+                        monitorForFullscreen.add(getDefaultMonitorIndex());
+                    }
+                    break;
                 case "used-size-of-puzzleare":
                     try {
                         usedSizeOfPuzzleare = Double.parseDouble(node.getTextContent());
                     } catch (NumberFormatException ex) {
                     }
+                    break;
             }
         }
 
@@ -235,6 +289,7 @@ public class PuzzleareaSettings extends Observable implements Savable {
     public void saveToFile(Document doc, Element rootElement) throws IOException {
         Element settingsElement = doc.createElement("puzzlearea-settings");
         Element tmpElement;
+        String txt;
 
         rootElement.appendChild(settingsElement);
 
@@ -250,6 +305,14 @@ public class PuzzleareaSettings extends Observable implements Savable {
         tmpElement.setTextContent(String.valueOf(puzzleareaBackgroundColor.getRGB()));
         settingsElement.appendChild(tmpElement);
 
+        tmpElement = doc.createElement("monitor-for-fullscreen");
+        txt = String.valueOf(monitorForFullscreen.get(0));
+        for (int i = 1; i < monitorForFullscreen.size(); i++) {
+            txt += "," + monitorForFullscreen.get(i);
+        }
+        tmpElement.setTextContent(txt);
+        settingsElement.appendChild(tmpElement);
+
         tmpElement = doc.createElement("show-puzzle-preview");
         tmpElement.setTextContent(String.valueOf(showPuzzlePreview));
         settingsElement.appendChild(tmpElement);
@@ -257,6 +320,28 @@ public class PuzzleareaSettings extends Observable implements Savable {
         tmpElement = doc.createElement("used-size-of-puzzleare");
         tmpElement.setTextContent(String.valueOf(usedSizeOfPuzzleare));
         settingsElement.appendChild(tmpElement);
+    }
+
+    /**
+     * Gets the monitor that is the default monitor. Used for a configuration in
+     * that no monitor would be selected. In this case, the default monitor
+     * should be used and selected.
+     *
+     * @return
+     */
+    private int getDefaultMonitorIndex() {
+        int mainMonitorIndex = 0;
+        GraphicsDevice[] allMonitors = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
+
+        for (int i = 0; i < allMonitors.length; i++) {
+            GraphicsDevice gd = allMonitors[i];
+
+            if (gd == GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice()) {
+                mainMonitorIndex = i;
+                break;
+            }
+        }
+        return mainMonitorIndex;
     }
 
 }

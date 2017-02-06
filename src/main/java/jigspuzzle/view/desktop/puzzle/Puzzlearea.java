@@ -1,6 +1,8 @@
 package jigspuzzle.view.desktop.puzzle;
 
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DnDConstants;
@@ -31,6 +33,13 @@ public class Puzzlearea extends JLayeredPane {
      * The current puzzle that the user tries to solve.
      */
     private Puzzle puzzle;
+
+    /**
+     * The point where the puzzlearea of this window starts for the puzzle.
+     *
+     * @see #setPuzzleareaStart(java.awt.Point)
+     */
+    private Point puzzleareStart = new Point(0, 0);
 
     private PuzzlePreview preview;
 
@@ -69,7 +78,7 @@ public class Puzzlearea extends JLayeredPane {
                                         PuzzleController.getInstance().loadPuzzle(draggedFile);
                                     } else {
                                         // load image
-                                        PuzzleController.getInstance().newPuzzle(draggedFile, Puzzlearea.this.getHeight(), Puzzlearea.this.getWidth());
+                                        PuzzleController.getInstance().newPuzzle(draggedFile);
                                     }
                                 } catch (IOException ex) {
                                 }
@@ -136,12 +145,19 @@ public class Puzzlearea extends JLayeredPane {
     }
 
     /**
+     * @see #setPuzzleareaStart(java.awt.Point)
+     */
+    Point getPuzzleareaStart() {
+        return new Point(puzzleareStart);
+    }
+
+    /**
      * Gets the height of one puzzlepiece that is shown to the user.
      *
      * @return
      */
     public int getPuzzlepieceHeight() {
-        return SettingsController.getInstance().getPuzzlepieceSize(this.getHeight(), this.getWidth()).height;
+        return SettingsController.getInstance().getPuzzlepieceSize().height;
     }
 
     /**
@@ -150,7 +166,7 @@ public class Puzzlearea extends JLayeredPane {
      * @return
      */
     public int getPuzzlepieceWidth() {
-        return SettingsController.getInstance().getPuzzlepieceSize(this.getHeight(), this.getWidth()).width;
+        return SettingsController.getInstance().getPuzzlepieceSize().width;
     }
 
     /**
@@ -161,6 +177,9 @@ public class Puzzlearea extends JLayeredPane {
     public void setNewPuzzle(Puzzle puzzle) {
         // delete old puzzle before
         this.deletePuzzle();
+        if (puzzle == null) {
+            return;
+        }
 
         // set new puzzle
         List<PuzzlepieceGroup> piecegroups = puzzle.getPuzzlepieceGroups();
@@ -188,8 +207,7 @@ public class Puzzlearea extends JLayeredPane {
             }
         }
 
-        // display new puzzle
-        setVisible(false);
+        // add observer to the puzzlepieces
         for (int x = 0; x < puzzle.getRowCount(); x++) {
             for (int y = 0; y < puzzle.getColumnCount(); y++) {
                 int listIndex = x * puzzle.getColumnCount() + y;
@@ -202,7 +220,7 @@ public class Puzzlearea extends JLayeredPane {
                 newView = piecegroupsViews.get(listIndex);
                 group = piecegroups.get(listIndex);
 
-                add(newView);
+//                add(newView);
                 group.addObserver((Observable o, Object arg) -> {
                     if (!group.isInPuzzle()) {
                         Puzzlearea.this.remove(newView);
@@ -212,11 +230,25 @@ public class Puzzlearea extends JLayeredPane {
             }
         }
 
+        // display all puzzlepieces on the puzzlearea
+        Dimension size = getSize();
+
+        setVisible(false);
+        for (PuzzlepieceView view : piecegroupsViews) {
+            add(view);
+        }
+        setVisible(true);
+        setSize(size); //<- so that getSize() not just returns (0,0)
+
         // move preview in the background
         this.moveToBack(preview);
+    }
 
-        // make this visible
-        setVisible(true);
+    /**
+     * @see DrawablePuzzlepieceGroup#getPuzzleareaStart()
+     */
+    void setPuzzleareaStart(Point p) {
+        puzzleareStart = new Point(p);
     }
 
     /**

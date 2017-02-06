@@ -1,7 +1,10 @@
 package jigspuzzle.model.puzzle;
 
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
+import jigspuzzle.JigSPuzzle;
+import jigspuzzle.controller.SettingsController;
 import jigspuzzle.util.ImageUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -277,15 +282,23 @@ public class Puzzle extends AbstractPuzzlesModel {
      * Shuffles the puzzle on the puzzleare, so that all puzzlepieces get new
      * coordinates.
      *
-     * @param maxX The maximum x-coordinate, that is <b>not</b> be used. Means,
-     * the given number is excludes.
-     * @param maxY The maximum y-coordinate, that is <b>not</b> be used. Means,
-     * the given number is excludes.
      * @param waitBetweenShuffle The Time in miliseconds that should be waited
      * before the next puzzlepiece gets a new coordinate.
      */
-    public void shufflePuzzlepieces(int maxX, int maxY, int waitBetweenShuffle) {
+    public void shufflePuzzlepieces(int waitBetweenShuffle) {
+        //todo: should this not be in PuzzleController?
+        // get the shape of the puzzlearea
+        Rectangle screenBounds;
+        Area screenArea = new Area();
+
+        for (Rectangle screen : JigSPuzzle.getInstance().getPuzzleWindow().getPuzzleareaBounds()) {
+            screenArea.add(new Area(screen));
+        }
+        screenBounds = screenArea.getBounds();
+
+        // get random numbers in the puzzlearea for every coordinate
         Random r = new Random();
+        Dimension pieceSize = SettingsController.getInstance().getPuzzlepieceSize();
 
         for (int i = 0; i < puzzlepieceseGroups.size(); i++) {
             PuzzlepieceGroup group = puzzlepieceseGroups.get(i);
@@ -294,10 +307,16 @@ public class Puzzle extends AbstractPuzzlesModel {
             } catch (InterruptedException ex) {
             }
             try {
-                group.setX(r.nextInt(maxX));
-                group.setY(r.nextInt(maxY));
+                int newX, newY;
+
+                do {
+                    newX = r.nextInt(screenBounds.width) + screenBounds.x;
+                    newY = r.nextInt(screenBounds.height) + screenBounds.y;
+                } while (!screenArea.contains(newX, newY, pieceSize.getWidth() * group.getMaxPuzzlePiecesInXDirection(), pieceSize.height * group.getMaxPuzzlePiecesInYDirection()));
+                group.setX(newX);
+                group.setY(newY);
             } catch (NullPointerException ex) {
-                // puzzlepiece group was already cnnected to another group and does not exist anymore
+                // puzzlepiece group was already connected to another group and does not exist anymore
                 continue;
             }
         }

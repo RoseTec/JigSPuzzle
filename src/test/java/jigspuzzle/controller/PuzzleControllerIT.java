@@ -24,7 +24,6 @@ public class PuzzleControllerIT {
 
     @BeforeClass
     public static void setUpClass() {
-        JigSPuzzle.getInstance().setPuzzleWindow(new DummyPuzzleWindow());
     }
 
     @AfterClass
@@ -33,6 +32,7 @@ public class PuzzleControllerIT {
 
     @Before
     public void setUp() {
+        JigSPuzzle.getInstance().setPuzzleWindow(new DummyPuzzleWindow());
     }
 
     @After
@@ -43,19 +43,21 @@ public class PuzzleControllerIT {
             file.delete();
         } catch (Exception ex) {
         }
+
+        // reset all controllers
+        JigSPuzzle.getInstance().resetInstances();
     }
 
     @Test
     public void testRestartPuzzle() throws Exception {
-        int areaHeight = 600, areaWidth = 600;
         Puzzle puzzle = (Puzzle) FactorySlave.build(Puzzle.class).create();
         PuzzleController instance = PuzzleController.getInstance();
         instance.setPuzzle(puzzle);
-        instance.restartPuzzle(areaHeight, areaWidth); // restart first time to actual mak a puzzle
+        instance.restartPuzzle(); // restart first time to actual mak a puzzle
 
         List<PuzzlepieceGroup> groups = instance.getPuzzle().getPuzzlepieceGroups();
         Image image = instance.getPuzzle().getImage();
-        instance.restartPuzzle(areaHeight, areaWidth);
+        instance.restartPuzzle();
         List<PuzzlepieceGroup> newGroups = instance.getPuzzle().getPuzzlepieceGroups();
         Image newImage = instance.getPuzzle().getImage();
 
@@ -77,7 +79,7 @@ public class PuzzleControllerIT {
 
         int x = puzzle.getPuzzlepieceGroups().get(3).getX();
         int y = puzzle.getPuzzlepieceGroups().get(3).getY();
-        instance.shufflePuzzlepieces(600, 600);
+        instance.shufflePuzzlepieces();
         int newX = puzzle.getPuzzlepieceGroups().get(3).getX();
         int newY = puzzle.getPuzzlepieceGroups().get(3).getY();
 

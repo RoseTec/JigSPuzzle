@@ -1,7 +1,7 @@
 package jigspuzzle.controller;
 
 import java.util.Observable;
-import java.util.Observer;
+import jigspuzzle.JigSPuzzle;
 import jigspuzzle.model.version.Version;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -29,6 +29,8 @@ public class VersionControllerIT {
 
     @After
     public void tearDown() {
+        // reset all controllers
+        JigSPuzzle.getInstance().resetInstances();
     }
 
     @Test

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Shape;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -104,8 +105,7 @@ class SettingsPuzzlepiece extends JPanel implements SelectionGroupSelectable<Int
 
         // paint an overlay if this puzzlepiece is selected
         if (selectionGroup != null && selectionGroup.isSelected(this)) {
-            int alpha = 127; // 50% transparent
-            g2.setColor(new Color(106, 188, 255, alpha));
+            g2.setColor(SelectionGroupSelectable.COLOR_SELECTED_OBJECT);
             g2.fillRect(0, 0, this.getWidth(), this.getHeight());
         }
     }
@@ -221,6 +221,22 @@ class SettingsPuzzlepiece extends JPanel implements SelectionGroupSelectable<Int
             } else {
                 return super.getShapeOnConnectorPosition(position, puzzlepiece);
             }
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        protected Dimension getPuzzleareaSize() {
+            return SettingsPuzzlepiece.this.getSize();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        protected Point getPuzzleareaStart() {
+            return new Point(0, 0);
         }
 
         /**

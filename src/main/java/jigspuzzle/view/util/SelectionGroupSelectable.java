@@ -1,5 +1,7 @@
 package jigspuzzle.view.util;
 
+import java.awt.Color;
+
 /**
  * A single object that can be seleced in a selection group.
  *
@@ -9,12 +11,7 @@ package jigspuzzle.view.util;
  */
 public interface SelectionGroupSelectable<T> {
 
-    /**
-     * Selts the selection group, in that this object is contained.
-     *
-     * @param selectionGroup
-     */
-    public void setSelectionGroup(SelectionGroup<T> selectionGroup);
+    public static Color COLOR_SELECTED_OBJECT = new Color(106, 188, 255, 127);
 
     /**
      * The value that is given back, when with object is selected.
@@ -24,8 +21,15 @@ public interface SelectionGroupSelectable<T> {
     public T getSelectionValue();
 
     /**
+     * Selts the selection group, in that this object is contained.
      *
-     * @param value The value that is given bac, when with object is selected.
+     * @param selectionGroup
+     */
+    public void setSelectionGroup(SelectionGroup<T> selectionGroup);
+
+    /**
+     *
+     * @param value The value that is given back, when with object is selected.
      */
     void setSelectionValue(T value);
 

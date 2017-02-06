@@ -2,9 +2,13 @@ package jigspuzzle.controller;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import jigspuzzle.JigSPuzzle;
+import jigspuzzle.testutils.mockups.DummyMultiMonitorPuzzleWindow;
+import jigspuzzle.testutils.mockups.DummyPuzzleWindow;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -37,13 +41,16 @@ public class SettingsControllerIT {
         File file = new File(SettingsController.SETTINGS_FILE_NAME);
 
         file.delete();
+
+        // reset all controllers
+        JigSPuzzle.getInstance().resetInstances();
     }
 
     @Test
     public void testGetPuzzlepieceSize() {
         SettingsController instance = SettingsController.getInstance();
         instance.setDecreasePuzzleAutomatically(true);
-        instance.setUsedSizeOfPuzzleare(1);
+        instance.setUsedSizeOfPuzzlearea(1);
         int puzzleareaHeight = 1000;
         int puzzleareaWidth = 1500;
         int puzzleHeight = 2000;
@@ -51,7 +58,8 @@ public class SettingsControllerIT {
         int puzzleRows = 4;
         int puzzleColumns = 4;
 
-        Dimension result = instance.getPuzzlepieceSize(puzzleareaHeight, puzzleareaWidth, puzzleHeight, puzzleWidth, puzzleRows, puzzleColumns);
+        JigSPuzzle.getInstance().setPuzzleWindow(new DummyPuzzleWindow(puzzleareaWidth, puzzleareaHeight));
+        Dimension result = instance.getPuzzlepieceSize(puzzleHeight, puzzleWidth, puzzleRows, puzzleColumns);
         assertEquals(250, result.height);
         assertEquals(250, result.width);
     }
@@ -60,7 +68,7 @@ public class SettingsControllerIT {
     public void testGetPuzzlepieceSize2() {
         SettingsController instance = SettingsController.getInstance();
         instance.setDecreasePuzzleAutomatically(true);
-        instance.setUsedSizeOfPuzzleare(0.5);
+        instance.setUsedSizeOfPuzzlearea(0.5);
         int puzzleareaHeight = 1000;
         int puzzleareaWidth = 1500;
         int puzzleHeight = 2000;
@@ -68,7 +76,8 @@ public class SettingsControllerIT {
         int puzzleRows = 4;
         int puzzleColumns = 4;
 
-        Dimension result = instance.getPuzzlepieceSize(puzzleareaHeight, puzzleareaWidth, puzzleHeight, puzzleWidth, puzzleRows, puzzleColumns);
+        JigSPuzzle.getInstance().setPuzzleWindow(new DummyPuzzleWindow(puzzleareaWidth, puzzleareaHeight));
+        Dimension result = instance.getPuzzlepieceSize(puzzleHeight, puzzleWidth, puzzleRows, puzzleColumns);
         assertEquals(125, result.height);
         assertEquals(125, result.width);
     }
@@ -77,7 +86,7 @@ public class SettingsControllerIT {
     public void testGetPuzzlepieceSize3() {
         SettingsController instance = SettingsController.getInstance();
         instance.setDecreasePuzzleAutomatically(true);
-        instance.setUsedSizeOfPuzzleare(1);
+        instance.setUsedSizeOfPuzzlearea(1);
         int puzzleareaHeight = 1500;
         int puzzleareaWidth = 1000;
         int puzzleHeight = 2500;
@@ -85,7 +94,8 @@ public class SettingsControllerIT {
         int puzzleRows = 5;
         int puzzleColumns = 4;
 
-        Dimension result = instance.getPuzzlepieceSize(puzzleareaHeight, puzzleareaWidth, puzzleHeight, puzzleWidth, puzzleRows, puzzleColumns);
+        JigSPuzzle.getInstance().setPuzzleWindow(new DummyPuzzleWindow(puzzleareaWidth, puzzleareaHeight));
+        Dimension result = instance.getPuzzlepieceSize(puzzleHeight, puzzleWidth, puzzleRows, puzzleColumns);
         assertEquals(250, result.height);
         assertEquals(250, result.width);
     }
@@ -94,7 +104,7 @@ public class SettingsControllerIT {
     public void testGetPuzzlepieceSize4() {
         SettingsController instance = SettingsController.getInstance();
         instance.setDecreasePuzzleAutomatically(true);
-        instance.setUsedSizeOfPuzzleare(1);
+        instance.setUsedSizeOfPuzzlearea(1);
         int puzzleareaHeight = 1000;
         int puzzleareaWidth = 1000;
         int puzzleHeight = 2500;
@@ -102,7 +112,8 @@ public class SettingsControllerIT {
         int puzzleRows = 5;
         int puzzleColumns = 4;
 
-        Dimension result = instance.getPuzzlepieceSize(puzzleareaHeight, puzzleareaWidth, puzzleHeight, puzzleWidth, puzzleRows, puzzleColumns);
+        JigSPuzzle.getInstance().setPuzzleWindow(new DummyPuzzleWindow(puzzleareaWidth, puzzleareaHeight));
+        Dimension result = instance.getPuzzlepieceSize(puzzleHeight, puzzleWidth, puzzleRows, puzzleColumns);
         assertEquals(200, result.height);
         assertEquals(200, result.width);
     }
@@ -111,7 +122,7 @@ public class SettingsControllerIT {
     public void testGetPuzzlepieceSize5() {
         SettingsController instance = SettingsController.getInstance();
         instance.setDecreasePuzzleAutomatically(false);
-        instance.setUsedSizeOfPuzzleare(0.5);
+        instance.setUsedSizeOfPuzzlearea(0.5);
         int puzzleareaHeight = 1000;
         int puzzleareaWidth = 1000;
         int puzzleHeight = 2500;
@@ -119,7 +130,8 @@ public class SettingsControllerIT {
         int puzzleRows = 5;
         int puzzleColumns = 4;
 
-        Dimension result = instance.getPuzzlepieceSize(puzzleareaHeight, puzzleareaWidth, puzzleHeight, puzzleWidth, puzzleRows, puzzleColumns);
+        JigSPuzzle.getInstance().setPuzzleWindow(new DummyPuzzleWindow(puzzleareaWidth, puzzleareaHeight));
+        Dimension result = instance.getPuzzlepieceSize(puzzleHeight, puzzleWidth, puzzleRows, puzzleColumns);
         assertEquals(500, result.height);
         assertEquals(500, result.width);
     }
@@ -129,7 +141,7 @@ public class SettingsControllerIT {
         SettingsController instance = SettingsController.getInstance();
         instance.setDecreasePuzzleAutomatically(true);
         instance.setEnlargePuzzleAutomatically(false);
-        instance.setUsedSizeOfPuzzleare(1);
+        instance.setUsedSizeOfPuzzlearea(1);
         int puzzleareaHeight = 1500;
         int puzzleareaWidth = 2000;
         int puzzleHeight = 1000;
@@ -137,7 +149,8 @@ public class SettingsControllerIT {
         int puzzleRows = 2;
         int puzzleColumns = 3;
 
-        Dimension result = instance.getPuzzlepieceSize(puzzleareaHeight, puzzleareaWidth, puzzleHeight, puzzleWidth, puzzleRows, puzzleColumns);
+        JigSPuzzle.getInstance().setPuzzleWindow(new DummyPuzzleWindow(puzzleareaWidth, puzzleareaHeight));
+        Dimension result = instance.getPuzzlepieceSize(puzzleHeight, puzzleWidth, puzzleRows, puzzleColumns);
         assertEquals(500, result.height);
         assertEquals(500, result.width);
     }
@@ -146,7 +159,7 @@ public class SettingsControllerIT {
     public void testGetPuzzlepieceSize10() {
         SettingsController instance = SettingsController.getInstance();
         instance.setEnlargePuzzleAutomatically(true);
-        instance.setUsedSizeOfPuzzleare(1);
+        instance.setUsedSizeOfPuzzlearea(1);
         int puzzleareaHeight = 1600;
         int puzzleareaWidth = 2000;
         int puzzleHeight = 1000;
@@ -154,7 +167,8 @@ public class SettingsControllerIT {
         int puzzleRows = 4;
         int puzzleColumns = 4;
 
-        Dimension result = instance.getPuzzlepieceSize(puzzleareaHeight, puzzleareaWidth, puzzleHeight, puzzleWidth, puzzleRows, puzzleColumns);
+        JigSPuzzle.getInstance().setPuzzleWindow(new DummyPuzzleWindow(puzzleareaWidth, puzzleareaHeight));
+        Dimension result = instance.getPuzzlepieceSize(puzzleHeight, puzzleWidth, puzzleRows, puzzleColumns);
         assertEquals(400, result.height);
         assertEquals(400, result.width);
     }
@@ -163,7 +177,7 @@ public class SettingsControllerIT {
     public void testGetPuzzlepieceSize11() {
         SettingsController instance = SettingsController.getInstance();
         instance.setEnlargePuzzleAutomatically(true);
-        instance.setUsedSizeOfPuzzleare(1);
+        instance.setUsedSizeOfPuzzlearea(1);
         int puzzleareaHeight = 1600;
         int puzzleareaWidth = 2000;
         int puzzleHeight = 1000;
@@ -171,7 +185,8 @@ public class SettingsControllerIT {
         int puzzleRows = 4;
         int puzzleColumns = 3;
 
-        Dimension result = instance.getPuzzlepieceSize(puzzleareaHeight, puzzleareaWidth, puzzleHeight, puzzleWidth, puzzleRows, puzzleColumns);
+        JigSPuzzle.getInstance().setPuzzleWindow(new DummyPuzzleWindow(puzzleareaWidth, puzzleareaHeight));
+        Dimension result = instance.getPuzzlepieceSize(puzzleHeight, puzzleWidth, puzzleRows, puzzleColumns);
         assertEquals(400, result.height);
         assertEquals(400, result.width);
     }
@@ -180,7 +195,7 @@ public class SettingsControllerIT {
     public void testGetPuzzlepieceSize12() {
         SettingsController instance = SettingsController.getInstance();
         instance.setEnlargePuzzleAutomatically(true);
-        instance.setUsedSizeOfPuzzleare(1);
+        instance.setUsedSizeOfPuzzlearea(1);
         int puzzleareaHeight = 1500;
         int puzzleareaWidth = 2000;
         int puzzleHeight = 500;
@@ -188,7 +203,8 @@ public class SettingsControllerIT {
         int puzzleRows = 2;
         int puzzleColumns = 4;
 
-        Dimension result = instance.getPuzzlepieceSize(puzzleareaHeight, puzzleareaWidth, puzzleHeight, puzzleWidth, puzzleRows, puzzleColumns);
+        JigSPuzzle.getInstance().setPuzzleWindow(new DummyPuzzleWindow(puzzleareaWidth, puzzleareaHeight));
+        Dimension result = instance.getPuzzlepieceSize(puzzleHeight, puzzleWidth, puzzleRows, puzzleColumns);
         assertEquals(500, result.height);
         assertEquals(500, result.width);
     }
@@ -197,7 +213,7 @@ public class SettingsControllerIT {
     public void testGetPuzzlepieceSize13() {
         SettingsController instance = SettingsController.getInstance();
         instance.setEnlargePuzzleAutomatically(true);
-        instance.setUsedSizeOfPuzzleare(0.5);
+        instance.setUsedSizeOfPuzzlearea(0.5);
         int puzzleareaHeight = 1500;
         int puzzleareaWidth = 2000;
         int puzzleHeight = 500;
@@ -205,7 +221,8 @@ public class SettingsControllerIT {
         int puzzleRows = 2;
         int puzzleColumns = 4;
 
-        Dimension result = instance.getPuzzlepieceSize(puzzleareaHeight, puzzleareaWidth, puzzleHeight, puzzleWidth, puzzleRows, puzzleColumns);
+        JigSPuzzle.getInstance().setPuzzleWindow(new DummyPuzzleWindow(puzzleareaWidth, puzzleareaHeight));
+        Dimension result = instance.getPuzzlepieceSize(puzzleHeight, puzzleWidth, puzzleRows, puzzleColumns);
         assertEquals(250, result.height);
         assertEquals(250, result.width);
     }
@@ -214,7 +231,7 @@ public class SettingsControllerIT {
     public void testGetPuzzlepieceSize14() {
         SettingsController instance = SettingsController.getInstance();
         instance.setEnlargePuzzleAutomatically(false);
-        instance.setUsedSizeOfPuzzleare(1);
+        instance.setUsedSizeOfPuzzlearea(1);
         int puzzleareaHeight = 1500;
         int puzzleareaWidth = 2000;
         int puzzleHeight = 500;
@@ -222,9 +239,51 @@ public class SettingsControllerIT {
         int puzzleRows = 2;
         int puzzleColumns = 4;
 
-        Dimension result = instance.getPuzzlepieceSize(puzzleareaHeight, puzzleareaWidth, puzzleHeight, puzzleWidth, puzzleRows, puzzleColumns);
+        JigSPuzzle.getInstance().setPuzzleWindow(new DummyPuzzleWindow(puzzleareaWidth, puzzleareaHeight));
+        Dimension result = instance.getPuzzlepieceSize(puzzleHeight, puzzleWidth, puzzleRows, puzzleColumns);
         assertEquals(250, result.height);
         assertEquals(250, result.width);
+    }
+
+    @Test
+    public void testGetPuzzlepieceSize15() {
+        Rectangle[] screens = new Rectangle[3];
+        SettingsController instance = SettingsController.getInstance();
+        instance.setEnlargePuzzleAutomatically(true);
+        instance.setUsedSizeOfPuzzlearea(1);
+
+        int puzzleHeight = 500;
+        int puzzleWidth = 1000;
+        int puzzleRows = 2;
+        int puzzleColumns = 4;
+        screens[0] = new Rectangle(-1680, 0, 1680, 1050);
+        screens[1] = new Rectangle(0, 0, 2000, 1500);
+        screens[2] = new Rectangle(2000, 10, 1680, 1050);
+
+        JigSPuzzle.getInstance().setPuzzleWindow(new DummyMultiMonitorPuzzleWindow(screens));
+        Dimension result = instance.getPuzzlepieceSize(puzzleHeight, puzzleWidth, puzzleRows, puzzleColumns);
+        assertEquals(500, result.height);
+        assertEquals(500, result.width);
+    }
+
+    @Test
+    public void testGetPuzzlepieceSize16() {
+        Rectangle[] screens = new Rectangle[2];
+        SettingsController instance = SettingsController.getInstance();
+        instance.setEnlargePuzzleAutomatically(true);
+        instance.setUsedSizeOfPuzzlearea(1);
+
+        int puzzleHeight = 1500;
+        int puzzleWidth = 1000;
+        int puzzleRows = 3;
+        int puzzleColumns = 2;
+        screens[0] = new Rectangle(0, 0, 1300, 1800);
+        screens[1] = new Rectangle(2000, 3000, 2000, 1000);
+
+        JigSPuzzle.getInstance().setPuzzleWindow(new DummyMultiMonitorPuzzleWindow(screens));
+        Dimension result = instance.getPuzzlepieceSize(puzzleHeight, puzzleWidth, puzzleRows, puzzleColumns);
+        assertEquals(600, result.height);
+        assertEquals(600, result.width);
     }
 
     @Test

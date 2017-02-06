@@ -2,6 +2,7 @@ package jigspuzzle.model.puzzle;
 
 import java.util.List;
 import jigspuzzle.JigSPuzzle;
+import jigspuzzle.controller.PuzzleController;
 import jigspuzzle.testutils.factories.FactorySlave;
 import jigspuzzle.testutils.mockups.DummyPuzzleWindow;
 import org.junit.After;
@@ -31,11 +32,13 @@ public class PuzzlepieceGroupIT {
 
     @After
     public void tearDown() {
+        JigSPuzzle.getInstance().resetInstances();
     }
 
     @Test
     public void testAddFromPuzzlepieceGroup_normal() throws ClassNotFoundException {
         Puzzle puzzle = (Puzzle) FactorySlave.build(Puzzle.class).create();
+        PuzzleController.getInstance().setPuzzle(puzzle);
         Puzzlepiece pieceThis = puzzle.puzzlepieces[1][1];
         Puzzlepiece pieceOther = puzzle.puzzlepieces[1][2];
 
@@ -58,6 +61,7 @@ public class PuzzlepieceGroupIT {
     @Test
     public void testAddFromPuzzlepieceGroup_addLeft() throws ClassNotFoundException {
         Puzzle puzzle = (Puzzle) FactorySlave.build(Puzzle.class).create();
+        PuzzleController.getInstance().setPuzzle(puzzle);
         Puzzlepiece pieceThis = puzzle.puzzlepieces[1][2];
         Puzzlepiece pieceOther = puzzle.puzzlepieces[1][1];
 
@@ -75,6 +79,7 @@ public class PuzzlepieceGroupIT {
     @Test
     public void testAddFromPuzzlepieceGroup_addTop() throws ClassNotFoundException {
         Puzzle puzzle = (Puzzle) FactorySlave.build(Puzzle.class).create();
+        PuzzleController.getInstance().setPuzzle(puzzle);
         Puzzlepiece pieceThis = puzzle.puzzlepieces[2][1];
         Puzzlepiece pieceOther = puzzle.puzzlepieces[1][1];
 
@@ -92,6 +97,7 @@ public class PuzzlepieceGroupIT {
     @Test
     public void testAddFromPuzzlepieceGroup_addBoth() throws ClassNotFoundException {
         Puzzle puzzle = (Puzzle) FactorySlave.build(Puzzle.class).create();
+        PuzzleController.getInstance().setPuzzle(puzzle);
         Puzzlepiece pieceThis, pieceOther;
         PuzzlepieceGroup groupThis, groupOther;
 
@@ -122,6 +128,7 @@ public class PuzzlepieceGroupIT {
     @Test
     public void testAddFromPuzzlepieceGroup_addBothMore() throws ClassNotFoundException {
         Puzzle puzzle = (Puzzle) FactorySlave.build(Puzzle.class).create();
+        PuzzleController.getInstance().setPuzzle(puzzle);
         Puzzlepiece pieceThis, pieceOther;
         PuzzlepieceGroup groupThis, groupOther;
 
@@ -176,6 +183,7 @@ public class PuzzlepieceGroupIT {
     @Test
     public void testGetPuzzlepieces() throws ClassNotFoundException {
         Puzzle puzzle = (Puzzle) FactorySlave.build(Puzzle.class).create();
+        PuzzleController.getInstance().setPuzzle(puzzle);
         Puzzlepiece pieceThis, pieceOther;
         PuzzlepieceGroup groupThis, groupOther;
 
@@ -212,6 +220,7 @@ public class PuzzlepieceGroupIT {
     @Test
     public void testGetPuzzlepieceConnectionsInPosition_2OnTopButtom() throws ClassNotFoundException {
         Puzzle puzzle = (Puzzle) FactorySlave.build(Puzzle.class).create();
+        PuzzleController.getInstance().setPuzzle(puzzle);
         Puzzlepiece pieceThis, pieceOther;
         PuzzlepieceGroup groupThis, groupOther;
 
@@ -234,6 +243,7 @@ public class PuzzlepieceGroupIT {
     @Test
     public void testGetPuzzlepieceConnectionsInPosition_withAHoleInside() throws ClassNotFoundException {
         Puzzle puzzle = (Puzzle) FactorySlave.build(Puzzle.class).create();
+        PuzzleController.getInstance().setPuzzle(puzzle);
         Puzzlepiece pieceThis, pieceOther;
         PuzzlepieceGroup groupThis, groupOther;
 
@@ -304,6 +314,7 @@ public class PuzzlepieceGroupIT {
     @Test
     public void testIsPuzzlepieceContained_more() throws ClassNotFoundException {
         Puzzle puzzle = (Puzzle) FactorySlave.build(Puzzle.class).create();
+        PuzzleController.getInstance().setPuzzle(puzzle);
         Puzzlepiece pieceThis, pieceOther;
         PuzzlepieceGroup groupThis, groupOther;
 

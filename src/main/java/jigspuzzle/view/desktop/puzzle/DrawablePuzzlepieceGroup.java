@@ -1,6 +1,7 @@
 package jigspuzzle.view.desktop.puzzle;
 
 import java.awt.BasicStroke;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -190,6 +191,26 @@ public abstract class DrawablePuzzlepieceGroup extends JPanel {
     }
 
     /**
+     * Gets the size of the puzzlearea in that this puzzlepiece is included.
+     *
+     * @return
+     */
+    protected abstract Dimension getPuzzleareaSize();
+
+    /**
+     * Gets the start of the puzzlearea to the given point. The start
+     * determinated from what position a puzzlepiece will be displayed. For
+     * instance if the start is (500,0) and we have a puzzlepiece at position
+     * (0,0), it will not be visible in the puzzlearea of this window. It will
+     * become visible, when it is moved to position (500,n).
+     *
+     * The default value is (0,0).
+     *
+     * @return
+     */
+    protected abstract Point getPuzzleareaStart();
+
+    /**
      * @return The model od the puzzlepiece group, that this view shows. This
      * value will be set in the constructor.
      */
@@ -367,9 +388,9 @@ public abstract class DrawablePuzzlepieceGroup extends JPanel {
      * Updates the view of this puzzlepiece-view to the coordinates of the
      * puzzlepiece-model.
      */
-    private void updateViewLocation() {
-        int x = piecegroup.getX();
-        int y = piecegroup.getY();
+    protected void updateViewLocation() {
+        int x = piecegroup.getX() - getPuzzleareaStart().x;
+        int y = piecegroup.getY() - getPuzzleareaStart().y;
 
         setLocation(x - getConnectionsSizeLeftRight(), y - getConnectionsSizeTopButtom());
     }
@@ -389,6 +410,14 @@ public abstract class DrawablePuzzlepieceGroup extends JPanel {
         // get position of puzzlepiece in the group
         int xStart = piecegroup.getXPositionOfPieceInGroup(puzzlepiece) * puzzlepieceWidth;
         int yStart = piecegroup.getYPositionOfPieceInGroup(puzzlepiece) * puzzlepieceHeight;
+
+        // don't draw th epiece if it is outside of the puzzlearea
+        if (xStart < -puzzlepieceWidth || yStart < -puzzlepieceHeight) {
+            return;
+        }
+        if (xStart > getPuzzleareaSize().width + puzzlepieceWidth || yStart > getPuzzleareaSize().height + puzzlepieceHeight) {
+            return;
+        }
 
         // draw the Connections to other puzzlepiecs
         PuzzlepieceConnection connection;
@@ -420,11 +449,7 @@ public abstract class DrawablePuzzlepieceGroup extends JPanel {
                 Shape oldClip = g2.getClip();
                 Area outConn = new Area(gp);
 
-                if (yStart == 0 && this.getY() < 0 && ConnectorPosition.TOP.equals(position)) {
-                    // don't draw the connector above the puzzleare, because it
-                    // could then be painted in the menu, that doesn't look nice...
-                    outConn.subtract(new Area(new Rectangle(getConnectionsSizeLeftRight(), 0, getPuzzlepieceWidth(), -this.getY())));
-                }
+                outConn.intersect(new Area(oldClip)); // don't draw outside the visible shape of this puzzlepiece
                 g2.setClip(outConn);
                 switch (position) {
                     case LEFT:

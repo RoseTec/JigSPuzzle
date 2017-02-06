@@ -66,11 +66,11 @@ public class PuzzleController extends AbstractController {
     /**
      * Gets the current puzzle.
      *
-     * Should <b>not</b> be used exept in tests.
+     * Do <b>not</b> modify atributes of the puzzle.
      *
      * @return
      */
-    Puzzle getPuzzle() {
+    public Puzzle getPuzzle() {
         return puzzle;
     }
 
@@ -186,12 +186,10 @@ public class PuzzleController extends AbstractController {
      * Creates a new puzzle that can be solved by the user
      *
      * @param img The image for that a puzzle should be created.
-     * @param puzzleareaHeight The availible height on the puzzlearea.
-     * @param puzzleareaWidth The availible width on the puzzlearea.
      * @throws IOException Will be thrown, when the given images cannot be
      * opened.
      */
-    public void newPuzzle(Image img, int puzzleareaHeight, int puzzleareaWidth) throws IOException {
+    public void newPuzzle(Image img) throws IOException {
         // load the image to the puzzle
         BufferedImage image = ImageUtil.transformImageToBufferedImage(img);
 
@@ -208,12 +206,9 @@ public class PuzzleController extends AbstractController {
         columnCount = image.getWidth() / puzzlepieceWidth;
 
         // create puzzle
-        Dimension pieceSize = SettingsController.getInstance().getPuzzlepieceSize(puzzleareaHeight,
-                puzzleareaWidth,
-                image.getHeight(),
-                image.getWidth(),
-                rowCount,
-                columnCount);
+        Dimension pieceSize = SettingsController.getInstance().getPuzzlepieceSize(
+                image.getHeight(), image.getWidth(),
+                rowCount, columnCount);
 
         if (puzzle != null) {
             puzzle.destroy();
@@ -224,35 +219,31 @@ public class PuzzleController extends AbstractController {
         JigSPuzzle.getInstance().getPuzzleWindow().setNewPuzzle(puzzle);
 
         // shuffle puzzle over the puzzlewindow
-        shufflePuzzlepieces(puzzleareaWidth - pieceSize.width, puzzleareaHeight - pieceSize.height);
+        shufflePuzzlepieces();
     }
 
     /**
      * Creates a new puzzle that can be solved by the user.
      *
      * @param imageFile The image for that a puzzle should be created.
-     * @param puzzleareaHeight The availible height on the puzzlearea.
-     * @param puzzleareaWidth The availible width on the puzzlearea.
      * @throws IOException Will be thrown, when the given images cannot be
      * opened.
      */
-    public void newPuzzle(File imageFile, int puzzleareaHeight, int puzzleareaWidth) throws IOException {
-        newPuzzle(ImageIO.read(imageFile), puzzleareaHeight, puzzleareaWidth);
+    public void newPuzzle(File imageFile) throws IOException {
+        newPuzzle(ImageIO.read(imageFile));
     }
 
     /**
      * Restarts the current puzzle. That means it will a new puzzle be created
      * from the image of the current puzzle.
      *
-     * @param puzzleareaHeight The availible height on the puzzlearea.
-     * @param puzzleareaWidth The availible width on the puzzlearea.
      * @throws java.io.IOException
      */
-    public void restartPuzzle(int puzzleareaHeight, int puzzleareaWidth) throws IOException {
+    public void restartPuzzle() throws IOException {
         if (puzzle == null) {
             return;
         }
-        newPuzzle(puzzle.getImage(), puzzleareaHeight, puzzleareaWidth);
+        newPuzzle(puzzle.getImage());
     }
 
     /**
@@ -285,17 +276,12 @@ public class PuzzleController extends AbstractController {
     }
 
     /**
-     * Shuffles the puzzle on the puzzleare, so that all puzzlepieces get new
+     * Shuffles the puzzle on the puzzlearea, so that all puzzlepieces get new
      * coordinates.
-     *
-     * @param maxX The maximum x-coordinate, die <b>nicht mehr</b> verwendet
-     * wird.
-     * @param maxY The maximum y-coordinate, die <b>nicht mehr</b> verwendet
-     * wird.
      */
-    public void shufflePuzzlepieces(int maxX, int maxY) {
+    public void shufflePuzzlepieces() {
         if (puzzle != null) {
-            puzzle.shufflePuzzlepieces(maxX, maxY, 10);
+            puzzle.shufflePuzzlepieces(10);
         }
     }
 
@@ -408,14 +394,12 @@ public class PuzzleController extends AbstractController {
      * @return
      */
     private boolean isPuzzlepieceNearOtherPieceInDirection(Puzzlepiece piece1, Puzzlepiece otherPiece, ConnectorPosition direction) {
-        int pieceWidth = JigSPuzzle.getInstance().getPuzzleWindow().getPuzzlepieceWidth();
-        int pieceHeight = JigSPuzzle.getInstance().getPuzzleWindow().getPuzzlepieceHeight();
+        int pieceWidth = SettingsController.getInstance().getPuzzlepieceSize().width;
+        int pieceHeight = SettingsController.getInstance().getPuzzlepieceSize().height;
 
         // calculate the tolerance offset
-        int possibleGroupOffsetX = JigSPuzzle.getInstance().getPuzzleWindow().getPuzzlepieceWidth()
-                * SettingsController.getInstance().getPuzzlepieceSnapDistancePercent() / 100;
-        int possibleGroupOffsetY = JigSPuzzle.getInstance().getPuzzleWindow().getPuzzlepieceHeight()
-                * SettingsController.getInstance().getPuzzlepieceSnapDistancePercent() / 100;
+        int possibleGroupOffsetX = pieceWidth * SettingsController.getInstance().getPuzzlepieceSnapDistancePercent() / 100;
+        int possibleGroupOffsetY = pieceHeight * SettingsController.getInstance().getPuzzlepieceSnapDistancePercent() / 100;
 
         // get the groups of the puzzlepieces
         PuzzlepieceGroup puzzlepieceGroup = piece1.getPuzzlepieceGroup();

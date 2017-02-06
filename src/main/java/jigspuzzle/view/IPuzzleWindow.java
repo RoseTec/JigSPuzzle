@@ -1,5 +1,6 @@
 package jigspuzzle.view;
 
+import java.awt.Rectangle;
 import jigspuzzle.model.puzzle.Puzzle;
 import jigspuzzle.model.puzzle.PuzzlepieceGroup;
 
@@ -34,18 +35,16 @@ public interface IPuzzleWindow {
     public void displayFatalError(String message);
 
     /**
-     * Gets the height of one puzzlepiece in the puzzleare.
+     * Gets an array of the bounds of the puzzlearea. Normally this is delegated
+     * to return the bounds of the component that acts as the puzzlearea.
+     *
+     * If the puzzlearea consists of several monitors, the bounds of each
+     * monitor will be added, such that this method returns an array of all
+     * monitor bounds.
      *
      * @return
      */
-    public int getPuzzlepieceHeight();
-
-    /**
-     * Gets the width of one puzzlepiece in the puzzleare.
-     *
-     * @return
-     */
-    public int getPuzzlepieceWidth();
+    public Rectangle[] getPuzzleareaBounds();
 
     /**
      * Shows the settings window to the user.
