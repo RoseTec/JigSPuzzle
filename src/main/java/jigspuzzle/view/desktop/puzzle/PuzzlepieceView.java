@@ -4,8 +4,6 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Area;
@@ -44,29 +42,24 @@ public class PuzzlepieceView extends DrawablePuzzlepieceGroup {
             this.repaint();
         });
 
-        // adapt sizes of puzzlepieces when this puzzlearea is resized
-        puzzlearea.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                updateViewSize();
-            }
-        });
-
-        // when the puzzlearea gets smaller, the puzzlepieces should still be
-        // visible. -> Moven them to stay in the puzzleare.
-        puzzlearea.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                Point p = new Point(getPuzzlepieceGroup().getX(), getPuzzlepieceGroup().getY());
-
-                correctPuzzlepieceGroupToFitInPuzzlearea(p);
-                setPuzzlepieceGroupPosition(p);
-            }
-        });
-
         // adapt size of this panel to the puzzlepieces inside it
         this.updateViewLocation();
         this.updateViewSize();
+    }
+
+    /**
+     * Adjusts the size of this puzzlepiece group to the size of the puzzlearea.
+     * This means, it gets smaller or bigger depending on the size of the
+     * epuzzlearea.
+     */
+    void adjustSizeToPuzzlearea() {
+        Point p = new Point(getPuzzlepieceGroup().getX(), getPuzzlepieceGroup().getY());
+
+        correctPuzzlepieceGroupToFitInPuzzlearea(p);
+        setPuzzlepieceGroupPosition(p);
+
+        // adapt sizes of puzzlepieces when this puzzlearea is resized
+        updateViewSize();
     }
 
     /**
@@ -87,6 +80,11 @@ public class PuzzlepieceView extends DrawablePuzzlepieceGroup {
         } else {
             return puzzlearea.getPuzzleareaStart();
         }
+    }
+
+    @Override
+    protected PuzzlepieceGroup getPuzzlepieceGroup() {
+        return super.getPuzzlepieceGroup();
     }
 
     /**

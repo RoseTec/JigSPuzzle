@@ -9,6 +9,8 @@ import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetAdapter;
 import java.awt.dnd.DropTargetDropEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,6 +59,25 @@ public class Puzzlearea extends JLayeredPane {
             Puzzlearea.this.setBackground(settings.getPuzzleareaBackgroundColor());
         });
         this.setBackground(SettingsController.getInstance().getPuzzleareaBackgroundColor());
+
+        // when the puzzlearea gets smaller, the puzzlepieces should still be
+        // visible. -> Moven them to stay in the puzzleare.
+        this.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                if (new Dimension(0, 0).equals(e.getComponent().getSize())) {
+                    return;
+                }
+
+                for (Component comp : getComponents()) {
+                    if (comp instanceof PuzzlepieceView) {
+                        PuzzlepieceView view = (PuzzlepieceView) comp;
+
+                        view.adjustSizeToPuzzlearea();
+                    }
+                }
+            }
+        });
 
         // enable drag&drop into this panel to create a puzzle
         DropTarget dt = new DropTarget(this, DnDConstants.ACTION_COPY_OR_MOVE, new DropTargetAdapter() {
@@ -204,23 +225,8 @@ public class Puzzlearea extends JLayeredPane {
 
                 newView.setName("puzzlepiece-group-" + x + "-" + y); // name is needed for tests
                 piecegroupsViews.set(listIndex, newView);
-            }
-        }
 
-        // add observer to the puzzlepieces
-        for (int x = 0; x < puzzle.getRowCount(); x++) {
-            for (int y = 0; y < puzzle.getColumnCount(); y++) {
-                int listIndex = x * puzzle.getColumnCount() + y;
-                PuzzlepieceView newView;
-                PuzzlepieceGroup group;
-
-                if (listIndex >= piecegroups.size()) {
-                    break;
-                }
-                newView = piecegroupsViews.get(listIndex);
-                group = piecegroups.get(listIndex);
-
-//                add(newView);
+                // add observer to the puzzlepieces
                 group.addObserver((Observable o, Object arg) -> {
                     if (!group.isInPuzzle()) {
                         Puzzlearea.this.remove(newView);
@@ -231,14 +237,13 @@ public class Puzzlearea extends JLayeredPane {
         }
 
         // display all puzzlepieces on the puzzlearea
-        Dimension size = getSize();
-
+//        Dimension size = getSize();
         setVisible(false);
         for (PuzzlepieceView view : piecegroupsViews) {
             add(view);
         }
         setVisible(true);
-        setSize(size); //<- so that getSize() not just returns (0,0)
+//        setSize(size); //<- so that getSize() not just returns (0,0)
 
         // move preview in the background
         this.moveToBack(preview);

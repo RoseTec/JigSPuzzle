@@ -161,6 +161,8 @@ public class DesktopPuzzleWindow implements IPuzzleWindow {
             }
             fullscreenPuzzleWindows = null;
             mainWindow.setVisible(true);
+
+            mainWindow.fullscreenTriggered();
         } else {
             mainWindow.setVisible(false);
 
@@ -200,17 +202,10 @@ public class DesktopPuzzleWindow implements IPuzzleWindow {
                 newWindow.setVisible(true);
                 fullscreenPuzzleWindows[i] = newWindow;
 
+                newWindow.fullscreenTriggered();
                 EventQueue.invokeLater(() -> { //invoke later, so that the window is finished with size before puzzlepieces are added
                     newWindow.setNewPuzzle(PuzzleController.getInstance().getPuzzle());
                 });
-            }
-        }
-
-        // update texts
-        mainWindow.fullscreenTriggered();
-        if (fullscreenPuzzleWindows != null) {
-            for (DesktopPuzzleMainWindow w : fullscreenPuzzleWindows) {
-                w.fullscreenTriggered();
             }
         }
     }

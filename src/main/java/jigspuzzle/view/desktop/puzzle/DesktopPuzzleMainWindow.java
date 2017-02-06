@@ -12,7 +12,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.Observable;
-import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import jigspuzzle.JigSPuzzle;
@@ -103,29 +102,6 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE && desktopPuzzleWindow.isFullscreenActive()) {
                     desktopPuzzleWindow.triggerFullscreen();
-                }
-            }
-        });
-
-        // show the menu on fullscreen only when the mouse is on top of the screen
-        this.addMouseMotionListener(new MouseAdapter() {
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                if (!desktopPuzzleWindow.isFullscreenActive()) {
-                    return;
-                }
-                int borderYBecomeVisible = 5;
-                int borderYBecomeUnvisible = 50;
-
-                if (e.getLocationOnScreen().y > borderYBecomeUnvisible && !((HideableJMenuBar) jMenuBar1).isHidden()) {
-                    ((HideableJMenuBar) jMenuBar1).setHidden(true);
-                    puzzlearea.setLocation(0, 0);
-                } else if (e.getLocationOnScreen().y < borderYBecomeVisible && ((HideableJMenuBar) jMenuBar1).isHidden()) {
-                    int menuBarOffset;
-
-                    ((HideableJMenuBar) jMenuBar1).setHidden(false);
-                    menuBarOffset = jMenuBar1.getPreferredSize().height;
-                    puzzlearea.setLocation(0, -menuBarOffset);
                 }
             }
         });
@@ -231,11 +207,35 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
     void fullscreenTriggered() {
         if (this.isUndecorated()) {
             // adjust window only for the jframes in fullscreen
-            ((HideableJMenuBar) jMenuBar1).setHidden(true);
             jMenuItem11.setIcon(ImageUtil.transformImageToIcon(ImageGetter.getInstance().getFullscreenCloseImage(), menuItemIconSize));
 
             jPanel1.setLayout(null);
             puzzlearea.setSize(getSize());
+
+            // show the menu on fullscreen only when the mouse is on top of the screen
+            ((HideableJMenuBar) jMenuBar1).setHidden(true);
+            this.addMouseMotionListener(new MouseAdapter() {
+                @Override
+                public void mouseMoved(MouseEvent e) {
+                    //todo: This depends on a new objec each time the fullscreen is activated
+                    if (!desktopPuzzleWindow.isFullscreenActive()) {
+                        return;
+                    }
+                    int borderYBecomeVisible = 5;
+                    int borderYBecomeUnvisible = 50;
+
+                    if (e.getLocationOnScreen().y > borderYBecomeUnvisible && !((HideableJMenuBar) jMenuBar1).isHidden()) {
+                        ((HideableJMenuBar) jMenuBar1).setHidden(true);
+                        puzzlearea.setLocation(0, 0);
+                    } else if (e.getLocationOnScreen().y < borderYBecomeVisible && ((HideableJMenuBar) jMenuBar1).isHidden()) {
+                        int menuBarOffset;
+
+                        ((HideableJMenuBar) jMenuBar1).setHidden(false);
+                        menuBarOffset = jMenuBar1.getPreferredSize().height;
+                        puzzlearea.setLocation(0, -menuBarOffset);
+                    }
+                }
+            });
         } else {
             // trigger component resized to ensure, the puzlepieces are in the puzzlearea
             puzzlearea.dispatchEvent(new ComponentEvent(this, ComponentEvent.COMPONENT_RESIZED));
