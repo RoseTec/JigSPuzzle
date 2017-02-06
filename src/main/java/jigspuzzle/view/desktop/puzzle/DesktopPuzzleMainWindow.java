@@ -1,5 +1,6 @@
 package jigspuzzle.view.desktop.puzzle;
 
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ComponentEvent;
@@ -11,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.Observable;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import jigspuzzle.JigSPuzzle;
@@ -19,6 +21,7 @@ import jigspuzzle.controller.SettingsController;
 import jigspuzzle.model.puzzle.Puzzle;
 import jigspuzzle.model.puzzle.PuzzlepieceGroup;
 import jigspuzzle.model.settings.PuzzleareaSettings;
+import jigspuzzle.util.ImageUtil;
 import jigspuzzle.view.IPuzzleWindow;
 import jigspuzzle.view.ImageGetter;
 import jigspuzzle.view.desktop.swing.ErrorMessageDialog;
@@ -54,6 +57,11 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
     private File lastSavedFile = null;
 
     /**
+     * The size of the icons of the menu items.
+     */
+    private Dimension menuItemIconSize = new Dimension(20, 20);
+
+    /**
      * Creates new form PuzzleWindow
      *
      * @param desktopPuzzleWindow
@@ -61,6 +69,14 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
     public DesktopPuzzleMainWindow(DesktopPuzzleWindow desktopPuzzleWindow) {
         this.desktopPuzzleWindow = desktopPuzzleWindow;
         initComponents();
+
+        jMenuItem1.setIcon(ImageUtil.transformImageToIcon(ImageGetter.getInstance().getNewPuzzleImage(), menuItemIconSize));
+        jMenuItem2.setIcon(ImageUtil.transformImageToIcon(ImageGetter.getInstance().getLoadImage(), menuItemIconSize));
+        jMenuItem3.setIcon(ImageUtil.transformImageToIcon(ImageGetter.getInstance().getSaveImage(), menuItemIconSize));
+        jMenuItem4.setIcon(ImageUtil.transformImageToIcon(ImageGetter.getInstance().getShuffleImage(), menuItemIconSize));
+        jMenuItem5.setIcon(ImageUtil.transformImageToIcon(ImageGetter.getInstance().getRestartImage(), menuItemIconSize));
+        jMenuItem6.setIcon(ImageUtil.transformImageToIcon(ImageGetter.getInstance().getExitImage(), menuItemIconSize));
+        jMenuItem11.setIcon(ImageUtil.transformImageToIcon(ImageGetter.getInstance().getFullscreenImage(), menuItemIconSize));
 
         // create Puzzlearea
         puzzlearea = new Puzzlearea();
@@ -216,6 +232,7 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
         if (this.isUndecorated()) {
             // adjust window only for the jframes in fullscreen
             ((HideableJMenuBar) jMenuBar1).setHidden(true);
+            jMenuItem11.setIcon(ImageUtil.transformImageToIcon(ImageGetter.getInstance().getFullscreenCloseImage(), menuItemIconSize));
 
             jPanel1.setLayout(null);
             puzzlearea.setSize(getSize());

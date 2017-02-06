@@ -30,6 +30,35 @@ public class ImageGetter {
     }
 
     /**
+     * @return The image used for exiting this program.
+     */
+    public Image getExitImage() {
+        return getImage("exit.png");
+    }
+
+    /**
+     * @return The image used for showing the fullscreen mode.
+     */
+    public Image getFullscreenImage() {
+        return getImage("fullscreen.png");
+    }
+
+    /**
+     * @return The image used for closing the fullscreen mode.
+     */
+    public Image getFullscreenCloseImage() {
+        return getImage("fullscreen_close.png");
+    }
+
+    /**
+     * @return The image used for loading an existing puzzle from the hdd.
+     * @see #getSaveImage()
+     */
+    public Image getLoadImage() {
+        return getImage("load.png");
+    }
+
+    /**
      *
      * @return The main image that stands for JigSPuzzle.
      */
@@ -73,6 +102,35 @@ public class ImageGetter {
      */
     public Image getMonitorImage() {
         return getImage("monitor.png");
+    }
+
+    /**
+     * @return The image used for creating a new puzzle from an image.
+     */
+    public Image getNewPuzzleImage() {
+        return getImage("new_puzzle.png");
+    }
+
+    /**
+     * @return The image used for restarting the current puzzle.
+     */
+    public Image getRestartImage() {
+        return getImage("restart_puzzle.png");
+    }
+
+    /**
+     * @return The image used for saving a puzzle to the hdd.
+     * @see #getLoadImage()
+     */
+    public Image getSaveImage() {
+        return getImage("save.png");
+    }
+
+    /**
+     * @return The image used for shuffleing the puzzlepieces.
+     */
+    public Image getShuffleImage() {
+        return getImage("shuffle_puzzlepieces.png");
     }
 
     private Image getImage(String imageName) {

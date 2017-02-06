@@ -1,8 +1,11 @@
 package jigspuzzle.util;
 
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 /**
  * A class that provides useful methods for images.
@@ -33,6 +36,40 @@ public class ImageUtil {
 
         // Return the buffered image
         return bimage;
+    }
+
+    /**
+     * Transforms the given image to an icon. For this, the class
+     * <code>ImageIcon</code> is used.
+     *
+     * @param img
+     * @return An instance of an icon for the given image or <code>null</code>,
+     * when the given image is <code>null</code>.
+     */
+    public static Icon transformImageToIcon(Image img) {
+        if (img == null) {
+            return null;
+        } else {
+            return new ImageIcon(img);
+        }
+    }
+
+    /**
+     * Transforms the given image to an icon. For this, the class
+     * <code>ImageIcon</code> is used.
+     *
+     * @param img
+     * @param size The that the icon should have.
+     * @return An instance of an icon for the given image or <code>null</code>,
+     * when the given image is <code>null</code>.
+     */
+    public static Icon transformImageToIcon(Image img, Dimension size) {
+        if (img == null) {
+            return null;
+        } else {
+            Image resisedImg = img.getScaledInstance(size.width, size.height, Image.SCALE_DEFAULT);
+            return transformImageToIcon(resisedImg);
+        }
     }
 
     /**
