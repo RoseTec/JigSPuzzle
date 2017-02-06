@@ -152,9 +152,9 @@ public class PuzzlepieceView extends DrawablePuzzlepieceGroup {
         newLocation.y += puzzlearea.getPuzzleareaStart().y;
 
         try {
-            //
-            if (puzzlearea.getWidth() <= getWidth() - 2 * getConnectionsSizeLeftRight()
-                    || puzzlearea.getHeight() <= getHeight() - 2 * getConnectionsSizeTopButtom()) {
+            // don't correct the size, when this puzzlepiece group is bigger than the puzzlearea
+            if (puzzlearea.getWidth() < getWidth() - 2 * getConnectionsSizeLeftRight()
+                    || puzzlearea.getHeight() < getHeight() - 2 * getConnectionsSizeTopButtom()) {
                 return;
             }
             // create a shape for the puzzlepiece group
