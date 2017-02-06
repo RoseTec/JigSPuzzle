@@ -158,15 +158,7 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
      */
     public void setNewPuzzle(Puzzle puzzle) {
         lastSavedFile = null;
-        Thread thread = new Thread(() -> {
-            puzzlearea.setNewPuzzle(puzzle);
-        });
-
-        thread.start();
-        try {
-            thread.join();
-        } catch (InterruptedException ex) {
-        }
+        puzzlearea.setNewPuzzle(puzzle);
     }
 
     /**

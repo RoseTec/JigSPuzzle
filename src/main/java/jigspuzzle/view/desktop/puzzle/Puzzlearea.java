@@ -237,13 +237,14 @@ public class Puzzlearea extends JLayeredPane {
         }
 
         // display all puzzlepieces on the puzzlearea
-//        Dimension size = getSize();
+        Dimension size = getSize();
+
         setVisible(false);
         for (PuzzlepieceView view : piecegroupsViews) {
             add(view);
         }
         setVisible(true);
-//        setSize(size); //<- so that getSize() not just returns (0,0)
+        setSize(size); //<- so that getSize() not just returns (0,0)
 
         // move preview in the background
         this.moveToBack(preview);
