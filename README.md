@@ -11,9 +11,9 @@ A program that allows you to create jigsaw puzzles from your image files. You ca
 # Features
 
 - create jigsaw puzzles from your image files either with a file chosser or with drag&drop
-- solve jigsaw puzzleswith your mouse on your computer
+- solve jigsaw puzzles with your mouse on your computer
 - have a small preview of the final image
-- possibility to automatically adjust size of jigsaw puzzle to the window size used for puzzeling
+- possibility to automatically adjust size of jigsaw puzzles to the window size used for puzzeling
 - save jigsaw puzzles and load them later again, when you want to continue playing
 - restart jigsaw puzzles at any time
 - several customizable settings for doing jigsaw puzzles
@@ -21,15 +21,18 @@ A program that allows you to create jigsaw puzzles from your image files. You ca
 - supported languages up to now: english, german
 
 # Download
-Go to the [release page on GitHub](https://github.com/RoseTec/JigSPuzzle/releases) and download the latest version. All releases contain a \*.zip file with an executable \*.jar. Extract the \*.jar and run it!
+Go to the [release page on GitHub](https://github.com/RoseTec/JigSPuzzle/releases) and download the latest version.
 
 # Installation
-No installation required! Just download JigSPuzzle and run it on a mashine with [Java](https://java.com/download/) installed.
+No installation required!<br/>
+Just download JigSPuzzle and run it on a mashine with [Java](https://java.com/download/) installed.
+
+All releases of JigSPuzzle contain a \*.zip file with an executable \*.jar. Unzip the \*.zip and run the \*.jar to play!
 
 # Gallery
-- load a image from your computer to create a jigsaw puzzle<br/>![load](images/loading.png)
+- load an image from your computer to create a jigsaw puzzle<br/>![load](images/loading.png)
 - solve a jigsaw puzzle<br/>![jigsaw](images/main.png)
 - have a small preview of the final image<br/>![preview](images/preview.png)
 - several customizable settings<br/>![custom settings](images/settings_puzzle.png)
-- changing settings take live effect<br/>![live changes](images/settings_live_change.png)
+- changing the settings take live effect<br/>![live changes](images/settings_live_change.png)
 - fullscreen support for multiple monitors<br/>![multiple monitors](images/multi_fullscreen.png)
