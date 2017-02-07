@@ -6,7 +6,7 @@ You have fun doing jigsaw puzzles?
 
 Then here is the right program for you: JigSPuzzle
 
-A program that allows you to create jigsaw puzzles from your image files. You can then try to solve them on your computer.
+It is a program that allows you to create jigsaw puzzles from your image files. You can then try to solve them on your computer.
 
 # Features
 
