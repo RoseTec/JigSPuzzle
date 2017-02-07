@@ -108,4 +108,14 @@
         <t id="21">This is already the newest version</t>
     </page>
 
+    <page id="12" descr="AboutDialog">
+        <t id="1">JigSPuzzle</t>
+        <t id="2">by RoseTec</t>
+
+        <t id="10">JigSPuzzle is a program, that allows to create and solve jigsaw puzzles on the computer.</t>
+
+        <t id="20">JigSPuzzle is under the GPL-3.0.</t>
+        <t id="21">The Sourcecode is open available under --link-- and everyone can download, use and extend it freely.</t>
+    </page>
+
 </language>
