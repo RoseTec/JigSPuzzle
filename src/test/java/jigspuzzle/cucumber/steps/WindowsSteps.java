@@ -164,6 +164,17 @@ public class WindowsSteps {
     }
     // -- Menu Bar end
 
+    // Button: Restart puzzle
+    @Then("^the button for restarting the puzzle should (not )?be enabled$")
+    public void see_appearence_settings_window(String negate) {
+        if (negate != null) {
+            puzzleWindow.menuItem("puzzle-restart").requireDisabled();
+        } else {
+            puzzleWindow.menuItem("puzzle-restart").requireEnabled();
+        }
+    }
+    // -- Button: Restart puzzle end
+
     // Settings window: appearance
     @Given("^(?:that )?I am on the appearance-settings window$")
     public void on_settings_window_appearance() {

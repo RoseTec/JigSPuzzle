@@ -8,3 +8,11 @@ Feature: Restart a puzzle
       And I have created a puzzle
       When I restart the puzzle
       Then I should see the restarted puzzle
+
+   Scenario: Button for restart a puzzle is not allways enabled
+     The button should only be enabled, when there is is puzzle.
+      Given that I am on the puzzle window
+      Then the button for restarting the puzzle should not be enabled
+      When I have created a puzzle
+      Then the button for restarting the puzzle should be enabled
+
