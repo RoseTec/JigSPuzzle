@@ -115,7 +115,7 @@
         <t id="10">JigSPuzzle ist ein Programm, mit dem Puzzles auf dem Computer erstellt und gelöst werden können.</t>
 
         <t id="20">JigSPuzzle seht unter der GPL-3.0.</t>
-        <t id="21">Der Quellcode ist offen unter --link-- einsehbar und kann von jedem kostenlos heruntergeladen, verwendet und erweitert werden.</t>
+        <t id="21">Der Quellcode ist offen unter {{link}} einsehbar und kann von jedem kostenlos heruntergeladen, verwendet und erweitert werden.</t>
     </page>
 
 </language>

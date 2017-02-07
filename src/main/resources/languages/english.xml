@@ -115,7 +115,7 @@
         <t id="10">JigSPuzzle is a program, that allows to create and solve jigsaw puzzles on the computer.</t>
 
         <t id="20">JigSPuzzle is under the GPL-3.0.</t>
-        <t id="21">The Sourcecode is open available under --link-- and everyone can download, use and extend it freely.</t>
+        <t id="21">The Sourcecode is open available under {{link}} and everyone can download, use and extend it freely.</t>
     </page>
 
 </language>

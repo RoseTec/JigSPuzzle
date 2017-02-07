@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Observable;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -155,14 +156,20 @@ public class LanguageSettings extends Observable implements Savable {
      *
      * @param pageId
      * @param textId
+     * @param variableMapping A mapping for variables used in the text for the
+     * language. It map the variable to a given value.
+     *
+     * Variables are used in the text as follows:
+     * <code>text {{variable}} text</code>.
      * @return
      */
-    public String getText(int pageId, int textId) {
+    public String getText(int pageId, int textId, Map<String, String> variableMapping) {
         String text;
 
         try {
             text = getLanguage(currentLanguage).getText(pageId, textId);
             if (text != null) {
+                text = replaceVariablesInText(text, variableMapping);
                 return text;
             }
         } catch (NullPointerException ex) {
@@ -172,6 +179,7 @@ public class LanguageSettings extends Observable implements Savable {
         try {
             text = getLanguage(DEFAULT_LANGUAGE).getText(pageId, textId);
             if (text != null) {
+                text = replaceVariablesInText(text, variableMapping);
                 return text;
             }
         } catch (NullPointerException ex) {
@@ -274,6 +282,27 @@ public class LanguageSettings extends Observable implements Savable {
             return JigSPuzzleResources.getResource(LANGUAGE_DIR_NAME + language + ".xml").openStream();
         } catch (IOException ex) {
             return null;
+        }
+    }
+
+    /**
+     * Replaces the variables in the text with the value from the map. If the
+     * map does not contain the variable, then nothing happens and the variable
+     * in the string stays as it is. Means: <code>text {{variable}} text</code>
+     * will not be changed.
+     *
+     * @param text
+     * @param variableMapping
+     * @return
+     */
+    private String replaceVariablesInText(String text, Map<String, String> variableMapping) {
+        if (variableMapping == null) {
+            return text;
+        } else {
+            for (String variable : variableMapping.keySet()) {
+                text = text.replaceAll("\\{\\{" + variable + "\\}\\}", variableMapping.get(variable));
+            }
+            return text;
         }
     }
 

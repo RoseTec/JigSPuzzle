@@ -5,7 +5,9 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.io.File;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import jigspuzzle.JigSPuzzle;
 import jigspuzzle.testutils.mockups.DummyMultiMonitorPuzzleWindow;
 import jigspuzzle.testutils.mockups.DummyPuzzleWindow;
@@ -312,6 +314,18 @@ public class SettingsControllerIT {
         String result = instance.getLanguageText(3215454, 3215455);
 
         assertEquals("readText-3215454-3215455", result);
+    }
+
+    @Test
+    public void testGetLanguageText2() {
+        SettingsController instance = SettingsController.getInstance();
+        Map<String, String> variableMapping = new HashMap<>();
+        String replace = "<my link>";
+
+        variableMapping.put("link", replace);
+        String result = instance.getLanguageText(12, 21, variableMapping);
+
+        assertTrue(result.contains(replace));
     }
 
     @Test

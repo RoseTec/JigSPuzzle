@@ -1,11 +1,15 @@
 package jigspuzzle.view.desktop.about;
 
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Observable;
 import jigspuzzle.controller.SettingsController;
 import jigspuzzle.view.ImageGetter;
 import jigspuzzle.view.desktop.swing.TopToButtomLayoutManager;
 import jigspuzzle.view.desktop.swing.ImageJPanel;
 import jigspuzzle.view.desktop.swing.JLabel;
+import jigspuzzle.view.desktop.swing.LinkLabel;
 
 /**
  * A dialog for details on JigSPuzzle.
@@ -14,9 +18,17 @@ import jigspuzzle.view.desktop.swing.JLabel;
  */
 public class AboutDialog extends javax.swing.JDialog {
 
+    private static String LINK_TO_SOURCES = "https://github.com/RoseTec/JigSPuzzle";
+
     public AboutDialog(java.awt.Frame parent) {
         super(parent, false);
         initComponents();
+
+        try {
+            ((LinkLabel) jLabel5).setLink(LINK_TO_SOURCES);
+        } catch (URISyntaxException ex) {
+            System.out.println("Executed a line that should not be executed on: new AboutDialog");
+        }
 
         // set layouts
         TopToButtomLayoutManager layoutMain = new TopToButtomLayoutManager();
@@ -52,13 +64,17 @@ public class AboutDialog extends javax.swing.JDialog {
      * Loads all texts from the settings in the current language.
      */
     private void loadLanguageTexts() {
+        Map<String, String> variableMapping;
+
         jLabel1.setText(SettingsController.getInstance().getLanguageText(12, 1));
         jLabel2.setText(SettingsController.getInstance().getLanguageText(12, 2));
 
         jLabel3.setText(SettingsController.getInstance().getLanguageText(12, 10));
 
         jLabel4.setText(SettingsController.getInstance().getLanguageText(12, 20));
-        jLabel5.setText(SettingsController.getInstance().getLanguageText(12, 21));
+        variableMapping = new HashMap<>();
+        variableMapping.put("link", "<a href=\"" + LINK_TO_SOURCES + "\">" + LINK_TO_SOURCES + "</a>");
+        jLabel5.setText(SettingsController.getInstance().getLanguageText(12, 21, variableMapping));
     }
 
     /**
@@ -81,7 +97,7 @@ public class AboutDialog extends javax.swing.JDialog {
         jLabel3 = new JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new JLabel();
-        jLabel5 = new JLabel();
+        jLabel5 = new LinkLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(700, 700));
@@ -136,17 +152,17 @@ public class AboutDialog extends javax.swing.JDialog {
         jPanel6.add(jPanel1);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel3.setText("jLabel3");
+        jLabel3.setText("It is a programm...");
         jPanel2.add(jLabel3);
 
         jPanel6.add(jPanel2);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel4.setText("jLabel4");
+        jLabel4.setText("Licence:");
         jPanel3.add(jLabel4);
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel5.setText("jLabel5");
+        jLabel5.setText("Sourcecode ist open...");
         jPanel3.add(jLabel5);
 
         jPanel6.add(jPanel3);

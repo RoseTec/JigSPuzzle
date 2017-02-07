@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 import javax.xml.parsers.DocumentBuilder;
@@ -228,7 +229,28 @@ public class SettingsController extends AbstractController {
      * @return
      */
     public String getLanguageText(int pageId, int textId) {
-        return languageSettings.getText(pageId, textId);
+        return getLanguageText(pageId, textId, null);
+    }
+
+    /**
+     * Gets the text in the current language for the given pageId and textId.
+     *
+     * If no text in the current language is given in the file for the language,
+     * then the english text is returned. If also the english text is not
+     * availibe, then the text <code>readText-[pageId]-[textId]</code> is
+     * returned.
+     *
+     * @param pageId
+     * @param textId
+     * @param variableMapping A mapping for variables used in the text for the
+     * language. It map the variable to a given value.
+     *
+     * Variables are used in the text as follows:
+     * <code>text {{variable}} text</code>.
+     * @return
+     */
+    public String getLanguageText(int pageId, int textId, Map<String, String> variableMapping) {
+        return languageSettings.getText(pageId, textId, variableMapping);
     }
 
     /**
