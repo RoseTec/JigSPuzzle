@@ -105,6 +105,9 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
                 }
             }
         });
+
+        // deactivate buttons when no puzzle is there
+        onPuzzleClosed();
     }
 
     /**
@@ -159,6 +162,10 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
     public void setNewPuzzle(Puzzle puzzle) {
         lastSavedFile = null;
         puzzlearea.setNewPuzzle(puzzle);
+
+        jMenuItem3.setEnabled(true);
+        jMenuItem4.setEnabled(true);
+        jMenuItem5.setEnabled(true);
     }
 
     /**
@@ -235,6 +242,16 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
 
         // text for fullscreen-menuItem changed
         loadLanguageTexts();
+    }
+
+    /**
+     * Actions, that are executed, when the current puzzle is closed and
+     * therefore removed from the puzzlearea.
+     */
+    private void onPuzzleClosed() {
+        jMenuItem3.setEnabled(false);
+        jMenuItem4.setEnabled(false);
+        jMenuItem5.setEnabled(false);
     }
 
     /**
