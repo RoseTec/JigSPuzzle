@@ -405,6 +405,7 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
 
         jMenuItem9.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
         jMenuItem9.setText("Über JigSPuzzle");
+        jMenuItem9.setName("about"); // NOI18N
         jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem9ActionPerformed(evt);

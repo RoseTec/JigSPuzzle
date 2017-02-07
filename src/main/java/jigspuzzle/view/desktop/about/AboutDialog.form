@@ -112,6 +112,7 @@
                           <Font name="Tahoma" size="36" style="0"/>
                         </Property>
                         <Property name="text" type="java.lang.String" value="JigSPuzzle"/>
+                        <Property name="name" type="java.lang.String" value="head" noResource="true"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel2">

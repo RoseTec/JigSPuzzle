@@ -120,6 +120,7 @@ public class AboutDialog extends javax.swing.JDialog {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         jLabel1.setText("JigSPuzzle");
+        jLabel1.setName("head"); // NOI18N
 
         jLabel2.setText("by RoseTec");
 

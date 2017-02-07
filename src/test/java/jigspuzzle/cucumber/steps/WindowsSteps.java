@@ -45,6 +45,8 @@ public class WindowsSteps {
 
     private DialogFixture versionWindow;
 
+    private DialogFixture aboutWindow;
+
     private static NoExitSecurityManagerInstaller noExitSecurityManagerInstaller;
 
     public WindowsSteps() {
@@ -75,6 +77,10 @@ public class WindowsSteps {
             versionWindow.cleanUp();
             versionWindow = null;
         }
+        if (aboutWindow != null) {
+            aboutWindow.cleanUp();
+            aboutWindow = null;
+        }
         if (noExitSecurityManagerInstaller != null) {
             JigSPuzzle.getInstance().exitProgram();
             noExitSecurityManagerInstaller.uninstall();
@@ -92,6 +98,10 @@ public class WindowsSteps {
 
     public AbstractWindowFixture getVersionWindow() {
         return versionWindow;
+    }
+
+    public AbstractWindowFixture getAboutWindow() {
+        return aboutWindow;
     }
 
     public Robot getRobot() {
@@ -250,4 +260,19 @@ public class WindowsSteps {
         versionWindow = findDialog("version-window").using(robot);
     }
     // -- Version window: end
+
+    // About window
+    @When("^I open the about-window$")
+    public void go_to_about_window() {
+        puzzleWindow.menuItem("about").click();
+        aboutWindow = findDialog("about-window").using(robot);
+    }
+
+    @Then("^I should see the about-window$")
+    public void see_about_window() {
+        aboutWindow.requireVisible();
+        aboutWindow.label("head").requireText("JigSPuzzle");
+    }
+    // --About window: end
+
 }
