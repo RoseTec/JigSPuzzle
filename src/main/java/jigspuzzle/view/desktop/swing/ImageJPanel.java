@@ -25,7 +25,13 @@ public class ImageJPanel extends JPanel implements SelectionGroupSelectable<Inte
      */
     private Image image;
 
-    private int marginTop, marginButtom, marginLeft, marginRight;
+    private int marginTop = 0, marginButtom = 0, marginLeft = 0, marginRight = 0;
+
+    /**
+     * The prefered size for this component to be draw. This also includes the
+     * margin.
+     */
+    private Dimension preferredSize = null;
 
     public ImageJPanel(LayoutManager layout, boolean isDoubleBuffered, Image image) {
         super(layout, isDoubleBuffered);
@@ -71,10 +77,14 @@ public class ImageJPanel extends JPanel implements SelectionGroupSelectable<Inte
      */
     @Override
     public Dimension getPreferredSize() {
-        int offsetX = marginLeft + marginRight;
-        int offsetY = marginTop + marginButtom;
+        if (preferredSize == null) {
+            int offsetX = marginLeft + marginRight;
+            int offsetY = marginTop + marginButtom;
 
-        return new Dimension(image.getWidth(null) + offsetX, image.getHeight(null) + offsetY);
+            return new Dimension(image.getWidth(null) + offsetX, image.getHeight(null) + offsetY);
+        } else {
+            return new Dimension(preferredSize);
+        }
     }
 
     /**
@@ -92,6 +102,14 @@ public class ImageJPanel extends JPanel implements SelectionGroupSelectable<Inte
             g2.setColor(SelectionGroupSelectable.COLOR_SELECTED_OBJECT);
             g2.fillRect(0, 0, this.getWidth(), this.getHeight());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPreferredSize(Dimension preferredSize) {
+        this.preferredSize = new Dimension(preferredSize);
     }
 
     private SelectionGroup<Integer> selectionGroup;

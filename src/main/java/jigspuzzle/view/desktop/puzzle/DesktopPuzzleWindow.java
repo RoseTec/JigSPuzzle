@@ -15,6 +15,7 @@ import jigspuzzle.controller.SettingsController;
 import jigspuzzle.model.puzzle.Puzzle;
 import jigspuzzle.model.puzzle.PuzzlepieceGroup;
 import jigspuzzle.view.IPuzzleWindow;
+import jigspuzzle.view.desktop.about.AboutDialog;
 import jigspuzzle.view.desktop.settings.SettingsWindow;
 import jigspuzzle.view.desktop.version.VersionCheckDialog;
 
@@ -36,6 +37,11 @@ public class DesktopPuzzleWindow implements IPuzzleWindow {
     private DesktopPuzzleMainWindow[] fullscreenPuzzleWindows;
 
     /**
+     * The window for detailed informations for JigSPuzzle.
+     */
+    private final AboutDialog aboutWidnow;
+
+    /**
      * The window in that the user can change the settings.
      */
     private final SettingsWindow settingsWindow;
@@ -48,6 +54,7 @@ public class DesktopPuzzleWindow implements IPuzzleWindow {
     public DesktopPuzzleWindow() {
         mainWindow = new DesktopPuzzleMainWindow(this);
         settingsWindow = new SettingsWindow();
+        aboutWidnow = new AboutDialog(mainWindow);
         versionCheckWindow = new VersionCheckDialog(mainWindow);
     }
 
@@ -96,6 +103,13 @@ public class DesktopPuzzleWindow implements IPuzzleWindow {
      */
     boolean isFullscreenActive() {
         return fullscreenPuzzleWindows != null && fullscreenPuzzleWindows.length > 0;
+    }
+
+    /**
+     * @see AboutDialog#showAboutWindow()
+     */
+    public void showAboutWindow() {
+        aboutWidnow.showAboutWindow();
     }
 
     /**
@@ -161,6 +175,8 @@ public class DesktopPuzzleWindow implements IPuzzleWindow {
             }
             fullscreenPuzzleWindows = null;
             mainWindow.setVisible(true);
+
+            mainWindow.fullscreenTriggered();
         } else {
             mainWindow.setVisible(false);
 
@@ -200,17 +216,10 @@ public class DesktopPuzzleWindow implements IPuzzleWindow {
                 newWindow.setVisible(true);
                 fullscreenPuzzleWindows[i] = newWindow;
 
+                newWindow.fullscreenTriggered();
                 EventQueue.invokeLater(() -> { //invoke later, so that the window is finished with size before puzzlepieces are added
                     newWindow.setNewPuzzle(PuzzleController.getInstance().getPuzzle());
                 });
-            }
-        }
-
-        // update texts
-        mainWindow.fullscreenTriggered();
-        if (fullscreenPuzzleWindows != null) {
-            for (DesktopPuzzleMainWindow w : fullscreenPuzzleWindows) {
-                w.fullscreenTriggered();
             }
         }
     }

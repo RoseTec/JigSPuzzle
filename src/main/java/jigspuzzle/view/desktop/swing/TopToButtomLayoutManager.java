@@ -1,4 +1,4 @@
-package jigspuzzle.view.desktop.settings;
+package jigspuzzle.view.desktop.swing;
 
 import java.awt.Component;
 import java.awt.Container;
@@ -14,34 +14,44 @@ import java.awt.LayoutManager;
  *
  * @author RoseTec
  */
-class TopToButtomLayoutManager implements LayoutManager {
+public class TopToButtomLayoutManager implements LayoutManager {
 
     /**
      * The offset of the components to the left side of this component to be
      * left blank.
+     *
+     * Default is 0.
      */
-    public int OFFSET_LEFT = 1;
+    public int OFFSET_LEFT = 0;
 
     /**
      * The offset of the components to the right side of this component to be
      * left blank.
+     *
+     * Default is 0.
      */
-    public int OFFSET_RIGHT = 1;
+    public int OFFSET_RIGHT = 0;
 
     /**
      * The offset of the first components to the border to be left blank.
+     *
+     * Default is 0.
      */
-    public int OFFSET_TOP = 1;
+    public int OFFSET_TOP = 0;
 
     /**
      * The offset of the last components to the border to be left blank.
+     *
+     * Default is 0.
      */
-    public int OFFSET_BUTTOM = 1;
+    public int OFFSET_BUTTOM = 0;
 
     /**
      * The size of empty space between two components in the comtainer.
+     *
+     * Default is 5.
      */
-    public int OFFSET_BETWEEN_COMPONENTS = 3;
+    public int OFFSET_BETWEEN_COMPONENTS = 5;
 
     /**
      * {@inheritDoc}

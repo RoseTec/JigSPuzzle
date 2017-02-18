@@ -1,5 +1,6 @@
 package jigspuzzle.view.desktop.settings;
 
+import jigspuzzle.view.desktop.swing.TopToButtomLayoutManager;
 import java.util.Observable;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;

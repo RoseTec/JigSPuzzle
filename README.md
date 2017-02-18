@@ -8,10 +8,9 @@ JigSPuzzle is a program that makes it possible to transform any image into a jig
 You have fun doing jigsaw puzzles?
 
 Then here is the right program for you: JigSPuzzle
+It is a program that allows you to create jigsaw puzzles from your image files. You can then try to solve them on your computer.
 
-A program that allows you to create jigsaw puzzles from your image files. You can then try to solve them on your computer.
-
-View the [presentation page](https://rosetec.github.io/JigSPuzzle/) for more informations and nice screenshots.
+Visit the [presentation page](https://rosetec.github.io/JigSPuzzle/) for more informations and nice screenshots.
 
 ## Main Features
 

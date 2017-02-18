@@ -196,8 +196,11 @@
                   <KeyStroke key="F1"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="&#xdc;ber JigSPuzzle"/>
-                <Property name="enabled" type="boolean" value="false"/>
+                <Property name="name" type="java.lang.String" value="about" noResource="true"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem9ActionPerformed"/>
+              </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JMenuItem()"/>
               </AuxValues>
