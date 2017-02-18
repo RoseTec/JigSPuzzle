@@ -2,6 +2,7 @@ package jigspuzzle;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -47,6 +48,35 @@ public class JigSPuzzleResources {
             try {
                 return file.toURI().toURL();
             } catch (MalformedURLException ex) {
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Gets a stream of the the resourse in the given path.
+     *
+     * @param resourcePath The path for the resource. It should start width a
+     * <code>/</code>
+     * @return
+     */
+    public static InputStream getResourceAsStream(String resourcePath) {
+        if (!resourcePath.startsWith("/")) {
+            resourcePath = "/" + resourcePath;
+        }
+
+        InputStream ret = JigSPuzzleResources.class.getResourceAsStream(resourcePath);
+        if (ret != null) {
+            return ret;
+        }
+
+        // seach also for files
+        File file = new File(resourcePath.substring(1));
+        if (file.exists()) {
+            try {
+                return file.toURI().toURL().openStream();
+            } catch (MalformedURLException ex) {
+            } catch (IOException ex) {
             }
         }
         return null;
