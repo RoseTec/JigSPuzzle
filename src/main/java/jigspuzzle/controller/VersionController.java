@@ -6,12 +6,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Properties;
 import jigspuzzle.JigSPuzzle;
 import jigspuzzle.JigSPuzzleResources;
 import jigspuzzle.model.version.Version;
@@ -163,32 +163,44 @@ public class VersionController extends AbstractController {
      * @throws IOException
      */
     private String getCurrentVersionString() throws IOException {
-        // get pom-file
-        URL url = JigSPuzzleResources.getResource("/META-INF/maven/RoseTec/JigSPuzzle/pom.xml");
-        if (url == null) {
-            // debug-mode
-            url = JigSPuzzleResources.getResource("/../pom.xml");
+        // get pom
+        InputStream in = JigSPuzzleResources.getResourceAsStream("/META-INF/maven/RoseTec/JigSPuzzle/pom.properties");
+
+        if (in != null) {
+            // read properties from jar
+            Properties prop = new Properties();
+            try {
+                prop.load(in);
+            } finally {
+                try {
+                    in.close();
+                } catch (Exception ex) {
+                }
+            }
+
+            return prop.getProperty("version");
+        } else {
+            // debug-mode: pom.xml is there as a file
+            URL url = JigSPuzzleResources.getResource("/../pom.xml");
+            File pomfile;
+            Model model = null;
+            FileReader reader = null;
+            MavenXpp3Reader mavenreader = new MavenXpp3Reader();
+
+            try {
+                pomfile = new File(url.toURI());
+                reader = new FileReader(pomfile); // <-- pomfile is your pom.xml
+                model = mavenreader.read(reader);
+                model.setPomFile(pomfile);
+            } catch (URISyntaxException ex) {
+                throw new IOException(ex);
+            } catch (XmlPullParserException ex) {
+                throw new IOException(ex);
+            }
+
+            MavenProject project = new MavenProject(model);
+            return project.getVersion();
         }
-
-        // read pom-file
-        File pomfile;
-        Model model = null;
-        FileReader reader = null;
-        MavenXpp3Reader mavenreader = new MavenXpp3Reader();
-
-        try {
-            pomfile = new File(url.toURI());
-            reader = new FileReader(pomfile); // <-- pomfile is your pom.xml
-            model = mavenreader.read(reader);
-            model.setPomFile(pomfile);
-        } catch (URISyntaxException ex) {
-            throw new IOException(ex);
-        } catch (XmlPullParserException ex) {
-            throw new IOException(ex);
-        }
-
-        MavenProject project = new MavenProject(model);
-        return project.getVersion();
     }
 
     private class WebVersionObservable extends Observable {

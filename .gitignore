@@ -2,3 +2,4 @@ build/
 build-test/
 nbproject/private/
 target/
+dependency-reduced-pom.xml
