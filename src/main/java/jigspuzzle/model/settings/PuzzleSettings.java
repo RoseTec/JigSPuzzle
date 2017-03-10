@@ -80,9 +80,11 @@ public class PuzzleSettings extends Observable implements Savable {
      * @param newNumber
      */
     public void setPuzzlepieceNumber(int newNumber) {
-        puzzlepieceNumber = newNumber;
-        setChanged();
-        notifyObservers();
+        if (newNumber > 0) {
+            puzzlepieceNumber = newNumber;
+            setChanged();
+            notifyObservers();
+        }
     }
 
     /**
