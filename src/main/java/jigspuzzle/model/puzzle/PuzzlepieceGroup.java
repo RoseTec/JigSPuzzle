@@ -116,8 +116,8 @@ public class PuzzlepieceGroup extends Observable implements Savable {
         }
 
         // calculate the position of the puzzlepieces in the groups
-        int rPositionThis = 0, cPositionThis = 0; // The row and column position of the puzzlepiece in the connection inside this group
-        int rPositionInOtherGroup = 0, cPositionInOtherGroup = 0; // The row and column position of the puzzlepiece in the connection inside the other group
+        int rPositionThis, cPositionThis; // The row and column position of the puzzlepiece in the connection inside this group
+        int rPositionInOtherGroup, cPositionInOtherGroup; // The row and column position of the puzzlepiece in the connection inside the other group
 
         rPositionThis = getYPositionOfPieceInGroup(pieceThis);
         cPositionThis = getXPositionOfPieceInGroup(pieceThis);

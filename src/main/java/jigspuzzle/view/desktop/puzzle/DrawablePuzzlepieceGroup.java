@@ -96,7 +96,7 @@ public abstract class DrawablePuzzlepieceGroup extends JPanel {
          * (x,y) in this panel
          */
 
-        // retrun false, if point is outide of the panel
+        // retrun false, if point is outside of the panel
         if (x < 0 || this.getWidth() < x
                 || y < 0 || this.getHeight() < y) {
             return false;
