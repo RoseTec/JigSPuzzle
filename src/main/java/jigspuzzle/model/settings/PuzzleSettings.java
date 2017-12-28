@@ -61,8 +61,13 @@ public class PuzzleSettings extends Observable implements Savable {
      */
     public void setPuzzlepieceConnectorShapeId(int puzzlepieceConnectorShapeId) {
         this.puzzlepieceConnectorShapeId = puzzlepieceConnectorShapeId;
-        setChanged();
-        notifyObservers();
+        if (!this.useRandomConnectorShape) {
+            // we need to update the listeners only, when we have 'new' information
+            // because, the connector shape is only used in settings and has no
+            // affect on the puzzle to show, we do not need to notify observers.
+            setChanged();
+            notifyObservers();
+        }
     }
 
     /**
