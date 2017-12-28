@@ -51,6 +51,13 @@ public class ImageGetter {
     }
 
     /**
+     * @return The image used for showing information of the program.
+     */
+    public Image getInfoImage() {
+        return getImage("info.png");
+    }
+
+    /**
      * @return The image used for loading an existing puzzle from the hdd.
      * @see #getSaveImage()
      */
@@ -124,6 +131,13 @@ public class ImageGetter {
      */
     public Image getSaveImage() {
         return getImage("save.png");
+    }
+
+    /**
+     * @return The image used for displaying settings.
+     */
+    public Image getSettingsImage() {
+        return getImage("settings.png");
     }
 
     /**

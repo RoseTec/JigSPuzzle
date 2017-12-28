@@ -75,7 +75,10 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
         jMenuItem4.setIcon(ImageUtil.transformImageToIcon(ImageGetter.getInstance().getShuffleImage(), menuItemIconSize));
         jMenuItem5.setIcon(ImageUtil.transformImageToIcon(ImageGetter.getInstance().getRestartImage(), menuItemIconSize));
         jMenuItem6.setIcon(ImageUtil.transformImageToIcon(ImageGetter.getInstance().getExitImage(), menuItemIconSize));
+//        jMenuItem7.setIcon(ImageUtil.transformImageToIcon(ImageGetter.getInstance().getSettingsImage(), menuItemIconSize));
+        jMenuItem8.setIcon(ImageUtil.transformImageToIcon(ImageGetter.getInstance().getSettingsImage(), menuItemIconSize));
         jMenuItem11.setIcon(ImageUtil.transformImageToIcon(ImageGetter.getInstance().getFullscreenImage(), menuItemIconSize));
+        jMenuItem9.setIcon(ImageUtil.transformImageToIcon(ImageGetter.getInstance().getInfoImage(), menuItemIconSize));
 
         // create Puzzlearea
         puzzlearea = new Puzzlearea();
