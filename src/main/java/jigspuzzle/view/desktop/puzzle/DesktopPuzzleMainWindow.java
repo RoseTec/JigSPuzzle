@@ -225,11 +225,12 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
                     }
                     int borderYBecomeVisible = 5;
                     int borderYBecomeUnvisible = 50;
+                    int yOnPuzzlearea = e.getLocationOnScreen().y - DesktopPuzzleMainWindow.this.getBounds().y;
 
-                    if (e.getLocationOnScreen().y > borderYBecomeUnvisible && !((HideableJMenuBar) jMenuBar1).isHidden()) {
+                    if (yOnPuzzlearea > borderYBecomeUnvisible && !((HideableJMenuBar) jMenuBar1).isHidden()) {
                         ((HideableJMenuBar) jMenuBar1).setHidden(true);
                         puzzlearea.setLocation(0, 0);
-                    } else if (e.getLocationOnScreen().y < borderYBecomeVisible && ((HideableJMenuBar) jMenuBar1).isHidden()) {
+                    } else if (yOnPuzzlearea < borderYBecomeVisible && ((HideableJMenuBar) jMenuBar1).isHidden()) {
                         int menuBarOffset;
 
                         ((HideableJMenuBar) jMenuBar1).setHidden(false);
