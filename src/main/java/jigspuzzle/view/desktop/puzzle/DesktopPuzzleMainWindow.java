@@ -219,11 +219,11 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
             this.addMouseMotionListener(new MouseAdapter() {
                 @Override
                 public void mouseMoved(MouseEvent e) {
-                    //todo: This depends on a new objec each time the fullscreen is activated
+                    //todo: This depends on a new object each time the fullscreen is activated
                     if (!desktopPuzzleWindow.isFullscreenActive()) {
                         return;
                     }
-                    int borderYBecomeVisible = 5;
+                    int borderYBecomeVisible = 3;
                     int borderYBecomeUnvisible = 50;
                     int yOnPuzzlearea = e.getLocationOnScreen().y - DesktopPuzzleMainWindow.this.getBounds().y;
 
