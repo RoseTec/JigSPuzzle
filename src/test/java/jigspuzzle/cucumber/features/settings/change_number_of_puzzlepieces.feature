@@ -8,9 +8,9 @@ Feature: Change number of puzzlepieces
       And I am on the puzzle-settings window
       When I change the number of puzzlepieces to "42"
       Then I should see the number of puzzlepieces in the settings window to be "42"
-      When I change the number of puzzlepieces to "530"
-      Then I should see the number of puzzlepieces in the settings window to be "530"
+      When I change the number of puzzlepieces to "330"
+      Then I should see the number of puzzlepieces in the settings window to be "330"
 
       When I save the settings
       And I create a new puzzle
-      Then the new puzzle should have "530" puzzlepieces
+      Then the new puzzle should have "330" puzzlepieces

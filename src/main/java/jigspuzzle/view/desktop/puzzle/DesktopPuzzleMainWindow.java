@@ -75,7 +75,10 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
         jMenuItem4.setIcon(ImageUtil.transformImageToIcon(ImageGetter.getInstance().getShuffleImage(), menuItemIconSize));
         jMenuItem5.setIcon(ImageUtil.transformImageToIcon(ImageGetter.getInstance().getRestartImage(), menuItemIconSize));
         jMenuItem6.setIcon(ImageUtil.transformImageToIcon(ImageGetter.getInstance().getExitImage(), menuItemIconSize));
+//        jMenuItem7.setIcon(ImageUtil.transformImageToIcon(ImageGetter.getInstance().getSettingsImage(), menuItemIconSize));
+        jMenuItem8.setIcon(ImageUtil.transformImageToIcon(ImageGetter.getInstance().getSettingsImage(), menuItemIconSize));
         jMenuItem11.setIcon(ImageUtil.transformImageToIcon(ImageGetter.getInstance().getFullscreenImage(), menuItemIconSize));
+        jMenuItem9.setIcon(ImageUtil.transformImageToIcon(ImageGetter.getInstance().getInfoImage(), menuItemIconSize));
 
         // create Puzzlearea
         puzzlearea = new Puzzlearea();
@@ -216,17 +219,18 @@ public class DesktopPuzzleMainWindow extends javax.swing.JFrame {
             this.addMouseMotionListener(new MouseAdapter() {
                 @Override
                 public void mouseMoved(MouseEvent e) {
-                    //todo: This depends on a new objec each time the fullscreen is activated
+                    //todo: This depends on a new object each time the fullscreen is activated
                     if (!desktopPuzzleWindow.isFullscreenActive()) {
                         return;
                     }
-                    int borderYBecomeVisible = 5;
+                    int borderYBecomeVisible = 3;
                     int borderYBecomeUnvisible = 50;
+                    int yOnPuzzlearea = e.getLocationOnScreen().y - DesktopPuzzleMainWindow.this.getBounds().y;
 
-                    if (e.getLocationOnScreen().y > borderYBecomeUnvisible && !((HideableJMenuBar) jMenuBar1).isHidden()) {
+                    if (yOnPuzzlearea > borderYBecomeUnvisible && !((HideableJMenuBar) jMenuBar1).isHidden()) {
                         ((HideableJMenuBar) jMenuBar1).setHidden(true);
                         puzzlearea.setLocation(0, 0);
-                    } else if (e.getLocationOnScreen().y < borderYBecomeVisible && ((HideableJMenuBar) jMenuBar1).isHidden()) {
+                    } else if (yOnPuzzlearea < borderYBecomeVisible && ((HideableJMenuBar) jMenuBar1).isHidden()) {
                         int menuBarOffset;
 
                         ((HideableJMenuBar) jMenuBar1).setHidden(false);

@@ -5,6 +5,7 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Observable;
 import jigspuzzle.model.Savable;
@@ -333,6 +334,26 @@ public class PuzzleareaSettings extends Observable implements Savable {
         int mainMonitorIndex = 0;
         GraphicsDevice[] allMonitors = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
 
+        allMonitors = Arrays.copyOf(allMonitors, allMonitors.length); // copy, because, detektion of default monitor will brake otherwise
+        Arrays.sort(allMonitors, (GraphicsDevice t, GraphicsDevice t1) -> {
+            // sort the monitors depending on the x-coordinate
+            int x1 = t.getDefaultConfiguration().getBounds().x;
+            int x2 = t1.getDefaultConfiguration().getBounds().x;
+
+            return Integer.compare(x1, x2);
+        });
+
+        // get the monitor on x=0
+        for (int i = 0; i < allMonitors.length; i++) {
+            GraphicsDevice gd = allMonitors[i];
+
+            if (gd.getDefaultConfiguration().getBounds().x == 0) {
+                mainMonitorIndex = i;
+                return mainMonitorIndex;
+            }
+        }
+
+        // no monitor on x = 0 => use default monitor from java
         for (int i = 0; i < allMonitors.length; i++) {
             GraphicsDevice gd = allMonitors[i];
 

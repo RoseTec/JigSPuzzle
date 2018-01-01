@@ -96,13 +96,14 @@ public abstract class DrawablePuzzlepieceGroup extends JPanel {
          * (x,y) in this panel
          */
 
-        // retrun false, if point is outide of the panel
+        // retrun false, if point is outside of the panel
         if (x < 0 || this.getWidth() < x
                 || y < 0 || this.getHeight() < y) {
             return false;
         }
 
         // 1. simple test: test, if point is in no puzzlepiece (puzzlepiece-size = puzzlepiece + connector_size)
+        // TODO: Is this simply test needed? Do we ever break in this code???
         boolean puzzlepieceHit = false;
 
         for (Puzzlepiece puzzlepiece : piecegroup.getPuzzlepieces()) {
@@ -125,6 +126,25 @@ public abstract class DrawablePuzzlepieceGroup extends JPanel {
         puzzlepieceHit = false;
 
         for (Puzzlepiece puzzlepiece : piecegroup.getPuzzlepieces()) {
+            // A check for the correct puzzlepiece path is done below.
+            // 1st: we only need to consider the puzzlepieces in the area around the coordinates given.
+            // So the (costly) puzzlepiece path check is not done for teh puzzlepieces that are not in
+            // the area around the cordinates.
+            int xStart = getXStartPositionOfPuzzlepiece(puzzlepiece);
+            int yStart = getYStartPositionOfPuzzlepiece(puzzlepiece);
+            int pieceX = xStart - getConnectionsSizeLeftRight();
+            int pieceY = yStart - getConnectionsSizeTopButtom();
+
+            if (pieceX < x && x < pieceX + getPuzzlepieceWidth() + 2 * getConnectionsSizeLeftRight()
+                    && pieceY < y || y < pieceY + getPuzzlepieceHeight() + 2 * getConnectionsSizeTopButtom()) {
+                // this piece is interesting, because it is in the area of the coordinates
+            } else {
+                // not interesting puzzlepiece => do not do a check, because it is to far away to
+                // contain the coordinates
+                continue;
+            }
+
+            // real check for the correct puzzlepiece path.
             Rectangle imgRect = new Rectangle(getXStartPositionOfPuzzlepiece(puzzlepiece),
                     getYStartPositionOfPuzzlepiece(puzzlepiece),
                     getPuzzlepieceWidth(),
@@ -370,6 +390,7 @@ public abstract class DrawablePuzzlepieceGroup extends JPanel {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
+        g2.setStroke(new BasicStroke((float) 1.1));
         for (Puzzlepiece puzzlepiece : piecegroup.getPuzzlepieces()) {
             // paint puzzlepiece
             paintPiece(puzzlepiece, g2);
@@ -402,7 +423,6 @@ public abstract class DrawablePuzzlepieceGroup extends JPanel {
      * @param g2
      */
     private void paintPiece(Puzzlepiece puzzlepiece, Graphics2D g2) {
-        g2.setStroke(new BasicStroke((float) 1.1));
         BufferedImage img = puzzlepiece.getImage();
         int puzzlepieceWidth = getPuzzlepieceWidth();
         int puzzlepieceHeight = getPuzzlepieceHeight();

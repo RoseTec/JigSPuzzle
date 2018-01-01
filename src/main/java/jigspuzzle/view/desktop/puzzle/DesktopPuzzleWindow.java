@@ -7,6 +7,7 @@ import java.awt.Rectangle;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -183,10 +184,20 @@ public class DesktopPuzzleWindow implements IPuzzleWindow {
             // get monitors from the settings
             List<Integer> allMonitorIndex = SettingsController.getInstance().getMonitorsForFullscreen();
 
-            // get the real monitors
+            // get all real monitors
             List<GraphicsDevice> monitorsForFullsceen = new ArrayList<>();
             GraphicsDevice[] allAvailableMonitors = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
 
+            allAvailableMonitors = Arrays.copyOf(allAvailableMonitors, allAvailableMonitors.length); // copy, because, detektion of default monitor will brake otherwise
+            Arrays.sort(allAvailableMonitors, (GraphicsDevice t, GraphicsDevice t1) -> {
+                // sort the monitors depending on the x-coordinate
+                int x1 = t.getDefaultConfiguration().getBounds().x;
+                int x2 = t1.getDefaultConfiguration().getBounds().x;
+
+                return Integer.compare(x1, x2);
+            });
+
+            // get the real monitors used becuse of the settings
             for (Integer monitorIndex : allMonitorIndex) {
                 GraphicsDevice monitorToAdd = allAvailableMonitors[monitorIndex];
 
