@@ -188,6 +188,7 @@ public class DesktopPuzzleWindow implements IPuzzleWindow {
             List<GraphicsDevice> monitorsForFullsceen = new ArrayList<>();
             GraphicsDevice[] allAvailableMonitors = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
 
+            allAvailableMonitors = Arrays.copyOf(allAvailableMonitors, allAvailableMonitors.length); // copy, because, detektion of default monitor will brake otherwise
             Arrays.sort(allAvailableMonitors, (GraphicsDevice t, GraphicsDevice t1) -> {
                 // sort the monitors depending on the x-coordinate
                 int x1 = t.getDefaultConfiguration().getBounds().x;

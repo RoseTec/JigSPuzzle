@@ -334,6 +334,7 @@ public class PuzzleareaSettings extends Observable implements Savable {
         int mainMonitorIndex = 0;
         GraphicsDevice[] allMonitors = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
 
+        allMonitors = Arrays.copyOf(allMonitors, allMonitors.length); // copy, because, detektion of default monitor will brake otherwise
         Arrays.sort(allMonitors, (GraphicsDevice t, GraphicsDevice t1) -> {
             // sort the monitors depending on the x-coordinate
             int x1 = t.getDefaultConfiguration().getBounds().x;
